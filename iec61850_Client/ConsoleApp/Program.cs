@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Logger;
+using IEC_61850;
 
 namespace ConsoleApp
 {
@@ -13,152 +14,14 @@ namespace ConsoleApp
 				Log.WorkLogging(true);
 
 				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.STOP);
-				Console.WriteLine("Press any key....");
+
+				var test = new ClientConnect();
+
+				test.DefineConnection("localhost",102);
+				test.StartConnection();
+				test.FillPathDA();
+
 				Console.ReadLine();
-
-
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.STOP);
-				Console.WriteLine("Press any key....");
-				Console.ReadLine();
-
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Test7"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test1"), Log.Code.WARNING);
-				Log.Write(new Exception("Test2"), Log.Code.ERROR);
-				Log.Write(new Exception("Test3"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test4"), Log.Code.ERROR);
-				Log.Write(new Exception("Test5"), Log.Code.WARNING);
-				Log.Write(new Exception("Test6"), Log.Code.ERROR);
-				Log.Write(new Exception("Testsssssssssssss"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Testsssssssssssss"), Log.Code.SUCCSES);
-				Log.Write(new Exception("Test8"), Log.Code.STOP);
-				Console.WriteLine("Press any key....");
-				Console.ReadLine();
-
-				Thread.Sleep(TimeSpan.FromSeconds(3));
-
 			}
 			catch (Exception ex)
 			{
