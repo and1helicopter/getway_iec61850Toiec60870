@@ -16,7 +16,7 @@ namespace ConsoleApp
 				foreach (var itme in lol)
 				{
 					dynamic test = await Client.GetValue(str, itme);
-					Console.WriteLine($"{str} : {itme.Path} = {test}");
+					//Console.WriteLine($"{str} : {itme.Path} = {test}");
 					;
 				}
 
@@ -32,11 +32,8 @@ namespace ConsoleApp
 
 				Log.Write(new Exception("Test1"), Log.Code.WARNING);
 
-				var temp = new ClientConnect();
-				temp.DefineConnection("localhost", 102);
-				temp.StartConnection();
-				temp.FillPathDA();
-				Client.AddConnection(temp);
+				Client.NewConnection("localhost", 102);
+				Client.StartConnection(Client.GetClientConnect("localhost:102"));
 
 				//var temp2 = new ClientConnect();
 				//temp2.DefineConnection("192.168.48.129", 102);
@@ -48,12 +45,22 @@ namespace ConsoleApp
 				lol.Add(new ClientConnect.PathDA("ESSrvLD0/CALH1.GrAlm.stVal", FunctionalConstraint.ST, MmsType.MMS_BOOLEAN));
 				lol.Add(new ClientConnect.PathDA("ESSrvLD0/CALH1.GrAlm.d", FunctionalConstraint.DC, MmsType.MMS_STRING));
 				lol.Add(new ClientConnect.PathDA("ESSrvLD0/CALH1.GrAlm.q", FunctionalConstraint.ST, MmsType.MMS_BIT_STRING));
+				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO1.stVal", FunctionalConstraint.ST, MmsType.MMS_BOOLEAN));
+				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO1.Oper.ctlVal", FunctionalConstraint.CO, MmsType.MMS_BOOLEAN));
+				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO2.Oper.ctlVal", FunctionalConstraint.CO, MmsType.MMS_BOOLEAN));
+
 
 				Loop(lol, "localhost:102");
-			//	Loop(lol, "192.168.48.129:102");
-
+				//	Loop(lol, "192.168.48.129:102");
+				foreach (var x in Client.GetPathDA(Client.GetClientConnect("localhost:102")))
+				{
+					Console.WriteLine($"{x.Path} : {x.FC} : {x.TypeMms}");
+				}
 				while (true)
 				{
+					//	Client.SetValue("localhost:102", false, lol[4]);
+					Client.SetValue("localhost:102", false, lol[5]);
+
 					Thread.Sleep(2500);
 				}
 

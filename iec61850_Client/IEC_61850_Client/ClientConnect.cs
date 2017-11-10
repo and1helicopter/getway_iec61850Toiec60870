@@ -1,4 +1,5 @@
-﻿using IEC61850.Client;
+﻿using System;
+using IEC61850.Client;
 using  IEC61850.Common;
 using System.Collections.Generic;
 using Logger;
@@ -7,17 +8,17 @@ namespace IEC_61850
 {
 	public class ClientConnect
 	{
-		private IedConnection _connection = new IedConnection();
-
-		public string GetConnetionHostPort()
-		{
-			return $"{_hostname}:{_port}";
-		}
+		private readonly IedConnection _connection = new IedConnection();
 
 		private string _hostname;
 		private int _port;
 
 		private IsoConnectionParameters _parameters;
+
+		public string GetConnetionHostPort()
+		{
+			return $"{_hostname}:{_port}";
+		}
 
 		public void DefineConnection(string hostname, int port)
 		{
@@ -73,7 +74,7 @@ namespace IEC_61850
 			_parameters.SetRemoteApTitle(apTitle, aeQualifier);
 		}
 
-		private List<PathDA> listPath = new List<PathDA>();
+		private readonly List<PathDA> _listPath = new List<PathDA>();
 
 		public class PathDA
 		{
@@ -89,9 +90,14 @@ namespace IEC_61850
 			}
 		}
 
+		private PathDA GetPathDA(string path)
+		{
+			return _listPath.Find(x => x.Path == path);
+		}
+
 		public List<PathDA> GetListPathDA()
 		{
-			return listPath;
+			return _listPath;
 		}
 
 		public void FillPathDA()
@@ -141,7 +147,7 @@ namespace IEC_61850
 			else
 			{
 				var typeMMS = _connection.GetVariableSpecification(itemPath, typeFC).GetType();
-				listPath.Add(new PathDA(itemPath, typeFC, typeMMS));
+				_listPath.Add(new PathDA(itemPath, typeFC, typeMMS));
 			}
 		}
 
@@ -177,6 +183,81 @@ namespace IEC_61850
 			}
 
 			return val;
+		}
+
+		public void SetValue(dynamic value, PathDA item)
+		{
+			if (item.Path.Contains("Oper.ctlVal"))
+			{
+				var path = item.Path.Replace(".Oper.ctlVal", "");
+
+				ControlObject control = _connection.CreateControlObject(path);
+				ControlModel controlModel = control.GetControlModel();
+				Console.WriteLine(controlModel);
+
+				var pathDA = new PathDA($"{path}.ctlModel", FunctionalConstraint.CF, MmsType.MMS_INTEGER);
+
+				try
+				{
+					var ctlModelValue = GetValue(pathDA);
+
+					if (ctlModelValue == 1)
+					{
+						DirectWithNormalSecurity(value, path);
+					}
+					else if (ctlModelValue == 2)
+					{
+						DirectWithNormalSecuritySbo(value, path);
+					}
+					else if (ctlModelValue == 3)
+					{
+						
+					}
+				}
+				catch (Exception e)
+				{
+					Log.Write(e, Log.Code.WARNING);
+				}
+			}
+		}
+
+		private void DirectWithNormalSecurity(dynamic value, string path)
+		{
+			if (GetPathDA($"{path}.Oper.ctlVal") != null)
+			{
+				var controlObject = _connection.CreateControlObject(path);
+				controlObject.Operate(value);
+			}
+		}
+
+		private void DirectWithNormalSecuritySbo(dynamic value, string path)
+		{
+			if (GetPathDA($"{path}.Oper.ctlVal") != null)
+			{
+				var controlObject = _connection.CreateControlObject(path);
+
+				if (controlObject.Select()){
+					controlObject.SetInterlockCheck(true);
+					controlObject.SetTestMode(true);
+
+					controlObject.SetSynchroCheck(true);
+					controlObject.SetOrigin("dsfdsgfds", OrCat.AUTOMATIC_BAY);
+					controlObject.Operate(value);
+				}
+
+				else
+					controlObject.Cancel();
+			}
+		}
+
+		private void DirectWithEnhancedSecurity(dynamic value, string path)
+		{
+			if (GetPathDA($"{path}.Oper.ctlVal") != null)
+			{
+				var controlObject = _connection.CreateControlObject(path);
+				controlObject.SelectWithValue(value);
+				controlObject.Operate(value);
+			}
 		}
 	}
 }
