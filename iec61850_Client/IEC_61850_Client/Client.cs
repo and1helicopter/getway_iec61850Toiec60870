@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IEC61850.Common;
 
 namespace IEC_61850
 {
@@ -78,10 +79,10 @@ namespace IEC_61850
 			return value;
 		}
 
-		public static void SetValue(string host, dynamic value, ClientConnect.PathDA item)
+		public static void SetValue(string host, dynamic value, ulong operTm, ClientConnect.PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
 			var connection = ConnectionList.First(x => x.GetConnetionHostPort().Equals(host));
-			connection.SetValue(value, item);
+			connection.SetValue(value, operTm, item, test, cheakInterlock, cheakSynchro, originator, orCat);
 		}
 	}
 }

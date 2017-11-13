@@ -56,10 +56,12 @@ namespace ConsoleApp
 				{
 					Console.WriteLine($"{x.Path} : {x.FC} : {x.TypeMms}");
 				}
+				var status = false;
 				while (true)
 				{
-					//	Client.SetValue("localhost:102", false, lol[4]);
-					Client.SetValue("localhost:102", false, lol[5]);
+					status = !status;
+					Client.SetValue("localhost:102", status, 0, lol[4], false, false, false, null, OrCat.PROCESS); //Direct_WithNormalSecurity
+					Client.SetValue("localhost:102", status, 0, lol[5], false, false, false, null, OrCat.PROCESS); //Sbo_WithNormalSecurity
 
 					Thread.Sleep(2500);
 				}

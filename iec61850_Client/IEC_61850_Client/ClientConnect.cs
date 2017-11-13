@@ -185,7 +185,7 @@ namespace IEC_61850
 			return val;
 		}
 
-		public void SetValue(dynamic value, PathDA item)
+		public void SetValue(dynamic value, ulong operTm, PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
 			if (item.Path.Contains("Oper.ctlVal"))
 			{
@@ -203,13 +203,17 @@ namespace IEC_61850
 
 					if (ctlModelValue == 1)
 					{
-						DirectWithNormalSecurity(value, path);
+						DirectWithNormalSecurity(value, operTm, path, test, cheakInterlock, cheakSynchro, originator, orCat);
 					}
 					else if (ctlModelValue == 2)
 					{
-						DirectWithNormalSecuritySbo(value, path);
+						WithNormalSecuritySbo(value, operTm, path, test, cheakInterlock, cheakSynchro, originator, orCat);
 					}
 					else if (ctlModelValue == 3)
+					{
+						DirectWithEnhancedSecurity(value, path);
+					}
+					else if (ctlModelValue == 4)
 					{
 						
 					}
@@ -221,33 +225,46 @@ namespace IEC_61850
 			}
 		}
 
-		private void DirectWithNormalSecurity(dynamic value, string path)
+		private void DirectWithNormalSecurity(dynamic value, ulong operTm, string path, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
-			if (GetPathDA($"{path}.Oper.ctlVal") != null)
-			{
-				var controlObject = _connection.CreateControlObject(path);
-				controlObject.Operate(value);
-			}
+			if (GetPathDA($"{path}.Oper.ctlVal") == null) return;
+			var controlObject = _connection.CreateControlObject(path);
+			
+			controlObject.EnableInterlockCheck();
+			controlObject.SetInterlockCheck(cheakInterlock);
+			
+			controlObject.EnableSynchroCheck();
+			controlObject.SetSynchroCheck(cheakSynchro);
+			
+			controlObject.SetTestMode(test);
+			
+			if(originator != null)
+				controlObject.SetOrigin(originator, orCat);
+			
+			controlObject.SetTestMode(false);
+			controlObject.Operate(value, operTm);
 		}
 
-		private void DirectWithNormalSecuritySbo(dynamic value, string path)
+		private void WithNormalSecuritySbo(dynamic value, ulong operTm, string path, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
-			if (GetPathDA($"{path}.Oper.ctlVal") != null)
-			{
-				var controlObject = _connection.CreateControlObject(path);
-
-				if (controlObject.Select()){
-					controlObject.SetInterlockCheck(true);
-					controlObject.SetTestMode(true);
-
-					controlObject.SetSynchroCheck(true);
-					controlObject.SetOrigin("dsfdsgfds", OrCat.AUTOMATIC_BAY);
-					controlObject.Operate(value);
-				}
-
-				else
-					controlObject.Cancel();
-			}
+			if (GetPathDA($"{path}.Oper.ctlVal") == null) return;
+			var controlObject = _connection.CreateControlObject(path);
+			
+			controlObject.EnableInterlockCheck();
+			controlObject.SetInterlockCheck(cheakInterlock);
+			
+			controlObject.EnableSynchroCheck();
+			controlObject.SetSynchroCheck(cheakSynchro);
+			
+			controlObject.SetTestMode(test);
+			
+			if(originator != null)
+				controlObject.SetOrigin(originator, orCat);
+			
+			if (controlObject.Select())
+				controlObject.Operate(value, operTm);
+			else
+				controlObject.Cancel();
 		}
 
 		private void DirectWithEnhancedSecurity(dynamic value, string path)
