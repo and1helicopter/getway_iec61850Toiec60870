@@ -48,6 +48,8 @@ namespace ConsoleApp
 				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO1.stVal", FunctionalConstraint.ST, MmsType.MMS_BOOLEAN));
 				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO1.Oper.ctlVal", FunctionalConstraint.CO, MmsType.MMS_BOOLEAN));
 				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO2.Oper.ctlVal", FunctionalConstraint.CO, MmsType.MMS_BOOLEAN));
+				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO3.Oper.ctlVal", FunctionalConstraint.CO, MmsType.MMS_BOOLEAN));
+				lol.Add(new ClientConnect.PathDA("ESSrvLD0/8DO_GGIO1.SPCSO4.Oper.ctlVal", FunctionalConstraint.CO, MmsType.MMS_BOOLEAN));
 
 
 				Loop(lol, "localhost:102");
@@ -60,52 +62,13 @@ namespace ConsoleApp
 				while (true)
 				{
 					status = !status;
-					Client.SetValue("localhost:102", status, 0, lol[4], false, false, false, null, OrCat.PROCESS); //Direct_WithNormalSecurity
-					Client.SetValue("localhost:102", status, 0, lol[5], false, false, false, null, OrCat.PROCESS); //Sbo_WithNormalSecurity
+					//Client.SetValue("localhost:102", status, null, 0, lol[4], false, false, false, null, OrCat.PROCESS); //Direct_WithNormalSecurity
+					//Client.SetValue("localhost:102", status, null, 0, lol[5], false, false, false, null, OrCat.PROCESS); //Sbo_WithNormalSecurity
+					//Client.SetValue("localhost:102", status, null, 0, lol[6], false, false, false, null, OrCat.PROCESS); //Direct_EnhanceadSecurity
+					Client.SetValue("localhost:102", status, !status, 0, lol[7], false, false, false, "test", OrCat.PROCESS); //Sbo_EnhanceadSecurity
 
 					Thread.Sleep(2500);
 				}
-
-
-				//var test = new ClientConnect();
-
-				//test.DefineConnection("localhost", 102);
-				//test.StartConnection();
-				//test.FillPathDA();
-
-				//Console.WriteLine("lol");
-				//Console.ReadLine();
-				//foreach (var item in test.GetListPathDA())
-				//{
-				//	Console.WriteLine($"{item.Path}   {item.FC}   {item.TypeMms}");
-				//}
-
-				//var testPathDA = test.GetListPathDA();
-				//var i = 0;
-
-				//while (i < 1)
-				//{
-				//	foreach (var pathDA in testPathDA)
-				//	{
-				//		if (pathDA.TypeMms == MmsType.MMS_UTC_TIME)
-				//		{
-				//			var lol = (Timestamp)test.GetValue(pathDA);
-				//			Console.WriteLine(new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime().AddMilliseconds(lol.TimeInMilliseconds));
-				//		}
-				//		else
-				//		{
-				//			var lol = test.GetValue(pathDA);
-				//			Console.WriteLine(lol);
-				//		}
-				//	}
-
-				//	i++;
-				//	Thread.Sleep(200);
-				//}
-
-
-				Console.ReadLine();
-
 			}
 			catch (Exception ex)
 			{

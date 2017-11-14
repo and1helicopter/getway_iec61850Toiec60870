@@ -79,10 +79,10 @@ namespace IEC_61850
 			return value;
 		}
 
-		public static void SetValue(string host, dynamic value, ulong operTm, ClientConnect.PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
+		public static void SetValue(string host, dynamic newValue, dynamic oldValue, ulong operTm, ClientConnect.PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
 			var connection = ConnectionList.First(x => x.GetConnetionHostPort().Equals(host));
-			connection.SetValue(value, operTm, item, test, cheakInterlock, cheakSynchro, originator, orCat);
+			connection.SetValue(newValue, oldValue, operTm, item, test, cheakInterlock, cheakSynchro, originator, orCat);
 		}
 	}
 }
