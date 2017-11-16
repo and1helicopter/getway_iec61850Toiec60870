@@ -10,8 +10,8 @@ namespace Logger
 	    private static bool _workLogging;
 	    private static readonly EventWaitHandle EventWaitHandle = new AutoResetEvent(false);
 	    private static readonly object Locker = new object();
-		private static Thread _loggingThread;
-		private static readonly Queue<LogMes> QueueLogMes = new Queue<LogMes>();
+			private static Thread _loggingThread;
+			private static readonly Queue<LogMes> QueueLogMes = new Queue<LogMes>();
 
 	    public static void WorkLogging(bool status)
 	    {
@@ -20,57 +20,55 @@ namespace Logger
 
 	    public static void Write(Exception exaption, Code codeLog)
 	    {
-			if (_workLogging)
-			{
-				if (_loggingThread == null)
+				if (_workLogging)
 				{
-					_loggingThread = new Thread(ProcessQueue)
+					if (_loggingThread == null)
 					{
-						Name = "Logger",
-						IsBackground = true
-					};
-					_loggingThread.Start();
+						_loggingThread = new Thread(ProcessQueue)
+						{
+							Name = "Logger",
+							IsBackground = true
+						};
+						_loggingThread.Start();
+					}
+	
+					lock (Locker)
+					{
+						QueueLogMes.Enqueue(new LogMes(exaption, codeLog));
+						EventWaitHandle.Set();
+					}
 				}
-
-				lock (Locker)
-				{
-					QueueLogMes.Enqueue(new LogMes(exaption, codeLog));
-					EventWaitHandle.Set();
-				}
-			}
 	    }
 
-		private static void ProcessQueue()
+			private static void ProcessQueue()
 	    {
-			while (_workLogging)
-			{
-				LogMes temp = null;
-
-				lock (Locker)
+				while (_workLogging)
 				{
-					if (QueueLogMes.Count != 0)
-						temp = QueueLogMes.Dequeue();
-
-				}
-
-				if (temp != null)
-					Message(temp);
-				else
-					EventWaitHandle.WaitOne();
-
+					LogMes temp = null;
+	
+					lock (Locker)
+					{
+						if (QueueLogMes.Count != 0)
+							temp = QueueLogMes.Dequeue();
+					}
+	
+					if (temp != null)
+						Message(temp);
+					else
+						EventWaitHandle.WaitOne();
 			}
 		}
 
-	    private static void Message(LogMes logMes)
-	    {
-		    using (StreamWriter w = File.AppendText("log.txt"))
-		    {
-			    w.Write(logMes.CodeLog == Code.STOP
-				    ? "---------------------------------------------------------------------------------------------\n"
-				    : $"#{logMes.DateTime}{logMes.DateTime.Millisecond}: {logMes.Exaption.Message} - Code Exaption: {logMes.CodeLog} \n");
-			    w.Close();
-		    }
-	    }
+	  private static void Message(LogMes logMes)
+	  {
+		   using (StreamWriter w = File.AppendText("log.txt"))
+		   {
+		    w.Write(logMes.CodeLog == Code.STOP
+			    ? "---------------------------------------------------------------------------------------------\n"
+			    : $"#{logMes.DateTime}{logMes.DateTime.Millisecond}: {logMes.Exaption.Message} - Code Exaption: {logMes.CodeLog} \n");
+		   w.Close();
+		  }
+	  }
 
 		private class LogMes
 		{

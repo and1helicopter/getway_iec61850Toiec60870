@@ -12,6 +12,7 @@ namespace IEC_61850
 
 		private string _hostname;
 		private int _port;
+		private bool _runConnect;
 
 		private IsoConnectionParameters _parameters;
 
@@ -31,6 +32,7 @@ namespace IEC_61850
 			try
 			{
 				_connection.Connect(_hostname, _port);
+				_runConnect = true;
 			}
 			catch (IedConnectionException e)
 			{
@@ -41,9 +43,15 @@ namespace IEC_61850
 		public void StopConnection()
 		{
 			_connection.Abort();
+			_runConnect = false;
 			_connection.Dispose();
 		}
 
+		public bool RunConnect()
+		{
+			return _runConnect;
+		}
+		
 		public void DefinePassword(string password)
 		{
 			_parameters = _connection.GetConnectionParameters();
@@ -190,10 +198,6 @@ namespace IEC_61850
 			if (item.Path.Contains("Oper.ctlVal"))
 			{
 				var path = item.Path.Replace(".Oper.ctlVal", "");
-
-				ControlObject control = _connection.CreateControlObject(path);
-				ControlModel controlModel = control.GetControlModel();
-				Console.WriteLine(controlModel);
 
 				var pathDA = new PathDA($"{path}.ctlModel", FunctionalConstraint.CF, MmsType.MMS_INTEGER);
 

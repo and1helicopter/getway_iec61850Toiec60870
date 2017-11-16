@@ -1,0 +1,38 @@
+{
+"iec61850":{ 
+	"port":"localhost",
+	"host":102
+	},
+"iec60870":{
+	"typeID":30,
+	"vsID":{
+		"sq":0,
+		"count":null
+	},
+	"cot":{
+		"reason":5,
+		"isNegative":false,
+		"isTest":false,
+		"oa":null
+	},
+	"ca":1,
+	"infObj":[
+		{
+			"addr":0,
+			"obj":[
+				{"val":"ESSrvLD0/8DO_GGIO1.SPCSO1.stVal"},
+				{"q":"ESSrvLD0/8DO_GGIO1.SPCSO1.q"},
+				{"t":"ESSrvLD0/8DO_GGIO1.SPCSO1.t"}
+			]
+		},
+		{
+			"addr":1,
+			"obj":[
+				{"val":"ESSrvLD0/8DO_GGIO1.SPCSO2.stVal"},
+				{"q":"ESSrvLD0/8DO_GGIO1.SPCSO2.q"},
+				{"t":"ESSrvLD0/8DO_GGIO1.SPCSO2.t"}
+			]
+		}
+		]
+	}
+}

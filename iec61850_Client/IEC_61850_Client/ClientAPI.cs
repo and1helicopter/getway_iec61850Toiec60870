@@ -5,7 +5,7 @@ using IEC61850.Common;
 
 namespace IEC_61850
 {
-    public static class Client
+    public static class ClientAPI
 	{
 		private static readonly List<ClientConnect> ConnectionList = new List<ClientConnect>();
 
@@ -18,44 +18,56 @@ namespace IEC_61850
 
 		public static void ConnectionDefinePassword(ClientConnect connect, string password)
 		{
-			connect.DefinePassword(password);
+			if(!connect.RunConnect())
+				connect.DefinePassword(password);
 		}
 
 		public static  void ConnectionDefineLocalAddresses(ClientConnect connect, uint pSelector, byte[] sSelector, byte[] tSelector)
 		{
-			connect.DefineLocalAddresses(pSelector, sSelector, tSelector);
+			if(!connect.RunConnect())
+				connect.DefineLocalAddresses(pSelector, sSelector, tSelector);
 		}
 
 		public static void ConnectionDefineLocalAddresses(ClientConnect connect, string apTitle, int aeQualifier)
 		{
-			connect.DefineLocalApTitle(apTitle, aeQualifier);
+			if(!connect.RunConnect())
+				connect.DefineLocalApTitle(apTitle, aeQualifier);
 		}
 
 		public static void ConnectionDefineRemoteAddresses(ClientConnect connect, uint pSelector, byte[] sSelector, byte[] tSelector)
-		{
-			connect.DefineRemoteAddresses(pSelector, sSelector, tSelector);
+		{			
+			if(!connect.RunConnect())
+				connect.DefineRemoteAddresses(pSelector, sSelector, tSelector);
 		}
 
 		public static void ConnectionDefineRemoteApTitle(ClientConnect connect, string apTitle, int aeQualifier)
 		{
-			connect.DefineRemoteApTitle(apTitle, aeQualifier);
+			if(!connect.RunConnect())
+				connect.DefineRemoteApTitle(apTitle, aeQualifier);
 		}
 		
 		public static void StartConnection(ClientConnect connect)
 		{
-			connect.StartConnection();
-			connect.FillPathDA();
+			if (!connect.RunConnect())
+			{
+				connect.StartConnection();
+				connect.FillPathDA();
+			}
 		}
 
 		public static void StopConnection(ClientConnect connect)
 		{
-			connect.StopConnection();
+			if(connect.RunConnect())
+				connect.StopConnection();
 		}
 
 		public static void DelateConnection(ClientConnect connect)
 		{
-			connect.StopConnection();
-			ConnectionList.Remove(connect);
+			if (!connect.RunConnect())
+			{
+				connect.StopConnection();
+				ConnectionList.Remove(connect);
+			}
 		}
 
 		public static ClientConnect GetClientConnect(string host)
