@@ -76,6 +76,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gateway\Gateway.csproj">
+      <Project>{54235ae3-6e1d-4439-9364-eb9dd2bba11e}</Project>
+      <Name>Gateway</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IEC_60870\IEC_60870.csproj">
       <Project>{7eb5871e-c706-4144-93a9-242e2f1883c4}</Project>
       <Name>IEC_60870</Name>

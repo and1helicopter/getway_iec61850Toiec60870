@@ -5,7 +5,7 @@ using IEC61850.Common;
 
 namespace IEC_61850
 {
-    public static class ClientAPI
+  public static class ClientAPI
 	{
 		private static readonly List<ClientConnect> ConnectionList = new List<ClientConnect>();
 
