@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="framework/ionicons/css/ionicons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <button @click=click>
+                <i class="ion-navicon"></i>
+            </button>
+        </header>
+        <aside v-show="show" transition="slide"></aside>
+    </div>
+    <script src="js/vue.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
