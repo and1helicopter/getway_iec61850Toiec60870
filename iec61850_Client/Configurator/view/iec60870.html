@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Компоненты Vue.js</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+<template id="test">
+    <div>
+        <input type="text" v-model="user" v-on:input="onUserChange" />
+        <p>Name: {{user}}</p>
+    </div>
+</template>
+
+<div id="app">
+    <h2>Hello, {{name}}</h2>
+    <useredit v-bind:user="name" v-on:userchange="change"></useredit>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    Vue.component('useredit', {
+        props: ["user"],
+        template: '#test',
+        methods: {
+            onUserChange: function(){
+                this.$emit('userchange', this.user);
+            }
+        }
+    });
+    new Vue({
+        el: "#app",
+        data: {
+            name: 'Tom'
+        },
+        methods:{
+            change: function(value){
+                this.name = value;
+            }
+        }
+    });
+</script>
+</body>
+</html>

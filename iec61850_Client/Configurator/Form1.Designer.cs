@@ -35,18 +35,20 @@
 			// 
 			this.Panel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Panel.Location = new System.Drawing.Point(0, 0);
+			this.Panel.MinimumSize = new System.Drawing.Size(800, 500);
 			this.Panel.Name = "Panel";
-			this.Panel.Size = new System.Drawing.Size(284, 261);
+			this.Panel.Size = new System.Drawing.Size(820, 500);
 			this.Panel.TabIndex = 0;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(284, 261);
+			this.ClientSize = new System.Drawing.Size(820, 500);
 			this.Controls.Add(this.Panel);
+			this.MinimumSize = new System.Drawing.Size(820, 500);
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Text = "Конфигуратор iec61850 - iec60870";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.ResumeLayout(false);

@@ -1,4 +1,5 @@
-﻿using CefSharp.WinForms;
+﻿using CefSharp;
+using CefSharp.WinForms;
 
 namespace Configurator
 {
@@ -16,10 +17,10 @@ namespace Configurator
 			_instanceMainForm = mainForm;
 		}
 
-		//public void showDevTools()
-		//{
-		//	_instanceBrowser.ShowDevTools();
-		//}
+		public void showDevTools()
+		{
+			_instanceBrowser.ShowDevTools();
+		}
 
 		//public void opencmd()
 		//{

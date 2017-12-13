@@ -46,10 +46,14 @@ namespace Configurator
 			_chromeBrowser.Dock = DockStyle.Fill;
 
 			// Allow the use of local resources in the browser
-			BrowserSettings browserSettings = new BrowserSettings();
-			browserSettings.FileAccessFromFileUrls = CefState.Enabled;
-			browserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
+			BrowserSettings browserSettings = new BrowserSettings
+			{
+				FileAccessFromFileUrls = CefState.Enabled,
+				UniversalAccessFromFileUrls = CefState.Enabled
+			};
 			_chromeBrowser.BrowserSettings = browserSettings;
+			
+			_chromeBrowser.RegisterJsObject("cefCustomObject", new CefCustomObject(_chromeBrowser, this));
 		}
 
 		private void Form1_Load(object sender, EventArgs e)

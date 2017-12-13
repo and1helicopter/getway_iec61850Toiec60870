@@ -3,17 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="framework/ionicons/css/ionicons.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body >
+
+    <template id="iec60870">
+        <transition name="fade">
+            <div>
+                <ht>Конфигруация сервера IEC60870:</ht>
+                <div class="iec60870">
+                    <label>Хост: </label><input v-model="host" v-on:input="changeHost()">
+                    <label>Порт: </label><input v-model="port" v-on:input="changePort()">
+                    <label>Ёмкость очереди ASDU:</label><input type="number" v-model="maxQueue">
+                </div>
+            </div>
+        </transition>
+    </template>
+
+    <template id="headerRight">
+        <div class="header_right">
+            <mr1>
+                Хост: {{host}}<br>Порт: {{port}}
+            </mr1>
+            <mr2>
+                <button title="Редактировать" class="button_right" v-on:click="show_on">
+                    <img src="image/edit/color/32/icons8-edit-32.png">
+                </button>
+            </mr2>
+        </div>
+    </template>
+
     <div id="app">
-        <header>
-            <button @click=click>
-                <i class="ion-navicon"></i>
-            </button>
-        </header>
-        <aside v-show="show" transition="slide"></aside>
+
+        <div id="main">
+            <div class="content">
+                <app-iec60870 v-if="show60870"></app-iec60870>
+            </div>
+            <div class="menu_left">192.168.000.001<br>192.168.000.002</div>
+            <div class="menu_right">
+                <app-header_right  v-bind:show="show60870" v-on:showstatuschange="change_show60870"></app-header_right>
+
+                <div class="content_right">
+
+                </div>
+
+            </div>
+        </div>
     </div>
     <script src="js/vue.js"></script>
     <script src="js/main.js"></script>
