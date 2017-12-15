@@ -131,16 +131,13 @@
     <Content Include="view\css\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="view\image\edit\color\32\000000.png">
+    <Content Include="view\image\icons8-checkmark-32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="view\image\edit\color\32\icons8-checkmark-32.png">
+    <Content Include="view\image\icons8-edit-32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="view\image\edit\color\32\icons8-edit-32.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="view\image\edit\color\48\000000.png">
+    <Content Include="view\image\icons8-plus-32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="view\index.html">

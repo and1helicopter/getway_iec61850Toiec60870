@@ -12,7 +12,8 @@
             <div>
                 <ht>Конфигруация сервера IEC61850:</ht>
                 <div>
-
+                    <label>Хост: </label><input v-model="data.servers61850[actual.index].host" >
+                    <label>Порт: </label><input v-model="data.servers61850[actual.index].port">
                 </div>
             </div>
         </transition>
@@ -20,20 +21,21 @@
 
     <template id="headerLeft">
         <div class="header_left">
-            <div v-for="server in servers61850" v-model="servers61850">
-                <button class="button_server" v-model="server" v-on:click="show_server61850(server)">
-                    <div>
-                        Хост:{{server.host}}<br>Порт:{{server.port}}
-                    </div>
-                </button>
-            </div>
+            <div class="sidebar">
+                <div v-for="(server, index) in data.servers61850" >
+                    <button class="button_server" v-bind:class="{button_selected: this.map.show.show61850[index]}" v-on:click="show_server61850(server, index)">
+                        <div>
+                            Хост:{{server.host}}<br>Порт:{{server.port}}
+                        </div>
+                    </button>
+                </div>
 
-            <div>
-                <button title="Добавить" class="button_add" v-on:click="add_server61850">
-                    <img src="image/icons8-plus-32.png">
-                </button>
+                <div>
+                    <button title="Добавить" class="button_add" v-on:click="add_server61850">
+                        <img src="image/icons8-plus-32.png">
+                    </button>
+                </div>
             </div>
-
         </div>
     </template>
 
@@ -43,11 +45,11 @@
             <div>
                 <ht>Конфигруация сервера IEC60870:</ht>
                 <div class="iec60870">
-                    <label>Хост: </label><input v-model="host" v-on:input="changeHost()">
-                    <label>Порт: </label><input v-model="port" v-on:input="changePort()">
-                    <label>Ёмкость очереди ASDU:</label><input v-model="maxQueue" type="number" >
+                    <label>Хост: </label><input v-model="data.host" v-on:input="changeHost()">
+                    <label>Порт: </label><input v-model="data.port" v-on:input="changePort()">
+                    <label>Ёмкость очереди ASDU:</label><input v-model="data.maxQueue" type="number" >
                     <label>Режим:</label><div></div>
-                    <label>Количество подключений:</label><input v-model="maxConnection" type="number">
+                    <label>Количество подключений:</label><input v-model="data.maxConnection" type="number">
                     <!--<label>Шифрование:</label><input v-model="statusTls" type="checkbox">-->
                 </div>
             </div>
