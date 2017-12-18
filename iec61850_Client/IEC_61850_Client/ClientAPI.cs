@@ -28,7 +28,7 @@ namespace IEC_61850
 				connect.DefineLocalAddresses(pSelector, sSelector, tSelector);
 		}
 
-		public static void ConnectionDefineLocalAddresses(ClientConnect connect, string apTitle, int aeQualifier)
+		public static void ConnectionDefineLocalApTitle(ClientConnect connect, string apTitle, int aeQualifier)
 		{
 			if(!connect.RunConnect())
 				connect.DefineLocalApTitle(apTitle, aeQualifier);

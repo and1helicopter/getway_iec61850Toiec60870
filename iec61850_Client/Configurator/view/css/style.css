@@ -64,6 +64,20 @@ body {
     -ms-overflow-style: none;
 }
 
+.sidebars {
+    width: auto;
+    padding: 3px 5px;
+    z-index: 10;
+    position: relative;
+    margin: 0 20px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-x: visible;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+}
+
 .menu_right {
     background-color: #ffffff;
     position: fixed;
@@ -124,6 +138,19 @@ body {
     transition: all .3s ease-in-out;
 }
 
+.button_services{
+    margin: 3px;
+    width: 50px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #9f9f9f;
+    cursor: auto;
+    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
+    transition: all .3s ease-in-out;
+}
+
 button:active {
     background-color: rgba(0, 0, 0, 0.25);
 }
@@ -135,6 +162,10 @@ button:hover{
 
 .button_selected{
     box-shadow:  0 0 3px 3px rgba(67, 160, 71, 0.79);
+}
+
+.button_started{
+    background-color: rgba(116, 255, 30, 0.51)
 }
 
 button[title]:hover:after{
@@ -174,6 +205,15 @@ input{
     border: 0.25px solid #ebebeb;
 }
 
+hr{
+    color: #9f9f9f;
+}
+
+h3{
+    font-family: Consolas, sans-serif;
+    -webkit-margin-before: 0;
+}
+
 .iec60870{
     position: absolute;
     align-items: center;
@@ -182,12 +222,35 @@ input{
     grid-template-rows: auto;
     margin: 10px 20px;
     line-height: 1.3;
+}
+
+.iec61850{
+    width: 100%;
+    padding-right: 300px;
+    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    margin: 10px 20px;
+    line-height: 1.3;
+}
+
+.iec61850_left{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
 
 }
 
 ht {
     padding-left: 40px;
     font: bold 12pt serif;
+}
+
+.services{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .slide-transition {

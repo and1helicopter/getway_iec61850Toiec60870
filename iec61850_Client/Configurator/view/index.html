@@ -9,11 +9,44 @@
 
     <template id="iec61850">
         <transition name="fade">
-            <div>
-                <ht>Конфигруация сервера IEC61850:</ht>
+            <div class="iec61850">
+                <div class="sidebars">
+                    <h3>Конфигрутор сервера IEC61850:</h3>
+                    <div class="iec61850_left">
+                        <label>Хост: </label><input v-model="data.servers61850[actual.index].host">
+                        <label>Порт: </label><input v-model="data.servers61850[actual.index].port">
+                        <label>Remote AP ID: </label><input >
+                        <label>Remote AE Qualifier: </label><input >
+                        <label>Remote P Selector: </label><input >
+                        <label>Remote S Selector: </label><input >
+                        <label>Remote T Selector: </label><input >
+                        <label>Local AP ID: </label><input >
+                        <label>Local AE Qualifier: </label><input >
+                        <label>Local P Selector: </label><input >
+                        <label>Local S Selector: </label><input >
+                        <label>Local T Selector: </label><input >
+                        <label>Authentication Enabled: </label><input type="checkbox">
+                        <label>Authentication Password: </label><input>
+                        <div></div>
+                        <div class="services">
+
+                            <button class="button_services" title="Запуск/Остановка" v-on:click="startServer">
+                                <img v-if="!start.run[actual.index]" src="image/icons8-play-32.png">
+                                <img v-else src="image/icons8-stop-32.png">
+                            </button>
+                            <button class="button_services" title="Удалить" v-on:click="removeServer">
+                                <img src="image/icons8-delete-32.png">
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div v-for=""></div>
+                    <div>
+                        <button>add</button>
+                    </div>
+                </div>
+
                 <div>
-                    <label>Хост: </label><input v-model="data.servers61850[actual.index].host" >
-                    <label>Порт: </label><input v-model="data.servers61850[actual.index].port">
                 </div>
             </div>
         </transition>
@@ -23,7 +56,7 @@
         <div class="header_left">
             <div class="sidebar">
                 <div v-for="(server, index) in data.servers61850" >
-                    <button class="button_server" v-bind:class="{button_selected: this.map.show.show61850[index]}" v-on:click="show_server61850(server, index)">
+                    <button class="button_server" v-bind:class="{button_selected: this.map.show.show61850[index], button_started: this.map.start.run[index]}" v-on:click="show_server61850(server, index)">
                         <div>
                             Хост:{{server.host}}<br>Порт:{{server.port}}
                         </div>
@@ -59,7 +92,7 @@
     <template id="headerRight">
         <div class="header_right">
             <mr1>
-                Хост: {{host}}<br>Порт: {{port}}
+                Хост: {{data.host}}<br>Порт: {{data.port}}
             </mr1>
             <mr2>
                 <button title="Редактировать" class="button_right" v-on:click="show_on">
@@ -74,7 +107,7 @@
         <div id="main">
             <div class="content">
                 <app-iec60870 v-if="show60870"></app-iec60870>
-                <app-iec61850 v-if="show61850"></app-iec61850>
+                <app-iec61850 v-if="show61850" v-bind:show="show61850" v-on:showstatuschange="change_show61850"></app-iec61850>
             </div>
             <div class="menu_left">
                 <app-header_left v-bind:show="show61850" v-on:showstatuschange="change_show61850"></app-header_left>

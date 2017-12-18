@@ -24,10 +24,15 @@ show = {
     show60870: false
 };
 
+start = {
+    run: []
+};
+
 map = {
     data: data,
     actual: actual,
-    show: show
+    show: show,
+    start: start
 };
 
 Vue.component('app-iec61850',{
@@ -36,7 +41,22 @@ Vue.component('app-iec61850',{
         return map
     },
     methods: {
+        startServer: function () {
+            map.start.run[map.actual.index] = !map.start.run[map.actual.index];
+            map.data.servers61850.sort();
+            //Запуск или остановка сервера
+        },
+        removeServer: function () {
 
+            map.start.run[map.actual.index] = false;
+            map.start.run.splice(map.actual.index, 1);
+            map.show.show61850[map.actual.index] = false;
+            this.$emit('showstatuschange', map.show.show61850[map.actual.index]);
+            map.show.show61850.splice(map.actual.index, 1);
+            map.data.servers61850.splice(map.actual.index, 1);
+            map.data.servers61850.sort();
+            //Запуск или остановка сервера
+        }
     }
 });
 
@@ -50,6 +70,7 @@ Vue.component('app-header_left', {
             map.data.servers61850.push(new server61850());
             map.data.servers61850[data.servers61850.length - 1].host = "127.0.0.1";
             map.data.servers61850[data.servers61850.length - 1].port = 102;
+            map.start.run.push(false);
             map.show.show61850.push(false);
 
             console.log(show.show61850[show.show61850.length - 1]);
