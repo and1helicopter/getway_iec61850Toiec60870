@@ -15,18 +15,18 @@
                     <div class="iec61850_left">
                         <label>Хост: </label><input v-model="data.servers61850[actual.index].host">
                         <label>Порт: </label><input v-model="data.servers61850[actual.index].port">
-                        <label>Remote AP ID: </label><input >
-                        <label>Remote AE Qualifier: </label><input >
-                        <label>Remote P Selector: </label><input >
-                        <label>Remote S Selector: </label><input >
-                        <label>Remote T Selector: </label><input >
-                        <label>Local AP ID: </label><input >
-                        <label>Local AE Qualifier: </label><input >
-                        <label>Local P Selector: </label><input >
-                        <label>Local S Selector: </label><input >
-                        <label>Local T Selector: </label><input >
-                        <label>Authentication Enabled: </label><input type="checkbox">
-                        <label>Authentication Password: </label><input>
+                        <label>Remote AP ID: </label><input v-model="data.servers61850[actual.index].apTitleR">
+                        <label>Remote AE Qualifier: </label><input v-model="data.servers61850[actual.index].aeQualifierR" >
+                        <label>Remote P Selector: </label><input v-model="data.servers61850[actual.index].pSelectorR">
+                        <label>Remote S Selector: </label><input v-model="data.servers61850[actual.index].sSelectorR">
+                        <label>Remote T Selector: </label><input v-model="data.servers61850[actual.index].tSelectorR">
+                        <label>Local AP ID: </label><input v-model="data.servers61850[actual.index].apTitleL">
+                        <label>Local AE Qualifier: </label><input v-model="data.servers61850[actual.index].aeQualifierL">
+                        <label>Local P Selector: </label><input v-model="data.servers61850[actual.index].pSelectorL">
+                        <label>Local S Selector: </label><input v-model="data.servers61850[actual.index].sSelectorL">
+                        <label>Local T Selector: </label><input v-model="data.servers61850[actual.index].tSelectorL">
+                        <label>Authentication Enabled: </label><input type="checkbox" v-model="data.servers61850[actual.index].enabled">
+                        <label>Authentication Password: </label><input v-model="data.servers61850[actual.index].password">
                         <div></div>
                         <div class="services">
 
@@ -45,7 +45,7 @@
                         <button>add</button>
                     </div>
                 </div>
-
+                <div style="background-color: #9f9f9f; width: 100%; height: 100%;"></div>
                 <div>
                 </div>
             </div>

@@ -2,6 +2,18 @@ class server61850 {
     constructor(){
         this.host = {};
         this.port = {};
+        this.apTitleR = '1.1.1.999.1';
+        this.aeQualifierR = '12';
+        this.pSelectorR = '1';
+        this.sSelectorR = '1';
+        this.tSelectorR = '0';
+        this.apTitleL = '1.1.1.999';
+        this.aeQualifierL = '12';
+        this.pSelectorL = '1';
+        this.sSelectorL = '1';
+        this.tSelectorL = '0';
+        this.enabled = false;
+        this.password = '';
         this.items = [];
     }
 }
