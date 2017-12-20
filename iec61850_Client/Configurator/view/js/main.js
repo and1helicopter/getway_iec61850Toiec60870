@@ -14,7 +14,29 @@ class server61850 {
         this.tSelectorL = '0';
         this.enabled = false;
         this.password = '';
-        this.items = [];
+        this.items61850 = [];
+        this.itemsASDU = [];
+    }
+}
+
+class ASDU{
+    constructor(){
+        this.typeID = {};
+        this.vsq = {};
+        this.cot = {};
+        this.isNegative = {};
+        this.isTest = {};
+        this.oa = {};
+        this.ca = {};
+        this.objects = [];
+    }
+}
+
+class Object61850{
+    constructor(path, typeFC, typeMMS) {
+        this.path = path;
+        this.typeFC = typeFC;
+        this.typeMMS = typeMMS;
     }
 }
 
@@ -28,8 +50,18 @@ data = {
 };
 
 actual = {
-    index: 0
+    index: 0,
+    add_item61850: []
 };
+
+class info_add_item61850{
+    constructor(){
+        this.path ='';
+        this.typeFC = '-1';
+        this.typeMMS = '0';
+        this.show = false;
+    }
+}
 
 show = {
     show61850: [],
@@ -66,8 +98,18 @@ Vue.component('app-iec61850',{
             this.$emit('showstatuschange', map.show.show61850[map.actual.index]);
             map.show.show61850.splice(map.actual.index, 1);
             map.data.servers61850.splice(map.actual.index, 1);
+            map.actual.add_item61850.splice(map.actual.index, 1);
             map.data.servers61850.sort();
             //Запуск или остановка сервера
+        },
+        add_show_new_item: function () {
+            actual.add_item61850[actual.index].show = true;
+        },
+        add_new_item: function () {
+
+            actual.add_item61850[actual.index].show = false;
+
+            data.servers61850[actual.index].items61850.push(new Object61850(actual.add_item61850[actual.index].path, actual.add_item61850[actual.index].typeFC ,actual.add_item61850[actual.index].typeMMS));
         }
     }
 });
@@ -83,6 +125,8 @@ Vue.component('app-header_left', {
             map.data.servers61850[data.servers61850.length - 1].host = "127.0.0.1";
             map.data.servers61850[data.servers61850.length - 1].port = 102;
             map.start.run.push(false);
+            map.actual.add_item61850.push(new info_add_item61850());
+
             map.show.show61850.push(false);
 
             console.log(show.show61850[show.show61850.length - 1]);
