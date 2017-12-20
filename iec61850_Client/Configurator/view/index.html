@@ -40,60 +40,39 @@
                         </div>
                     </div>
                     <hr>
-                    <div>
-                        <div v-if="!start.run[actual.index]">
-                            <button v-if="!actual.add_item61850[actual.index].show" class="button_config" v-on:click="add_show_new_item">
-                                <img src="image/icons8-plus-math-16.png">
-                            </button>
-                            <input v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
-                            <select v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].typeFC">
-                                <option value="-1">NONE</option>
-                                <option value="0">ST</option>
-                                <option value="1">MX</option>
-                                <option value="2">SP</option>
-                                <option value="3">SV</option>
-                                <option value="4">CF</option>
-                                <option value="5">DC</option>
-                                <option value="6">SG</option>
-                                <option value="7">SE</option>
-                                <option value="8">SR</option>
-                                <option value="9">OR</option>
-                                <option value="10">BL</option>
-                                <option value="11">EX</option>
-                                <option value="12">CO</option>
-                                <option value="13">US</option>
-                                <option value="14">MS</option>
-                                <option value="15">RP</option>
-                                <option value="16">BR</option>
-                                <option value="17">LG</option>
-                                <option value="99">ALL</option>
-                            </select>
-                            <select v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].typeMMS">
-                                <option value="0">MMS_ARRAY</option>
-                                <option value="1">MMS_STRUCTURE</option>
-                                <option value="2">MMS_BOOLEAN</option>
-                                <option value="3">MMS_BIT_STRING</option>
-                                <option value="4">MMS_INTEGER</option>
-                                <option value="5">MMS_UNSIGNED</option>
-                                <option value="6">MMS_FLOAT</option>
-                                <option value="7">MMS_OCTET_STRING</option>
-                                <option value="8">MMS_VISIBLE_STRING</option>
-                                <option value="9">MMS_GENERALIZED_TIME</option>
-                                <option value="10">MMS_BINARY_TIME</option>
-                                <option value="11">MMS_BCD</option>
-                                <option value="12">MMS_OBJ_ID</option>
-                                <option value="13">MMS_STRING</option>
-                                <option value="14">MMS_UTC_TIME</option>
-                                <option value="15">MMS_DATA_ACCESS_ERROR</option>
-                            </select>
-                            <button v-if="actual.add_item61850[actual.index].show" class="button_config" v-on:click="add_new_item">
-                                <img src="image/icons8-plus-math-16.png">
-                            </button>
-                        </div>
+                    <div v-if="!start.run[actual.index]" class="items61850" v-for="(item, index) in data.servers61850[actual.index].items61850">
+                        <button class="button_config" v-on:click="edit_item_iec61850(index)">
+                            <img src="image/icons8-edit-16.png">
+                        </button>
+                        <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>
+                        <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeFC}}</div>
+                        <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeMMS}}</div>
+                        <input class="input_no_border" v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
+                        <select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeFC">
+                            <option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
+                        </select>
+                        <select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeMMS">
+                            <option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
+                        </select>
+                        <button v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" class="button_config" v-on:click="remove_item_iec61850(index)">
+                            <img src="image/icons8-delete-16.png">
+                        </button>
                     </div>
-                    <div v-for="(item, index) in data.servers61850[actual.index].items61850">
-                        <button v-if="!start.run[actual.index]"> edit</button>
-                        {{item.path}} {{item.typeFC}} {{item.typeMMS}}
+                    <div class="items61850" v-if="!start.run[actual.index]">
+                        <button class="button_config">
+                            <img v-if="!actual.add_item61850[actual.index].show" src="image/icons8-plus-math-16.png"  v-on:click="add_show_new_item">
+                            <img v-else src="image/icons8-delete-16.png"  v-on:click="close_mew_item">
+                        </button>
+                        <input class="input_no_border" v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
+                        <select v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].typeFC">
+                            <option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
+                        </select>
+                        <select v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].typeMMS">
+                            <option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
+                        </select>
+                        <button v-if="actual.add_item61850[actual.index].show" class="button_config" v-on:click="add_new_item">
+                            <img src="image/icons8-checkmark-16.png">
+                        </button>
                     </div>
                 </div>
                 <div style="background-color: #9f9f9f; width: 100%; height: 100%;"></div>

@@ -150,16 +150,17 @@ body {
 }
 
 .button_config{
-    padding: 0;
     width: 16px;
     height: 16px;
+    padding: 0;
     background: transparent;
     border: none;
     outline: none;
     color: #9f9f9f;
     cursor: auto;
-    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
     transition: all .3s ease-in-out;
+    text-align: center;
 }
 
 button:active {
@@ -212,8 +213,17 @@ mr2{
 input{
     font-family: Consolas, sans-serif;
     font-size: 9pt;
-    margin: 1px;
     border: 0.25px solid #ebebeb;
+}
+
+.input_no_border{
+    font-family: Consolas, sans-serif;
+    font-size: 9pt;
+    margin: 0;
+    border-left: 0.25px solid #ebebeb;
+    border-right: 0.25px solid #ebebeb;
+    border-top: 0;
+    border-bottom: 0;
 }
 
 hr{
@@ -252,7 +262,18 @@ h3{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
+}
 
+.items61850{
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    height: 16px;
+    width: auto;
+    flex-flow: initial;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 16px 1fr 50px 125px 16px;
+    grid-template-rows: auto;
 }
 
 ht {
@@ -269,9 +290,11 @@ ht {
 select{
     font-family: Consolas, sans-serif;
     font-size: 9pt;
-    margin: 1px;
-    border: 0.25px solid #ebebeb;
-    max-width: 75px;
+    margin: 0;
+    border-left: 0.25px solid #ebebeb;
+    border-right: 0.25px solid #ebebeb;
+    border-top: 0;
+    border-bottom: 0;
 }
 
 .slide-transition {

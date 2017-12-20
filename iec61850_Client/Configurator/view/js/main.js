@@ -57,9 +57,10 @@ actual = {
 class info_add_item61850{
     constructor(){
         this.path ='';
-        this.typeFC = '-1';
-        this.typeMMS = '0';
+        this.typeFC = 'NONE';
+        this.typeMMS = 'MMS_ARRAY';
         this.show = false;
+        this.edit_item_iec61850 = [];
     }
 }
 
@@ -72,11 +73,55 @@ start = {
     run: []
 };
 
+options_iec61850 = {
+    options_fc: [
+        { text: 'NONE', value: 'NONE'},
+        { text: 'ST', value: 'ST'},
+        { text: 'MX', value: 'MX'},
+        { text: 'SP', value: 'SP'},
+        { text: 'SV', value: 'SV'},
+        { text: 'CF', value: 'CF'},
+        { text: 'DC', value: 'DC'},
+        { text: 'SG', value: 'SG'},
+        { text: 'SE', value: 'SE'},
+        { text: 'SR', value: 'SR'},
+        { text: 'OR', value: 'OR'},
+        { text: 'BL', value: 'BL'},
+        { text: 'EX', value: 'EX'},
+        { text: 'CO', value: 'CO'},
+        { text: 'US', value: 'US'},
+        { text: 'MS', value: 'MS'},
+        { text: 'RP', value: 'RP'},
+        { text: 'BR', value: 'BR'},
+        { text: 'LG', value: 'LG'},
+        { text: 'ALL', value: 'ALL'},
+    ],
+    options_mms: [
+        { text: 'MMS_ARRAY', value: 'MMS_ARRAY'},
+        { text: 'MMS_STRUCTURE', value: 'MMS_STRUCTURE'},
+        { text: 'MMS_BOOLEAN', value: 'MMS_BOOLEAN'},
+        { text: 'MMS_BIT_STRING', value: 'MMS_BIT_STRING'},
+        { text: 'MMS_INTEGER', value: 'MMS_INTEGER'},
+        { text: 'MMS_UNSIGNED', value: 'MMS_UNSIGNED'},
+        { text: 'MMS_FLOAT', value: 'MMS_FLOAT'},
+        { text: 'MMS_OCTET_STRING', value: 'MMS_OCTET_STRING'},
+        { text: 'MMS_VISIBLE_STRING', value: 'MMS_VISIBLE_STRING'},
+        { text: 'MMS_GENERALIZED_TIME', value: 'MMS_GENERALIZED_TIME'},
+        { text: 'MMS_BINARY_TIME', value: 'MMS_BINARY_TIME'},
+        { text: 'MMS_BCD', value: 'MMS_BCD'},
+        { text: 'MMS_OBJ_ID', value: 'MMS_OBJ_ID'},
+        { text: 'MMS_STRING', value: 'MMS_STRING'},
+        { text: 'MMS_UTC_TIME', value: 'MMS_UTC_TIME'},
+        { text: 'MMS_DATA_ACCESS_ERROR', value: 'MMS_DATA_ACCESS_ERROR'}
+    ]
+};
+
 map = {
     data: data,
     actual: actual,
     show: show,
-    start: start
+    start: start,
+    options_iec61850: options_iec61850
 };
 
 Vue.component('app-iec61850',{
@@ -89,6 +134,7 @@ Vue.component('app-iec61850',{
             map.start.run[map.actual.index] = !map.start.run[map.actual.index];
             map.data.servers61850.sort();
             //Запуск или остановка сервера
+            
         },
         removeServer: function () {
 
@@ -106,10 +152,22 @@ Vue.component('app-iec61850',{
             actual.add_item61850[actual.index].show = true;
         },
         add_new_item: function () {
-
             actual.add_item61850[actual.index].show = false;
-
+            actual.add_item61850[actual.index].edit_item_iec61850.push(false);
             data.servers61850[actual.index].items61850.push(new Object61850(actual.add_item61850[actual.index].path, actual.add_item61850[actual.index].typeFC ,actual.add_item61850[actual.index].typeMMS));
+        },
+        close_mew_item: function () {
+            actual.add_item61850[actual.index].show = false;
+        },
+        edit_item_iec61850: function (index) {
+            actual.add_item61850[actual.index].edit_item_iec61850[index] = ! actual.add_item61850[actual.index].edit_item_iec61850[index];
+            data.servers61850[actual.index].items61850.sort();
+            console.log(actual.add_item61850[actual.index].edit_item_iec61850[index]);
+        },
+        remove_item_iec61850: function(index){
+            data.servers61850[actual.index].items61850.splice(index, 1);
+            actual.add_item61850[actual.index].edit_item_iec61850.splice(index, 1);
+            data.servers61850[actual.index].items61850.sort();
         }
     }
 });
