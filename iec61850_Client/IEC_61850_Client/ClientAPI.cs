@@ -16,84 +16,93 @@ namespace IEC_61850
 			ConnectionList.Add(connect);
 		}
 
-		public static void ConnectionDefinePassword(ClientConnect connect, string password)
+		public static void ConnectionDefineConnection(int index, string host, int port)
 		{
-			if(!connect.RunConnect())
-				connect.DefinePassword(password);
+			ConnectionList[index].DefineConnection(host, port);
 		}
 
-		public static  void ConnectionDefineLocalAddresses(ClientConnect connect, uint pSelector, byte[] sSelector, byte[] tSelector)
+		public static void ConnectionDefinePassword(int index, string password)
 		{
-			if(!connect.RunConnect())
-				connect.DefineLocalAddresses(pSelector, sSelector, tSelector);
+			if(!ConnectionList[index].RunConnect())
+				ConnectionList[index].DefinePassword(password);
 		}
 
-		public static void ConnectionDefineLocalApTitle(ClientConnect connect, string apTitle, int aeQualifier)
+		public static  void ConnectionDefineLocalAddresses(int index, uint pSelector, byte[] sSelector, byte[] tSelector)
 		{
-			if(!connect.RunConnect())
-				connect.DefineLocalApTitle(apTitle, aeQualifier);
+			if(!ConnectionList[index].RunConnect())
+				ConnectionList[index].DefineLocalAddresses(pSelector, sSelector, tSelector);
 		}
 
-		public static void ConnectionDefineRemoteAddresses(ClientConnect connect, uint pSelector, byte[] sSelector, byte[] tSelector)
+		public static void ConnectionDefineLocalApTitle(int index, string apTitle, int aeQualifier)
+		{
+			if(!ConnectionList[index].RunConnect())
+				ConnectionList[index].DefineLocalApTitle(apTitle, aeQualifier);
+		}
+
+		public static void ConnectionDefineRemoteAddresses(int index, uint pSelector, byte[] sSelector, byte[] tSelector)
 		{			
-			if(!connect.RunConnect())
-				connect.DefineRemoteAddresses(pSelector, sSelector, tSelector);
+			if(!ConnectionList[index].RunConnect())
+				ConnectionList[index].DefineRemoteAddresses(pSelector, sSelector, tSelector);
 		}
 
-		public static void ConnectionDefineRemoteApTitle(ClientConnect connect, string apTitle, int aeQualifier)
+		public static void ConnectionDefineRemoteApTitle(int index, string apTitle, int aeQualifier)
 		{
-			if(!connect.RunConnect())
-				connect.DefineRemoteApTitle(apTitle, aeQualifier);
+			if(!ConnectionList[index].RunConnect())
+				ConnectionList[index].DefineRemoteApTitle(apTitle, aeQualifier);
 		}
 		
-		public static void StartConnection(ClientConnect connect)
+		public static bool StartConnection(int index)
 		{
-			if (!connect.RunConnect())
+			if (!ConnectionList[index].RunConnect())
 			{
-				connect.StartConnection();
-				connect.FillPathDA();
+				if (ConnectionList[index].StartConnection())
+				{
+					ConnectionList[index].FillPathDA();
+					return true;
+				}
+				return false;
+			}
+			return false;
+		}
+
+		public static void StopConnection(int index)
+		{
+			if(ConnectionList[index].RunConnect())
+				ConnectionList[index].StopConnection();
+		}
+
+		public static void DelateConnection(int index)
+		{
+			if (!ConnectionList[index].RunConnect())
+			{
+				ConnectionList[index].StopConnection();
+				ConnectionList.Remove(ConnectionList[index]);
 			}
 		}
 
-		public static void StopConnection(ClientConnect connect)
+		public static ClientConnect GetClientConnect(int index)
 		{
-			if(connect.RunConnect())
-				connect.StopConnection();
+			return ConnectionList[index];
 		}
 
-		public static void DelateConnection(ClientConnect connect)
+		public static List<ClientConnect.PathDA> GetPathDA(int index)
 		{
-			if (!connect.RunConnect())
-			{
-				connect.StopConnection();
-				ConnectionList.Remove(connect);
-			}
+			return ConnectionList[index].GetListPathDA();
 		}
 
-		public static ClientConnect GetClientConnect(string host)
-		{
-			var temp = ConnectionList.First(x => x.GetConnetionHostPort().Equals(host));
-			return temp;
-		}
-
-		public static List<ClientConnect.PathDA> GetPathDA(ClientConnect connect)
-		{
-			return connect.GetListPathDA();
-		}
-
-		public static async Task<dynamic> GetValue(string host, ClientConnect.PathDA item)
+		public static async Task<dynamic> GetValue(int index, ClientConnect.PathDA item)
 		{
 			dynamic value =  await Task.Run(() =>
 			{
-				return ConnectionList.First(x => x.GetConnetionHostPort().Equals(host)).GetValue(item);
+				return ConnectionList[index].GetValue(item);
 			});
 
 			return value;
 		}
 
-		public static void SetValue(string host, dynamic newValue, dynamic oldValue, ulong operTm, ClientConnect.PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
+		public static void SetValue(int index, dynamic newValue, dynamic oldValue, ulong operTm, ClientConnect.PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
-			var connection = ConnectionList.First(x => x.GetConnetionHostPort().Equals(host));
+			var connection = ConnectionList[index];
 			connection.SetValue(newValue, oldValue, operTm, item, test, cheakInterlock, cheakSynchro, originator, orCat);
 		}
 	}

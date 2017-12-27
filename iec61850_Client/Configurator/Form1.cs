@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
+using Gateway;
 
 namespace Configurator
 {
@@ -39,8 +41,11 @@ namespace Configurator
 			// Initialize cef with the provided settings
 			Cef.Initialize(settings);
 			// Create a browser component
-			_chromeBrowser = new ChromiumWebBrowser(_page);
-			
+			_chromeBrowser = new ChromiumWebBrowser(_page)
+			{
+				RequestContext = new RequestContext()
+			};
+
 			// Add it to the form and fill it to the form window.
 			Panel.Controls.Add(_chromeBrowser);
 			_chromeBrowser.Dock = DockStyle.Fill;
@@ -52,13 +57,24 @@ namespace Configurator
 				UniversalAccessFromFileUrls = CefState.Enabled
 			};
 			_chromeBrowser.BrowserSettings = browserSettings;
+
+			//			var server_start = new CefCustomObject(_chromeBrowser, this);
+
+			_chromeBrowser.RegisterAsyncJsObject("serverStart", new CefCustomObject(_chromeBrowser, this), BindingOptions.DefaultBinder);
 			
-			_chromeBrowser.RegisterJsObject("cefCustomObject", new CefCustomObject(_chromeBrowser, this));
+			_chromeBrowser.IsBrowserInitializedChanged += (sender, args) =>
+			{
+				if (_chromeBrowser.IsBrowserInitialized)
+				{
+					_chromeBrowser.ShowDevTools();
+				}
+			};
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			//_chromeBrowser.ShowDevTools();
+			if (_chromeBrowser.IsBrowserInitialized)
+				_chromeBrowser.ShowDevTools();
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)

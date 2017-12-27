@@ -40,8 +40,8 @@
                         </div>
                     </div>
                     <hr>
-                    <div v-if="!start.run[actual.index]" class="items61850" v-for="(item, index) in data.servers61850[actual.index].items61850">
-                        <button class="button_config" v-on:click="edit_item_iec61850(index)">
+                    <div class="items61850" v-for="(item, index) in data.servers61850[actual.index].items61850">
+                        <button v-if="!start.run[actual.index]" class="button_config" v-on:click="edit_item_iec61850(index)">
                             <img src="image/icons8-edit-16.png">
                         </button>
                         <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>

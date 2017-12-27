@@ -27,16 +27,18 @@ namespace IEC_61850
 			_port = port;
 		}
 
-		public void StartConnection()
+		public bool StartConnection()
 		{
 			try
 			{
 				_connection.Connect(_hostname, _port);
 				_runConnect = true;
+				return true;
 			}
 			catch (IedConnectionException e)
 			{
 				Log.Write(e, Log.Code.ERROR);
+				return false;
 			}
 		}
 
@@ -86,21 +88,21 @@ namespace IEC_61850
 
 		public class PathDA
 		{
-			public string Path { get; }
-			public FunctionalConstraint FC { get; }
-			public MmsType TypeMms { get; }
+			public string path { get; }
+			public FunctionalConstraint typeFC { get; }
+			public MmsType typeMMS { get; }
 
-			public PathDA(string path, FunctionalConstraint fc, MmsType typeMms)
+			public PathDA(string pathStr, FunctionalConstraint typeFc, MmsType typeMms)
 			{
-				Path = path;
-				FC = fc;
-				TypeMms = typeMms;
+				path = pathStr;
+				typeFC = typeFc;
+				typeMMS = typeMms;
 			}
 		}
 
 		private PathDA GetPathDA(string path)
 		{
-			return _listPath.Find(x => x.Path == path);
+			return _listPath.Find(x => x.path == path);
 		}
 
 		public List<PathDA> GetListPathDA()
@@ -162,31 +164,31 @@ namespace IEC_61850
 		public dynamic GetValue(PathDA item)
 		{
 			dynamic val;
-			switch (item.TypeMms)
+			switch (item.typeMMS)
 			{
 				case MmsType.MMS_BIT_STRING:
-					val = _connection.ReadBitStringValue(item.Path, item.FC);
+					val = _connection.ReadBitStringValue(item.path, item.typeFC);
 					break;
 				case MmsType.MMS_BOOLEAN:
-					val = _connection.ReadBooleanValue(item.Path, item.FC);
+					val = _connection.ReadBooleanValue(item.path, item.typeFC);
 					break;
 				case MmsType.MMS_FLOAT:
-					val = _connection.ReadFloatValue(item.Path, item.FC);
+					val = _connection.ReadFloatValue(item.path, item.typeFC);
 					break;
 				case MmsType.MMS_INTEGER:
-					val = _connection.ReadIntegerValue(item.Path, item.FC);
+					val = _connection.ReadIntegerValue(item.path, item.typeFC);
 					break;
 				case MmsType.MMS_UNSIGNED:
-					val = _connection.ReadValue(item.Path, item.FC);
+					val = _connection.ReadValue(item.path, item.typeFC);
 					break;
 				case MmsType.MMS_STRING:
-					val = _connection.ReadStringValue(item.Path, item.FC);
+					val = _connection.ReadStringValue(item.path, item.typeFC);
 					break;
 				case MmsType.MMS_UTC_TIME:
-					val = _connection.ReadTimestampValue(item.Path, item.FC);
+					val = _connection.ReadTimestampValue(item.path, item.typeFC);
 					break;
 				default:
-					val = _connection.ReadValue(item.Path, item.FC);
+					val = _connection.ReadValue(item.path, item.typeFC);
 					break;
 			}
 
@@ -195,9 +197,9 @@ namespace IEC_61850
 
 		public void SetValue(dynamic newValue, dynamic oldValue, ulong operTm, PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
-			if (item.Path.Contains("Oper.ctlVal"))
+			if (item.path.Contains("Oper.ctlVal"))
 			{
-				var path = item.Path.Replace(".Oper.ctlVal", "");
+				var path = item.path.Replace(".Oper.ctlVal", "");
 
 				var pathDA = new PathDA($"{path}.ctlModel", FunctionalConstraint.CF, MmsType.MMS_INTEGER);
 

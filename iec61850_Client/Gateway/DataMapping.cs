@@ -6,6 +6,7 @@ namespace Gateway
 {
 	public static class DataMapping
 	{
+		
 		private static List<DataItem> ObjectsList = new List<DataItem>();  
 		
 		public static void OpenSetting()

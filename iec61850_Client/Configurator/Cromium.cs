@@ -1,8 +1,11 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using Gateway;
 
 namespace Configurator
 {
+
+
 	class CefCustomObject
 	{
 		// Declare a local instance of chromium and the main form in order to execute things from here in the main thread
@@ -20,6 +23,35 @@ namespace Configurator
 		public void showDevTools()
 		{
 			_instanceBrowser.ShowDevTools();
+		}
+
+		public dynamic startServer61850(dynamic obj, dynamic status, dynamic index)
+		{
+			if (status)
+			{
+				if (!GatewayAPI_Class.Start_Server61850(obj, index))
+				{
+					//Соединение не может быть установлено
+					return false;
+				}
+				else
+				{
+					//Получение списка 
+					var listItems = GatewayAPI_Class.Get_Items_Server61850(index);
+					//Отправка даннных в форму
+					return listItems;
+				}
+			}
+			else
+			{
+				GatewayAPI_Class.Stop_Server61850(index);
+				return true;
+			}
+		}
+
+		public void addServer61850(dynamic obj)
+		{
+			GatewayAPI_Class.Add_Server61850(obj);
 		}
 
 		//public void opencmd()

@@ -63,7 +63,7 @@ namespace ConsoleApp
 //				foreach (var itme in lol)
 //				{
 //					dynamic test = await ClientAPI.GetValue(str, itme);
-//					Console.WriteLine($"{str} : {itme.Path} = {test}");
+//					Console.WriteLine($"{str} : {itme.path} = {test}");
 //				}
 //				Console.WriteLine("\n");
 //				Thread.Sleep(2500);
@@ -101,7 +101,7 @@ namespace ConsoleApp
 //				//	Loop(lol, "192.168.48.129:102");
 //				foreach (var x in ClientAPI.GetPathDA(ClientAPI.GetClientConnect("localhost:102")))
 //				{
-//					Console.WriteLine($"{x.Path} : {x.FC} : {x.TypeMms}");
+//					Console.WriteLine($"{x.path} : {x.typeFC} : {x.typeMMS}");
 //				}
 //				var status = false;
 //				while (true)

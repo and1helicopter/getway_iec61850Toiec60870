@@ -124,6 +124,35 @@ map = {
     options_iec61850: options_iec61850
 };
 
+function test(list, status, index) {
+    alert("test_injecting");
+    var list0 = JSON.parse(list);
+    map.data.servers61850[index].items61850 = [];
+    for(var i=0; i < list0.length; i++)
+    {
+        console.log(list0[i]);
+        map.data.servers61850[index].items61850.push(new Object61850(list0[i].path, list0[i].typeFC, list0[i].typeMMS));
+    }
+    //map.data.servers61850.
+    console.log('test_injecting');
+    map.data.servers61850.sort();
+    //console.log(list);
+}
+
+
+async function testlol() {
+    map.start.run[map.actual.index] = !map.start.run[map.actual.index];
+    map.data.servers61850.sort();
+    //Запуск или остановка сервера
+    //data.servers61850[actual.index] - передача настроек
+    var output = JSON.stringify(data.servers61850[actual.index]);
+    var status = start.run[actual.index];
+    var index = actual.index;
+    console.log(output);
+    var list = await serverStart.startServer61850(output, status, index);
+    test(list, status, index);
+}
+
 Vue.component('app-iec61850',{
     template: '#iec61850',
     data: function () {
@@ -131,10 +160,7 @@ Vue.component('app-iec61850',{
     },
     methods: {
         startServer: function () {
-            map.start.run[map.actual.index] = !map.start.run[map.actual.index];
-            map.data.servers61850.sort();
-            //Запуск или остановка сервера
-            
+            testlol();
         },
         removeServer: function () {
 
@@ -184,9 +210,10 @@ Vue.component('app-header_left', {
             map.data.servers61850[data.servers61850.length - 1].port = 102;
             map.start.run.push(false);
             map.actual.add_item61850.push(new info_add_item61850());
-
             map.show.show61850.push(false);
-
+            //Добавить новый сервер
+            var output = JSON.stringify(data.servers61850[data.servers61850.length - 1]);
+            serverStart.addServer61850(output);
             console.log(show.show61850[show.show61850.length - 1]);
         },
         show_server61850: function (server, index) {
