@@ -15,7 +15,6 @@ namespace Configurator
 		public Form1()
 		{
 			InitializeComponent();
-
 			InitializeChromium();
 		}
 

@@ -21,6 +21,12 @@ namespace IEC_61850
 			ConnectionList[index].DefineConnection(host, port);
 		}
 
+		public static void ConnectionNewParameters(int index)
+		{
+			if (!ConnectionList[index].RunConnect())
+				ConnectionList[index].NewParameters();
+		}
+
 		public static void ConnectionDefinePassword(int index, string password)
 		{
 			if(!ConnectionList[index].RunConnect())
@@ -53,31 +59,27 @@ namespace IEC_61850
 		
 		public static bool StartConnection(int index)
 		{
-			if (!ConnectionList[index].RunConnect())
+			if (ConnectionList[index].RunConnect()) return false;
+			if (!ConnectionList[index].StartConnection()) return false;
+			return ConnectionList[index].FillPathDA(); ;
+		}
+
+		public static bool StopConnection(int index)
+		{
+			return ConnectionList[index].RunConnect() && ConnectionList[index].StopConnection();
+		}
+
+		public static bool DelateConnection(int index)
+		{
+			if (ConnectionList[index].RunConnect())
 			{
-				if (ConnectionList[index].StartConnection())
+				if (!ConnectionList[index].StopConnection())
 				{
-					ConnectionList[index].FillPathDA();
-					return true;
+					return false;
 				}
-				return false;
 			}
-			return false;
-		}
-
-		public static void StopConnection(int index)
-		{
-			if(ConnectionList[index].RunConnect())
-				ConnectionList[index].StopConnection();
-		}
-
-		public static void DelateConnection(int index)
-		{
-			if (!ConnectionList[index].RunConnect())
-			{
-				ConnectionList[index].StopConnection();
-				ConnectionList.Remove(ConnectionList[index]);
-			}
+			ConnectionList.Remove(ConnectionList[index]);
+			return true;
 		}
 
 		public static ClientConnect GetClientConnect(int index)

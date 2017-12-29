@@ -124,55 +124,53 @@ map = {
     options_iec61850: options_iec61850
 };
 
-function test(list, status, index) {
-    alert("test_injecting");
-    var list0 = JSON.parse(list);
-    map.data.servers61850[index].items61850 = [];
-    for(var i=0; i < list0.length; i++)
-    {
-        console.log(list0[i]);
-        map.data.servers61850[index].items61850.push(new Object61850(list0[i].path, list0[i].typeFC, list0[i].typeMMS));
-    }
-    //map.data.servers61850.
-    console.log('test_injecting');
-    map.data.servers61850.sort();
-    //console.log(list);
-}
-
-
-async function testlol() {
-    map.start.run[map.actual.index] = !map.start.run[map.actual.index];
-    map.data.servers61850.sort();
-    //Запуск или остановка сервера
-    //data.servers61850[actual.index] - передача настроек
-    var output = JSON.stringify(data.servers61850[actual.index]);
-    var status = start.run[actual.index];
-    var index = actual.index;
-    console.log(output);
-    var list = await serverStart.startServer61850(output, status, index);
-    test(list, status, index);
-}
-
 Vue.component('app-iec61850',{
     template: '#iec61850',
     data: function () {
         return map
     },
     methods: {
-        startServer: function () {
-            testlol();
-        },
-        removeServer: function () {
-
-            map.start.run[map.actual.index] = false;
-            map.start.run.splice(map.actual.index, 1);
-            map.show.show61850[map.actual.index] = false;
-            this.$emit('showstatuschange', map.show.show61850[map.actual.index]);
-            map.show.show61850.splice(map.actual.index, 1);
-            map.data.servers61850.splice(map.actual.index, 1);
-            map.actual.add_item61850.splice(map.actual.index, 1);
+        startServer: async function () {
+            map.start.run[map.actual.index] = !map.start.run[map.actual.index];
             map.data.servers61850.sort();
             //Запуск или остановка сервера
+            var output = JSON.stringify(data.servers61850[actual.index]);
+            var status = start.run[actual.index];
+            var index = actual.index;
+            console.log(output);
+            var list = await serverStart.startServer61850(output, status, index);
+            var temp = JSON.parse(list);
+            if(!temp)
+            {
+                map.start.run[index] = !map.start.run[index];
+                //Сервер не запустился
+                return;
+            }
+            map.data.servers61850[index].items61850 = [];
+            for(var i=0; i < temp.length; i++)
+            {
+                console.log(temp[i]);
+                map.data.servers61850[index].items61850.push(new Object61850(temp[i].path, temp[i].typeFC, temp[i].typeMMS));
+            }
+            //map.data.servers61850.
+            map.data.servers61850.sort();
+        },
+        removeServer: async function () {
+            var index = actual.index;
+            var temp = await serverStart.removeServer61850(index);
+            if(temp)
+            {
+                map.start.run[map.actual.index] = false;
+                map.start.run.splice(map.actual.index, 1);
+                map.show.show61850[map.actual.index] = false;
+                this.$emit('showstatuschange', map.show.show61850[map.actual.index]);
+                map.show.show61850.splice(map.actual.index, 1);
+                map.data.servers61850.splice(map.actual.index, 1);
+                map.actual.add_item61850.splice(map.actual.index, 1);
+                map.data.servers61850.sort();
+                //Запуск или остановка сервера
+            }
+
         },
         add_show_new_item: function () {
             actual.add_item61850[actual.index].show = true;

@@ -42,18 +42,33 @@ namespace IEC_61850
 			}
 		}
 
-		public void StopConnection()
+		public bool StopConnection()
 		{
-			_connection.Abort();
-			_runConnect = false;
-			_connection.Dispose();
+			try
+			{
+				_connection.Close();
+				//_connection.Abort();
+				_runConnect = false;
+				//_connection.Dispose();
+				return true;
+			}
+			catch (Exception e)
+			{
+				Log.Write(e, Log.Code.ERROR);
+				return false;
+			}
 		}
 
 		public bool RunConnect()
 		{
 			return _runConnect;
 		}
-		
+
+		public void NewParameters()
+		{
+			_parameters = null;
+		}
+
 		public void DefinePassword(string password)
 		{
 			_parameters = _connection.GetConnectionParameters();
@@ -110,19 +125,26 @@ namespace IEC_61850
 			return _listPath;
 		}
 
-		public void FillPathDA()
+		public bool FillPathDA()
 		{
-			var nodeLD = _connection.GetServerDirectory();
-
-			foreach (var ld in nodeLD)
+			try
 			{
-				var nodeLN = _connection.GetLogicalDeviceDirectory(ld);
-				foreach (var ln in nodeLN)
+				var nodeLD = _connection.GetServerDirectory();
+
+				foreach (var ld in nodeLD)
 				{
-					FillDataObject(ld, ln);
-
-
+					var nodeLN = _connection.GetLogicalDeviceDirectory(ld);
+					foreach (var ln in nodeLN)
+					{
+						FillDataObject(ld, ln);
+					}
 				}
+				return true;
+			}
+			catch (Exception e)
+			{
+				Log.Write(e, Log.Code.ERROR);
+				return false;
 			}
 		}
 

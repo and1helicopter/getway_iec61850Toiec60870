@@ -4,8 +4,6 @@ using Gateway;
 
 namespace Configurator
 {
-
-
 	class CefCustomObject
 	{
 		// Declare a local instance of chromium and the main form in order to execute things from here in the main thread
@@ -34,24 +32,25 @@ namespace Configurator
 					//Соединение не может быть установлено
 					return false;
 				}
-				else
-				{
-					//Получение списка 
-					var listItems = GatewayAPI_Class.Get_Items_Server61850(index);
-					//Отправка даннных в форму
-					return listItems;
-				}
+				//Получение списка 
+				var listItems = GatewayAPI_Class.Get_Items_Server61850(index);
+				//Отправка даннных в форму
+				return listItems;
 			}
 			else
 			{
-				GatewayAPI_Class.Stop_Server61850(index);
-				return true;
+				return !GatewayAPI_Class.Stop_Server61850(index);
 			}
 		}
 
-		public void addServer61850(dynamic obj)
+		public dynamic addServer61850(dynamic obj)
 		{
-			GatewayAPI_Class.Add_Server61850(obj);
+			return GatewayAPI_Class.Add_Server61850(obj);
+		}
+
+		public dynamic removeServer61850(dynamic index)
+		{
+			return GatewayAPI_Class.Remove_Server61850(index);
 		}
 
 		//public void opencmd()
