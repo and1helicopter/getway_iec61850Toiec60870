@@ -131,28 +131,39 @@ Vue.component('app-iec61850',{
     },
     methods: {
         startServer: async function () {
-            map.start.run[map.actual.index] = !map.start.run[map.actual.index];
-            map.data.servers61850.sort();
-            //Запуск или остановка сервера
-            var output = JSON.stringify(data.servers61850[actual.index]);
-            var status = start.run[actual.index];
-            var index = actual.index;
-            console.log(output);
-            var list = await serverStart.startServer61850(output, status, index);
-            var temp = JSON.parse(list);
-            if(!temp)
+            var index = map.actual.index;
+            var output = JSON.stringify(data.servers61850[index]);
+            if(!map.start.run[index])
             {
-                map.start.run[index] = !map.start.run[index];
-                //Сервер не запустился
-                return;
+                //Установка соединения с сервером
+                var status = !start.run[index];
+                var list = await serverStart.startServer61850(output, status, index);
+                var temp = JSON.parse(list);
+                if(!temp)
+                {
+                    //map.start.run[index] = !map.start.run[index];
+                    //Сервер не запустился
+                    return;
+                }
+                map.data.servers61850[index].items61850 = [];
+                for(var i=0; i < temp.length; i++)
+                {
+                    console.log(temp[i]);
+                    map.data.servers61850[index].items61850.push(new Object61850(temp[i].path, temp[i].typeFC, temp[i].typeMMS));
+                }
             }
-            map.data.servers61850[index].items61850 = [];
-            for(var i=0; i < temp.length; i++)
+            else
             {
-                console.log(temp[i]);
-                map.data.servers61850[index].items61850.push(new Object61850(temp[i].path, temp[i].typeFC, temp[i].typeMMS));
+                var status = !start.run[index];
+                var list = await serverStart.startServer61850(output, status, index);
+                var temp = JSON.parse(list);
+                if(!temp)
+                {
+                    //Соединение не получилось разорвать
+                    return;
+                }
             }
-            //map.data.servers61850.
+            map.start.run[index] = !map.start.run[index];
             map.data.servers61850.sort();
         },
         removeServer: async function () {

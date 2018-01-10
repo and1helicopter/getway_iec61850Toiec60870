@@ -11,8 +11,18 @@
         <transition name="fade">
             <div class="iec61850">
                 <div  class="sidebars">
-                    <h3>Конфигрутор сервера IEC61850:</h3>
+
                     <div class="iec61850_left">
+                        <h3>Конфигрутор соединения IEC61850:</h3>
+                        <div class="services">
+                            <button class="button_services" title="Запуск/Остановка" v-on:click="startServer">
+                                <img v-if="!start.run[actual.index]" src="image/icons8-play-32.png">
+                                <img v-else src="image/icons8-stop-32.png">
+                            </button>
+                            <button class="button_services" title="Удалить" v-on:click="removeServer">
+                                <img src="image/icons8-delete-32.png">
+                            </button>
+                        </div>
                         <label>Хост: </label><input v-model="data.servers61850[actual.index].host">
                         <label>Порт: </label><input v-model="data.servers61850[actual.index].port">
                         <label>Remote AP ID: </label><input v-model="data.servers61850[actual.index].apTitleR">
@@ -27,37 +37,32 @@
                         <label>Local T Selector: </label><input v-model="data.servers61850[actual.index].tSelectorL">
                         <label>Authentication Enabled: </label><input type="checkbox" v-model="data.servers61850[actual.index].enabled">
                         <label>Authentication Password: </label><input v-model="data.servers61850[actual.index].password">
-                        <div></div>
-                        <div class="services">
-
-                            <button class="button_services" title="Запуск/Остановка" v-on:click="startServer">
-                                <img v-if="!start.run[actual.index]" src="image/icons8-play-32.png">
-                                <img v-else src="image/icons8-stop-32.png">
-                            </button>
-                            <button class="button_services" title="Удалить" v-on:click="removeServer">
-                                <img src="image/icons8-delete-32.png">
-                            </button>
-                        </div>
                     </div>
                     <hr>
-                    <div class="items61850" v-for="(item, index) in data.servers61850[actual.index].items61850">
-                        <button  class="button_config" v-on:click="edit_item_iec61850(index)">
-                            <img src="image/icons8-edit-16.png">
-                        </button>
-                        <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>
-                        <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeFC}}</div>
-                        <div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeMMS}}</div>
-                        <input class="input_no_border" v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
-                        <select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeFC">
-                            <option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
-                        </select>
-                        <select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeMMS">
-                            <option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
-                        </select>
-                        <button v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" class="button_config" v-on:click="remove_item_iec61850(index)">
-                            <img src="image/icons8-delete-16.png">
-                        </button>
+                    <!--Список элементов мэк61850-->
+                    <div  v-for="(item, index) in data.servers61850[actual.index].items61850">
+                        <!--фильтрум список по группам-->
+                        <span>{{item.path}}</span>
+
+                        <!--<button v-if="!start.run[actual.index]" class="button_config" v-on:click="edit_item_iec61850(index)">-->
+                            <!--<img src="image/icons8-edit-16.png">-->
+                        <!--</button>-->
+                        <!--<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>-->
+                        <!--<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeFC}}</div>-->
+                        <!--<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeMMS}}</div>-->
+                        <!--<input class="input_no_border" v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">-->
+                        <!--<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeFC">-->
+                            <!--<option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>-->
+                        <!--</select>-->
+                        <!--<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeMMS">-->
+                            <!--<option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>-->
+                        <!--</select>-->
+                        <!--<button v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" class="button_config" v-on:click="remove_item_iec61850(index)">-->
+                            <!--<img src="image/icons8-delete-16.png">-->
+                        <!--</button>-->
+
                     </div>
+
                     <div class="items61850" v-if="!start.run[actual.index]">
                         <button class="button_config">
                             <img v-if="!actual.add_item61850[actual.index].show" src="image/icons8-plus-math-16.png"  v-on:click="add_show_new_item">

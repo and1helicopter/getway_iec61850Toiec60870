@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
-using Gateway;
 
 namespace Configurator
 {
@@ -18,7 +16,7 @@ namespace Configurator
 			InitializeChromium();
 		}
 
-		public void InitializeChromium()
+		private void InitializeChromium()
 		{
 			CefSettings settings = new CefSettings();
 			settings.SetOffScreenRenderingBestPerformanceArgs();
@@ -29,18 +27,18 @@ namespace Configurator
 			// for example, replace page with a direct path instead :
 			// String page = @"C:\Users\SDkCarlos\Desktop\afolder\index.html";
 
-			string _page = string.Format($"{ Application.StartupPath}\\view\\index.html");
+			string page = string.Format($"{ Application.StartupPath}\\view\\index.html");
 			//String page = @"C:\Users\SDkCarlos\Desktop\artyom-HOMEPAGE\index.html";
 
-			if (!File.Exists(_page))
+			if (!File.Exists(page))
 			{
-				MessageBox.Show(@"Error The html file doesn't exists : " + _page);
+				MessageBox.Show(@"Error The html file doesn't exists : " + page);
 			}
 
 			// Initialize cef with the provided settings
 			Cef.Initialize(settings);
 			// Create a browser component
-			_chromeBrowser = new ChromiumWebBrowser(_page)
+			_chromeBrowser = new ChromiumWebBrowser(page)
 			{
 				RequestContext = new RequestContext()
 			};

@@ -66,7 +66,7 @@ namespace IEC_61850
 
 		public static bool StopConnection(int index)
 		{
-			return ConnectionList[index].RunConnect() && ConnectionList[index].StopConnection();
+			return ConnectionList[index].StopConnection();
 		}
 
 		public static bool DelateConnection(int index)

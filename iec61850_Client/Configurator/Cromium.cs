@@ -39,7 +39,7 @@ namespace Configurator
 			}
 			else
 			{
-				return !GatewayAPI_Class.Stop_Server61850(index);
+				return GatewayAPI_Class.Stop_Server61850(index);
 			}
 		}
 
