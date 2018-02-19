@@ -61,7 +61,7 @@ namespace IEC_61850
 		{
 			if (ConnectionList[index].RunConnect()) return false;
 			if (!ConnectionList[index].StartConnection()) return false;
-			return ConnectionList[index].FillPathDA(); ;
+			return ConnectionList[index].FillPathDA(); 
 		}
 
 		public static bool StopConnection(int index)

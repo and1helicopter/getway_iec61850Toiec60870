@@ -129,6 +129,7 @@ namespace IEC_61850
 		{
 			try
 			{
+				_listPath.Clear();
 				var nodeLD = _connection.GetServerDirectory();
 
 				foreach (var ld in nodeLD)

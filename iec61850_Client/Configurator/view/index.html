@@ -11,71 +11,137 @@
         <transition name="fade">
             <div class="iec61850">
                 <div  class="sidebars">
-
                     <div class="iec61850_left">
                         <h3>Конфигрутор соединения IEC61850:</h3>
                         <div class="services">
                             <button class="button_services" title="Запуск/Остановка" v-on:click="startServer">
-                                <img v-if="!start.run[actual.index]" src="image/icons8-play-32.png">
+                                <img v-if="!map.start.run[map.actual.index]" src="image/icons8-play-32.png">
                                 <img v-else src="image/icons8-stop-32.png">
                             </button>
                             <button class="button_services" title="Удалить" v-on:click="removeServer">
                                 <img src="image/icons8-delete-32.png">
                             </button>
                         </div>
-                        <label>Хост: </label><input v-model="data.servers61850[actual.index].host">
-                        <label>Порт: </label><input v-model="data.servers61850[actual.index].port">
-                        <label>Remote AP ID: </label><input v-model="data.servers61850[actual.index].apTitleR">
-                        <label>Remote AE Qualifier: </label><input v-model="data.servers61850[actual.index].aeQualifierR" >
-                        <label>Remote P Selector: </label><input v-model="data.servers61850[actual.index].pSelectorR">
-                        <label>Remote S Selector: </label><input v-model="data.servers61850[actual.index].sSelectorR">
-                        <label>Remote T Selector: </label><input v-model="data.servers61850[actual.index].tSelectorR">
-                        <label>Local AP ID: </label><input v-model="data.servers61850[actual.index].apTitleL">
-                        <label>Local AE Qualifier: </label><input v-model="data.servers61850[actual.index].aeQualifierL">
-                        <label>Local P Selector: </label><input v-model="data.servers61850[actual.index].pSelectorL">
-                        <label>Local S Selector: </label><input v-model="data.servers61850[actual.index].sSelectorL">
-                        <label>Local T Selector: </label><input v-model="data.servers61850[actual.index].tSelectorL">
-                        <label>Authentication Enabled: </label><input type="checkbox" v-model="data.servers61850[actual.index].enabled">
-                        <label>Authentication Password: </label><input v-model="data.servers61850[actual.index].password">
+                        <label>Хост: </label><input v-model="map.data.servers61850[map.actual.index].host">
+                        <label>Порт: </label><input v-model="map.data.servers61850[map.actual.index].port">
+                        <label>Remote AP ID: </label><input v-model="map.data.servers61850[map.actual.index].apTitleR">
+                        <label>Remote AE Qualifier: </label><input v-model="map.data.servers61850[map.actual.index].aeQualifierR" >
+                        <label>Remote P Selector: </label><input v-model="map.data.servers61850[map.actual.index].pSelectorR">
+                        <label>Remote S Selector: </label><input v-model="map.data.servers61850[map.actual.index].sSelectorR">
+                        <label>Remote T Selector: </label><input v-model="map.data.servers61850[map.actual.index].tSelectorR">
+                        <label>Local AP ID: </label><input v-model="map.data.servers61850[map.actual.index].apTitleL">
+                        <label>Local AE Qualifier: </label><input v-model="map.data.servers61850[map.actual.index].aeQualifierL">
+                        <label>Local P Selector: </label><input v-model="map.data.servers61850[map.actual.index].pSelectorL">
+                        <label>Local S Selector: </label><input v-model="map.data.servers61850[map.actual.index].sSelectorL">
+                        <label>Local T Selector: </label><input v-model="map.data.servers61850[map.actual.index].tSelectorL">
+                        <label>Authentication Enabled: </label><input type="checkbox" v-model="map.data.servers61850[map.actual.index].enabled">
+                        <label>Authentication Password: </label><input v-model="map.data.servers61850[map.actual.index].password">
                     </div>
                     <hr>
                     <!--Список элементов мэк61850-->
-                    <div  v-for="(item, index) in data.servers61850[actual.index].items61850">
-                        <!--фильтрум список по группам-->
-                        <span>{{item.path}}</span>
-
-                        <!--<button v-if="!start.run[actual.index]" class="button_config" v-on:click="edit_item_iec61850(index)">-->
-                            <!--<img src="image/icons8-edit-16.png">-->
-                        <!--</button>-->
-                        <!--<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>-->
-                        <!--<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeFC}}</div>-->
-                        <!--<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeMMS}}</div>-->
-                        <!--<input class="input_no_border" v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">-->
-                        <!--<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeFC">-->
-                            <!--<option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>-->
-                        <!--</select>-->
-                        <!--<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeMMS">-->
-                            <!--<option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>-->
-                        <!--</select>-->
-                        <!--<button v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" class="button_config" v-on:click="remove_item_iec61850(index)">-->
-                            <!--<img src="image/icons8-delete-16.png">-->
-                        <!--</button>-->
-
+                    <div v-show="TreeView[map.actual.index].show">
+                        <div v-for="(itemLD, indexLD) in TreeView[map.actual.index].node" >
+                            <div v-bind:class="{ld_open_item: itemLD.show, ld_close_item: !itemLD.show}" v-on:click="itemLD.show = !itemLD.show">{{itemLD.title}}</div>
+                            <div v-show="itemLD.show" v-for="(itemLN, indexLN) in itemLD.node">
+                                <div  v-bind:class="{ln_open_item: itemLN.show, ln_close_item: !itemLN.show}" v-on:click="itemLN.show = !itemLN.show">{{itemLN.title}}</div>
+                                <div v-show="itemLN.show" v-for="(itemDO, indexDO) in itemLN.node">
+                                    <div v-bind:class="{do_open_item: itemDO.show , do_close_item: !itemDO.show}" v-on:click="itemDO.show = !itemDO.show">{{itemDO.title}}</div>
+                                    <div v-show="itemDO.show" v-for="(itemAttr, indexAttr) in itemDO.node">
+                                        <div class="attr_item" v-on:click="itemAttr.show =!itemAttr.show" >
+                                            <!--Отображение-->
+                                            <div v-show="!itemAttr.edit">
+                                                <div>{{itemAttr.attr.path}}
+                                                    <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 7px; position: absolute;" v-on:click="if(!map.start.run[map.actual.index])itemAttr.edit = !itemAttr.edit;">
+                                                        <img src="image/edit.png">
+                                                    </button>
+                                                </div>
+                                                <div v-show="itemAttr.show">FC: {{itemAttr.attr.typeFC}}&nbsp;&nbsp;&nbsp;&nbsp; MMS: {{itemAttr.attr.typeMMS}}
+                                                    <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 7px; position: absolute;" v-on:click="remove_item_iec61850(itemAttr, indexAttr, indexDO, indexLN, indexLD)">
+                                                        <img src="image/remove.png">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!--Редактирование-->
+                                            <div v-show="itemAttr.edit">
+                                                <div v-show="!map.start.run[map.actual.index]">
+                                                    <input v-model="itemAttr.attr.path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
+                                                    <button class="button_menu" style="right: 7px; position: absolute;" v-on:click="if(!map.start.run[map.actual.index])itemAttr.edit = !itemAttr.edit;">
+                                                        <img src="image/edit.png">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <label>FC: </label>
+                                                    <select v-model="itemAttr.attr.typeFC">
+                                                        <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
+                                                    </select>
+                                                    <label style="padding-left: 30px">MMS: </label>
+                                                    <select v-model="itemAttr.attr.typeMMS">
+                                                        <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Добавить новый элемент, если связь не установленна-->
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!--<div  class="menu" v-for="(itemLD, indexLD) in ldList(map.actual.index)">-->
+                        <!--<div v-on:click="ldToggle(map.actual.index, indexLD)">-->
+                            <!--<span class="menu_ld_close" v-bind:class="{menu_ld_open : open_view[map.actual.index].show61850.ld[indexLD]}">{{itemLD}}</span>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;<div v-for="(itemLN, indexLN) in lnList(map.actual.index, itemLD)">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span v-if = "open_view[map.actual.index].show61850.ld[indexLD]" class="menu_ln">+{{itemLN}}</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div v-for="(itemDO, indexDO) in doList(map.actual.index, itemLD, itemLN)">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span>++{{itemDO}}</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div v-for="(itemDA, indexDA) in daList(map.actual.index, itemLD, itemLN, itemDO)">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span>-&#45;&#45;{{itemDA.path}}</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
 
-                    <div class="items61850" v-if="!start.run[actual.index]">
+                    <!--<div  v-for="(item, index) in data.servers61850[actual.index].items61850">-->
+                        <!--&lt;!&ndash;фильтрум список по группам&ndash;&gt;-->
+                        <!--<span>{{item.path}}</span>-->
+
+                        <!--&lt;!&ndash;<button v-if="!start.run[actual.index]" class="button_config" v-on:click="edit_item_iec61850(index)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<img src="image/icons8-edit-16.png">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeFC}}</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeMMS}}</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input class="input_no_border" v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeFC">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeMMS">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<button v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" class="button_config" v-on:click="remove_item_iec61850(index)">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<img src="image/icons8-delete-16.png">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+
+                    <!--</div>-->
+
+                    <div class="items61850" v-if="!map.start.run[map.actual.index]">
                         <button class="button_config">
-                            <img v-if="!actual.add_item61850[actual.index].show" src="image/icons8-plus-math-16.png"  v-on:click="add_show_new_item">
+                            <img v-if="!map.actual.add_item61850[map.actual.index].show" src="image/icons8-plus-math-16.png"  v-on:click="add_show_new_item">
                             <img v-else src="image/icons8-delete-16.png"  v-on:click="close_mew_item">
                         </button>
-                        <input class="input_no_border" v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
-                        <select v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].typeFC">
-                            <option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
+                        <input class="input_no_border" v-if="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
+                        <select v-if="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].typeFC">
+                            <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
                         </select>
-                        <select v-if="actual.add_item61850[actual.index].show" v-model="actual.add_item61850[actual.index].typeMMS">
-                            <option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
+                        <select v-if="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].typeMMS">
+                            <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
                         </select>
-                        <button v-if="actual.add_item61850[actual.index].show" class="button_config" v-on:click="add_new_item">
+                        <button v-if="map.actual.add_item61850[map.actual.index].show" class="button_config" v-on:click="add_new_item(
+                                map.actual.add_item61850[map.actual.index].path,
+                                map.actual.add_item61850[map.actual.index].typeFC,
+                                map.actual.add_item61850[map.actual.index].typeMMS,
+                                map.actual.index)">
                             <img src="image/icons8-checkmark-16.png">
                         </button>
                     </div>
@@ -92,14 +158,13 @@
     <template id="headerLeft">
         <div class="header_left">
             <div class="sidebar">
-                <div v-for="(server, index) in data.servers61850" >
+                <div v-for="(server, index) in map.data.servers61850" >
                     <button class="button_server" v-bind:class="{button_selected: this.map.show.show61850[index], button_started: this.map.start.run[index]}" v-on:click="show_server61850(server, index)">
                         <div>
                             Хост:{{server.host}}<br>Порт:{{server.port}}
                         </div>
                     </button>
                 </div>
-
                 <div>
                     <button title="Добавить" class="button_add" v-on:click="add_server61850">
                         <img src="image/icons8-plus-32.png">
@@ -140,7 +205,6 @@
     </template>
 
     <div id="app">
-
         <div id="main">
             <div class="content">
                 <app-iec60870 v-if="show60870"></app-iec60870>

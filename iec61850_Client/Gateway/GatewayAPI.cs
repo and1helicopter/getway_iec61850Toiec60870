@@ -80,6 +80,7 @@ namespace Gateway
 			if (!ServersList[index].Equals(newObjServer61850))
 			{
 				ServersList[index] = newObjServer61850;
+				//ServersList[index].items61850.Clear();
 				SetParametrServer61850(newObjServer61850, index);
 			}
 			//Запуск сервера и проверка на успешность запуска 
@@ -88,7 +89,7 @@ namespace Gateway
 
 		public static bool Stop_Server61850(dynamic index)
 		{
-			return ClientAPI.StopConnection(index); ;
+			return ClientAPI.StopConnection(index);
 		}
 
 		public static string Get_Items_Server61850(dynamic index)
