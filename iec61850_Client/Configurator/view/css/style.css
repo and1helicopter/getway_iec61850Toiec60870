@@ -324,8 +324,8 @@ h3{
 
 .attr_item{
     padding-left: 50px;
-    margin-bottom: 2px;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    min-height: 16px;
 }
 
 .button_menu{
@@ -351,8 +351,8 @@ select{
     font-family: Consolas, sans-serif;
     font-size: 9pt;
     margin: 0;
-    border-left: 0.25px solid #ebebeb;
-    border-right: 0.25px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
+    border-right: 1px solid #ebebeb;
     border-top: 0;
     border-bottom: 0;
 }
@@ -362,6 +362,39 @@ select{
     zoom: 50%;
     cursor: default;
 }
+/*Пагинация*/
+.pagination {
+    width: 100%;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px auto 5px;
+}
+
+.pagination_left, .pagination_right {
+    width: 20%;
+}
+
+.pagination_left {
+    float: left;
+}
+
+.pagination_right {
+    float: right;
+}
+
+.pagination_mid {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+/*ASDU*/
+.asdu{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 1px;
+}
+
 
 .menu_ld_open {
     content: url(../image/LD_open_32.png);

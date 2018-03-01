@@ -87,69 +87,108 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div  class="menu" v-for="(itemLD, indexLD) in ldList(map.actual.index)">-->
-                        <!--<div v-on:click="ldToggle(map.actual.index, indexLD)">-->
-                            <!--<span class="menu_ld_close" v-bind:class="{menu_ld_open : open_view[map.actual.index].show61850.ld[indexLD]}">{{itemLD}}</span>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash;<div v-for="(itemLN, indexLN) in lnList(map.actual.index, itemLD)">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span v-if = "open_view[map.actual.index].show61850.ld[indexLD]" class="menu_ln">+{{itemLN}}</span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div v-for="(itemDO, indexDO) in doList(map.actual.index, itemLD, itemLN)">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>++{{itemDO}}</span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div v-for="(itemDA, indexDA) in daList(map.actual.index, itemLD, itemLN, itemDO)">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>-&#45;&#45;{{itemDA.path}}</span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--</div>-->
-
-                    <!--<div  v-for="(item, index) in data.servers61850[actual.index].items61850">-->
-                        <!--&lt;!&ndash;фильтрум список по группам&ndash;&gt;-->
-                        <!--<span>{{item.path}}</span>-->
-
-                        <!--&lt;!&ndash;<button v-if="!start.run[actual.index]" class="button_config" v-on:click="edit_item_iec61850(index)">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<img src="image/icons8-edit-16.png">&ndash;&gt;-->
-                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.path}}</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeFC}}</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div v-if="!actual.add_item61850[actual.index].edit_item_iec61850[index]">{{item.typeMMS}}</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<input class="input_no_border" v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeFC">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<option v-for="option in options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<select v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" v-model="item.typeMMS">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<option v-for="option in options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<button v-if="actual.add_item61850[actual.index].edit_item_iec61850[index]" class="button_config" v-on:click="remove_item_iec61850(index)">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<img src="image/icons8-delete-16.png">&ndash;&gt;-->
-                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
-
-                    <!--</div>-->
-
-                    <div class="items61850" v-if="!map.start.run[map.actual.index]">
-                        <button class="button_config">
-                            <img v-if="!map.actual.add_item61850[map.actual.index].show" src="image/icons8-plus-math-16.png"  v-on:click="add_show_new_item">
-                            <img v-else src="image/icons8-delete-16.png"  v-on:click="close_mew_item">
-                        </button>
-                        <input class="input_no_border" v-if="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].path" type="text"  onkeydown="this.style.width = ((this.value.length + 1)*7) + 'px';">
-                        <select v-if="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].typeFC">
-                            <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
-                        </select>
-                        <select v-if="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].typeMMS">
-                            <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
-                        </select>
-                        <button v-if="map.actual.add_item61850[map.actual.index].show" class="button_config" v-on:click="add_new_item(
+                    <div class="attr_item" v-if="!map.start.run[map.actual.index]" style="padding-left: 0;">
+                        <div>
+                            <button class="button_menu" style="position: absolute;  margin-bottom: 0;">
+                                <img v-if="!map.actual.add_item61850[map.actual.index].show" src="image/add.png" v-on:click="add_show_new_item">
+                                <img v-else src="image/clear.png" v-on:click="close_mew_item" >
+                            </button>
+                            <div style="padding-left: 16px">
+                                <input style="width: 100%; margin-top: -1px; margin-left: -1px;" v-show="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
+                            </div>
+                        </div>
+                        <div style="padding-left: 16px" v-show="map.actual.add_item61850[map.actual.index].show">
+                            <label>FC: </label>
+                            <select v-model="map.actual.add_item61850[map.actual.index].typeFC">
+                                <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
+                            </select>
+                            <label style="padding-left: 30px">MMS: </label>
+                            <select v-model="map.actual.add_item61850[map.actual.index].typeMMS">
+                                <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
+                            </select>
+                            <button class="button_menu" style="right: 7px; position: absolute;  margin-bottom: 0;" v-show="map.actual.add_item61850[map.actual.index].show" v-on:click="add_new_item(
                                 map.actual.add_item61850[map.actual.index].path,
                                 map.actual.add_item61850[map.actual.index].typeFC,
                                 map.actual.add_item61850[map.actual.index].typeMMS,
                                 map.actual.index)">
-                            <img src="image/icons8-checkmark-16.png">
-                        </button>
+                                <img src="image/ok.png">
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div style="background-color: #9f9f9f; width: 100%; height: 100%;"></div>
-
+                <!--ASDU-->
                 <div class="sidebars">
                     <h3>Конфигрутор ASDU:</h3>
+                    <!--Отображение всех ASDU c выбором и добавлением-->
+                    <div>
+                        <div class="pagination">
+                            <button class="pagination_left">Left</button>
+                            <div class="pagination_mid" v-for="(itemASDU, indexASDU) in map.data.servers61850[map.actual.index].itemsASDU">
+                                <button v-on:click="change_current(indexASDU, map.actual.index)">{{indexASDU + 1}}</button>
+                            </div>
+                            <button class="pagination_right">Right</button>
+                        </div>
+                        <button v-on:click="add_asdu(map.actual.index)">ADD</button>
+                        <hr>
+                        <!--Отображение выбронного ASDU c редактирвованием-->
+                        <div class="asdu" v-if="ShowASDU[map.actual.index].show" >
+                            <div style="width: 100%; display: flex;">
+                                <div>Type ID:</div>
+                                <input type="number" min="0" max="127" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID"  v-on:change="cot_filter(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID)">
+                                <label  v-model="value = show_text(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID, map.options_iec60870.options_typeID)">{{value.strEN}}({{value.strRU}})</label>
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <input type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].sq">
+                                <label>{{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].sq ? 'Одиночный объект' : 'Последовательность объектов'}}</label>
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <div>Причина передачи:</div>
+                                <select type="submit" min="0" max="63" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].cot">
+                                    <option v-for="option in TempASDU_COT">{{option.value}}</option>
+                                </select>
+                                <label  v-model="value = show_text(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].cot, map.options_iec60870.options_cot)">{{value.strEN}}({{value.strRU}})</label>
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <label>Подтверждение:</label>
+                                <input type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isNegative" >
+                                <label>{{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isNegative ? 'Отрицательное' : 'Положительное'}}</label>
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <label>Тест:</label>
+                                <input type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isTest" >
+                                <label>{{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isTest ? 'True' : 'False'}}</label>
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <label>Адрес инициатора (опцианально):</label>
+                                <input type="number" min="0" max="255" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].oa" >
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <label>Общий адрес:</label>
+                                <input type="number" min="0" max="65535" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].ca" >
+                            </div>
+                            <div style="width: 100%;  display: flex;">
+                                <label>Количество:</label>
+                                <label v-model="quantity = map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects.length">{{quantity }}</label>
+                            </div>
+                            <div>
+                                <button v-on:click="add_obj_asdu(map.actual.index)">ADD</button>
+                            </div>
+                            <div>
+                                <!--Объекты-->
+                                <div v-for="obj in map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects" style="margin: 2px; padding: 2px;  border: 1px solid rgba(0, 0, 0, 0.1); ">
+                                    <input v-model="obj.addrObj">
+                                    <!--Элементы-->
+                                    <div v-for="elem in obj.attributeObj">
+                                        <div v-for="item in elem">
+                                            <label>{{item.typeElement}}</label>
+                                            <input v-model="item.attributeElement">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </transition>

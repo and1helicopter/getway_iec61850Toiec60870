@@ -21,14 +21,28 @@ class server61850 {
 
 class ASDU{
     constructor(){
-        this.typeID = {};
-        this.vsq = {};
-        this.cot = {};
-        this.isNegative = {};
-        this.isTest = {};
-        this.oa = {};
-        this.ca = {};
+        this.typeID = 0;
+        this.sq = false;
+        this.cot = 0;
+        this.isNegative = false;
+        this.isTest = false;
+        this.oa = 0;
+        this.ca = 0;
         this.objects = [];
+    }
+}
+
+class InformationObject{
+    constructor(){
+        this.addrObj = {};  //addr - obj
+        this.attributeObj = [];
+    }
+}
+
+class InformationElement{
+    constructor(){
+        this.typeElement = {};  //3 типа: штамп времени (3-byte/7-byte), значение, качество (time, value, quantity)
+        this.attributeElement = {};
     }
 }
 
@@ -116,12 +130,212 @@ options_iec61850 = {
     ]
 };
 
+options_iec60870 = {
+    options_typeID: [
+        {textRU: 'Не определено', textEN: 'NONE', value: 0},
+        {textRU: 'Одноэлементная информация', textEN: 'M_SP_NA_1', value: 1},
+        {textRU: 'Одноэлементная информация с меткой времени', textEN: 'M_SP_TA_1', value: 2},
+        {textRU: 'Двухэлементная информация', textEN: 'M_DP_NA_1', value: 3},
+        {textRU: 'Двухэлементная информация с меткой времени', textEN: 'M_DP_TA_1', value: 4},
+        {textRU: 'Информация о положение отпаек', textEN: 'M_ST_NA_1', value: 5},
+        {textRU: 'Информация о положение отпаек с меткой времени', textEN: 'M_ST_TA_1', value: 6},
+        {textRU: 'Строка из 32 бит', textEN: 'M_BO_NA_1', value: 7},
+        {textRU: 'Строка из 32 бит с меткой времени', textEN: 'M_BO_TA_1', value: 8},
+        {textRU: 'Значение измеряемой величины, нормализованное значение', textEN: 'M_ME_NA_1', value: 9},
+        {textRU: 'Значение измеряемой величины, нормализованное значение с меткой времени', textEN: 'M_ME_TA_1', value: 10},
+        {textRU: 'Значение измеряемой величины, масштабированное значение', textEN: 'M_ME_NB_1', value: 11},
+        {textRU: 'Значение измеряемой величины, масштабированное значение с меткой времени', textEN: 'M_ME_TB_1', value: 12},
+        {textRU: 'Значение измеряемой величины, короткий формат с плавающей запятой', textEN: 'M_ME_NC_1', value: 13},
+        {textRU: 'Значение измеряемой величины, короткий формат с плавающей запятой с меткой времени', textEN: 'M_MC_TB_1', value: 14},
+        {textRU: 'Интегральная сумма', textEN: 'M_IT_NA_1', value: 15},
+        {textRU: 'Интегральная сумма запятой с меткой времени', textEN: 'M_IT_TA_1', value: 16},
+        {textRU: 'Информация о работе релейной защиты с меткой времени', textEN: 'M_EP_TA_1', value: 17},
+        {textRU: 'Упакованная информация о срабатывание пусковых органов защиты с меткой времени', textEN: 'M_IT_TB_1', value: 18},
+        {textRU: 'Упакованная информация о срабатывание выходных цепей защиты с меткой времени', textEN: 'M_EP_TC_1', value: 19},
+        {textRU: 'Упакованная одноэлементная информация суказателем изменения состояния', textEN: 'M_PS_NA_1', value: 20},
+        {textRU: 'Значение измеряемой величины, нормализованное значение без описателя качества', textEN: 'M_ME_ND_1', value: 21},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 22},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 23},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 24},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 25},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 26},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 27},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 28},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 29},
+        {textRU: 'Одноэлементная информация с меткой времени СР56Время2а', textEN: 'М_SP_ТB_1', value: 30},
+        {textRU: 'Двухэлементная информация с меткой времени СР56Время2а', textEN: 'М_DP_TB_1', value: 31},
+        {textRU: 'Информация о положении отпаек с меткой времени СР56Время2а', textEN: 'М_ST_TB_1', value: 32},
+        {textRU: 'Строка из 32 бит с меткой времени СР56Время2а', textEN: 'М_ВО_TB_1', value: 33},
+        {textRU: 'Значение измеряемой величины, нормализованное значение с меткой времени СР56Время2а', textEN: 'М_МЕ_TD_1', value: 34},
+        {textRU: 'Значение измеряемой величины, масштабированное значение с меткой времени СР56Время2а', textEN: 'М_МЕ_TЕ_1', value: 35},
+        {textRU: 'Значение измеряемой величины, короткий формат с плавающей запятой с меткой времени СР56Время2а', textEN: 'М_МЕ_TF_1', value: 36},
+        {textRU: 'Интегральная сумма с меткой времени СР56Время2а', textEN: 'М_IT_TB_1', value: 37},
+        {textRU: 'Информация о работе релейной защиты с меткой времени СР56Время2а', textEN: 'М_ЕР_TD_1', value: 38},
+        {textRU: 'Упакованная информация о срабатывании пусковых органов защиты с меткой времени СР56Время2а', textEN: 'М_ЕР_TЕ_1', value: 39},
+        {textRU: 'Упакованная информация о срабатывании выходных цепей защиты с меткой времени СР56Время2а', textEN: 'М_ЕР_TF_1', value: 40},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 41},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 42},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 43},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 44},
+        {textRU: 'Однопозиционная команда', textEN: 'C_SC_NA_1', value: 45},
+        {textRU: 'Двухпозиционная команда', textEN: 'C_DC_NA_1', value: 46},
+        {textRU: 'Команда пошагового регулирования', textEN: 'C_RC_NA_1', value: 47},
+        {textRU: 'Команда уставки, нормализованное значение', textEN: 'C_SE_NA_1', value: 48},
+        {textRU: 'Команда уставки, масштабированное значение', textEN: 'C_SE_NB_1', value: 49},
+        {textRU: 'Команда уставки, короткий формат с плавающей запятой', textEN: 'C_SE_NC_1', value: 50},
+        {textRU: 'Строка из 32 бит', textEN: 'C_ВО_NA_1', value: 51},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 52},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 53},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 54},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 55},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 56},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 57},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 58},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 59},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 60},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 61},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 62},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 63},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 64},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 65},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 66},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 67},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 68},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 69},
+        {textRU: 'Конец инициализации', textEN: 'М_ЕI_NA_1', value: 70},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 71},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 72},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 73},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 74},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 75},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 76},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 77},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 78},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 79},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 80},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 81},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 82},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 83},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 84},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 85},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 86},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 87},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 88},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 89},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 90},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 91},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 92},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 93},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 94},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 95},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 96},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 97},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 98},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 99},
+        {textRU: 'Команда опроса', textEN: 'C_IC_NA_1', value: 100},
+        {textRU: 'Команда опроса счетчиков', textEN: 'C_CI_NA_1', value: 101},
+        {textRU: 'Команда чтения', textEN: 'C_RD_NA_1', value: 102},
+        {textRU: 'Команда синхронизации часов', textEN: 'C_CS_NA_1', value: 103},
+        {textRU: 'Команда тестирования', textEN: 'C_ТS_NA_1', value: 104},
+        {textRU: 'Команда сброса процесса в исходное состояние', textEN: 'C_RP_NA_1', value: 105},
+        {textRU: 'Команда определения запаздывания', textEN: 'C_CD_NA_1', value: 106},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 107},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 108},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 109},
+        {textRU: 'Параметр измеряемой величины, нормализованное значение', textEN: 'Р_МЕ_NA_1', value: 110},
+        {textRU: 'Параметр измеряемой величины, масштабированное значение', textEN: 'Р_МЕ_NВ_1', value: 111},
+        {textRU: 'Параметр измеряемой величины, короткий формат с плавающей запятой', textEN: 'Р_МЕ_NС_1', value: 112},
+        {textRU: 'Параметр активации', textEN: 'Р_АС_NА_1', value: 113},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 114},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 115},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 116},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 117},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 118},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 119},
+        {textRU: 'Файл готов', textEN: 'F_FR_NA_1', value: 120},
+        {textRU: 'Секция готова', textEN: 'F_SR_NA_1', value: 121},
+        {textRU: 'Вызов директории, выбор файла, вызов файла, вызов секции', textEN: 'F_SC_NA_1', value: 122},
+        {textRU: 'Последняя секция, последний сегмент', textEN: 'F_LS_NA_1', value: 123},
+        {textRU: 'Подтверждение файла, подтверждение секции', textEN: 'F_AF_NA_1', value: 124},
+        {textRU: 'Сегмент', textEN: 'F_SG_NA_1', value: 125},
+        {textRU: 'Директория', textEN: 'F_DR_TA_1', value: 126},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 127},
+    ],
+    options_cot: [
+        {textRU: 'Не используется', textEN: 'NONE', value: 0},
+        {textRU: 'Периодически, циклически', textEN: 'per/cyc', value: 1},
+        {textRU: 'Фоновое сканирование', textEN: 'back', value: 2},
+        {textRU: 'Спорадически', textEN: 'spont', value: 3},
+        {textRU: 'Сообщение об инициализации', textEN: 'init', value: 4},
+        {textRU: 'Запрос или запрашиваемые данные', textEN: 'req', value: 5},
+        {textRU: 'Активация', textEN: 'act', value: 6},
+        {textRU: 'Пдтверждение активации', textEN: 'actсon', value: 7},
+        {textRU: 'Деактивация', textEN: 'deact', value: 8},
+        {textRU: 'Подтверждение деактивации', textEN: 'deactcon', value: 9},
+        {textRU: 'Завершение активации', textEN: 'actterm', value: 10},
+        {textRU: 'Обратная информация, вызванная удаленной командой', textEN: 'retrem', value: 11},
+        {textRU: 'Обратная информация, вызванная местной командой', textEN: 'retloc', value: 12},
+        {textRU: 'Передача файлов', textEN: 'file', value: 13},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 14},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 15},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 16},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 17},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 18},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 19},
+        {textRU: 'Ответ на опрос станции', textEN: 'inrogen', value: 20},
+        {textRU: 'Ответ на опрос станции 1', textEN: 'inro1', value: 21},
+        {textRU: 'Ответ на опрос станции 2', textEN: 'inro2', value: 22},
+        {textRU: 'Ответ на опрос станции 3', textEN: 'inro3', value: 23},
+        {textRU: 'Ответ на опрос станции 4', textEN: 'inro4', value: 24},
+        {textRU: 'Ответ на опрос станции 5', textEN: 'inro5', value: 25},
+        {textRU: 'Ответ на опрос станции 6', textEN: 'inro6', value: 26},
+        {textRU: 'Ответ на опрос станции 7', textEN: 'inro7', value: 27},
+        {textRU: 'Ответ на опрос станции 8', textEN: 'inro8', value: 28},
+        {textRU: 'Ответ на опрос станции 9', textEN: 'inro9', value: 29},
+        {textRU: 'Ответ на опрос станции 10', textEN: 'inro10', value: 30},
+        {textRU: 'Ответ на опрос станции 11', textEN: 'inro11', value: 31},
+        {textRU: 'Ответ на опрос станции 12', textEN: 'inro12', value: 32},
+        {textRU: 'Ответ на опрос станции 13', textEN: 'inro13', value: 33},
+        {textRU: 'Ответ на опрос станции 14', textEN: 'inro14', value: 34},
+        {textRU: 'Ответ на опрос станции 15', textEN: 'inro15', value: 35},
+        {textRU: 'Ответ на опрос станции 16', textEN: 'inro16', value: 36},
+        {textRU: 'Ответ на общий запрос счетчиков', textEN: 'reqcogen', value: 37},
+        {textRU: 'Ответ на запрос группы счетчиков 1', textEN: 'reqco1', value: 38},
+        {textRU: 'Ответ на запрос группы счетчиков 2', textEN: 'reqco2', value: 39},
+        {textRU: 'Ответ на запрос группы счетчиков 3', textEN: 'reqco3', value: 40},
+        {textRU: 'Ответ на запрос группы счетчиков 4', textEN: 'reqco4', value: 41},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 42},
+        {textRU: 'Резерв для дальнейших совместимых определений', textEN: '', value: 43},
+        {textRU: 'Неизвестный идентификатор типа', textEN: '', value: 44},
+        {textRU: 'Неизвестная причина передачи', textEN: '', value: 45},
+        {textRU: 'Неизвестный общий адрес ASDU', textEN: '', value: 46},
+        {textRU: 'Неизвестный адрес объекта информаци', textEN: '', value: 47},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 48},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 49},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 50},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 51},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 52},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 53},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 54},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 55},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 56},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 57},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 58},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 59},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 60},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 61},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 62},
+        {textRU: 'Для специальных применений (частный диапазон)', textEN: '', value: 63}
+    ]
+};
+
 map = {
     data: data,
     actual: actual,
     show: show,
     start: start,
-    options_iec61850: options_iec61850
+    options_iec61850: options_iec61850,
+    options_iec60870: options_iec60870
 };
 
 class openStatus {
@@ -148,8 +362,20 @@ class treeView{
     }
 }
 
+class showASDU{
+    constructor(){
+        this.current = 0;
+        this.total = 0;
+        this.show = false;
+        this.show_left = false;
+        this.show_right = false;
+    }
+}
+
 open_view = false;
 TreeView = [];
+ShowASDU = [];
+TempASDU_COT = [];
 
 Vue.component('app-iec61850',{
     template: '#iec61850',
@@ -157,7 +383,9 @@ Vue.component('app-iec61850',{
         return {
             map: map,
             open_view: open_view,
-            TreeView: TreeView
+            TreeView: TreeView,
+            ShowASDU: ShowASDU,
+            TempASDU_COT: TempASDU_COT
         }
     },
     methods: {
@@ -315,7 +543,301 @@ Vue.component('app-iec61850',{
                 }
             }
 
-        }
+        },
+        //функции для ASDU
+        add_asdu: function (index) {
+            let asduObj = new ASDU();
+            map.data.servers61850[index].itemsASDU.push(asduObj);
+            ShowASDU[index].total += 1;
+        },
+        change_current: function (indexASDU, index) {
+            ShowASDU[index].current = indexASDU;
+            ShowASDU[index].show = true;
+        },
+        show_asdu: function () {
+            return this.total > 0;
+        },
+        show_text: function (id, obj) {
+            for(let i = 0; i < obj.length; i++){
+                if(obj[i].value == id){
+                   let strEN = obj[i].textEN;
+                   let strRU = obj[i].textRU;
+                   console.log({strEN, strRU});
+                    return {strEN, strRU};
+                }
+            }
+        },
+        cot_filter: function (value) {
+            this.TempASDU_COT = [];
+            if (value === '0' || value === '41' || value === '42' || value === '43' || value === '44'
+                || value === '52' || value === '53' || value === '54' || value === '55' || value === '56' || value === '57' || value === '58' || value === '59'
+                || value === '60' || value === '61' || value === '62' || value === '63' || value === '64' || value === '65' || value === '66' || value === '67'
+                || value === '68' || value === '69' || value === '71' || value === '72' || value === '73' || value === '74' || value === '75' || value === '76'
+                || value === '77' || value === '78' || value === '79' || value === '80' || value === '81' || value === '82' || value === '83' || value === '84'
+                || value === '85' || value === '86' || value === '87' || value === '88' || value === '89' || value === '90' || value === '91' || value === '92'
+                || value === '93' || value === '94' || value === '95' || value === '96' || value === '97' || value === '98' || value === '99' || value === '107'
+                || value === '108' || value === '109' || value === '114' || value === '115' || value === '116' || value === '117' || value === '118' || value === '119'){
+                this.TempASDU_COT.push(map.options_iec60870.options_cot[0]);
+            }
+            else if(value === '1' || value === '3' || value === '5' || value === '20') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 2 || tempVal === 3 || tempVal === 5 || tempVal === 11 || tempVal === 12 || tempVal === 20 || tempVal === 21 || tempVal === 22
+                        || tempVal === 23 || tempVal === 24 || tempVal === 25 || tempVal === 26 || tempVal === 27 || tempVal === 28 || tempVal === 29
+                        || tempVal === 30 || tempVal === 31 || tempVal === 32 || tempVal === 33 || tempVal === 34 || tempVal === 35 || tempVal === 36) {
+                            this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '2' || value === '4' || value === '6' || value === '30' || value === '31' || value === '32') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 3 || tempVal === 5 || tempVal === 11 || tempVal === 12) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '7') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 2 || tempVal === 3 || tempVal === 5 || tempVal === 20 || tempVal === 21 || tempVal === 22 || tempVal === 23 || tempVal === 24
+                        || tempVal === 25 || tempVal === 26 || tempVal === 27 || tempVal === 28 || tempVal === 29 || tempVal === 30
+                        || tempVal === 31 || tempVal === 32 || tempVal === 33 || tempVal === 34 || tempVal === 35 || tempVal === 36) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '8' || value === '10' || value === '12' || value === '14' || value === '33' || value === '34' || value === '35' || value === '36' || value === '126') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 3 || tempVal === 5) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '9' || value === '11' || value === '13' || value === '21') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 1 || tempVal === 2 || tempVal === 3 || tempVal === 5 || tempVal === 20 || tempVal === 21 || tempVal === 22
+                        || tempVal === 23 || tempVal === 24 || tempVal === 25 || tempVal === 26 || tempVal === 27 || tempVal === 28 || tempVal === 29
+                        || tempVal === 30 || tempVal === 31 || tempVal === 32 || tempVal === 33 || tempVal === 34 || tempVal === 35 || tempVal === 36) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '15' || value === '16' || value === '37') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 3 || tempVal === 37 || tempVal === 38 || tempVal === 39 || tempVal === 40 || tempVal === 41) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '17' || value === '18' || value === '19' || value === '38' || value === '39' || value === '40') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 3) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '45' || value === '46' || value === '47' || value === '48' || value === '49' || value === '50' || value === '51' || value === '100' || value === '113') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 6 || tempVal === 7 || tempVal === 8 || tempVal === 9 || tempVal === 10 || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '70') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 4) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '101') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 6 || tempVal === 7 || tempVal === 10 || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '102') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 5) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '103' || value === '106') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 3 || tempVal === 6 || tempVal === 7 || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '104' || value === '105') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 6 || tempVal === 7 || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '110' || value === '111' || value === '112') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 3 || tempVal === 5 || tempVal === 6 || tempVal === 7 || tempVal === 20 || tempVal === 21 || tempVal === 22
+                        || tempVal === 23 || tempVal === 24 || tempVal === 25 || tempVal === 26 || tempVal === 27 || tempVal === 28 || tempVal === 29
+                        || tempVal === 30 || tempVal === 31 || tempVal === 32 || tempVal === 33 || tempVal === 34 || tempVal === 35 || tempVal === 36
+                        || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '120' || value === '121' || value === '123' || value === '124' || value === '125') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 13 || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+            else if(value === '122') {
+                for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
+                    let tempVal = map.options_iec60870.options_cot[i].value;
+                    if(tempVal === 5 || tempVal === 13 || tempVal === 44 || tempVal === 45 || tempVal === 46 || tempVal === 47) {
+                        this.TempASDU_COT.push(map.options_iec60870.options_cot[i]);
+                    }
+                }
+            }
+        },
+        add_obj_asdu: function (index) {
+            let indexASDU = this.ShowASDU[index].current;
+            let typeID = map.data.servers61850[index].itemsASDU[indexASDU].typeID;
+            let sq = map.data.servers61850[index].itemsASDU[indexASDU].sq;
+            let count =  map.data.servers61850[index].itemsASDU[indexASDU].objects.length;
+            let Elements = [];
+
+            if(typeID === '1' || typeID === '3'){
+                let infElementTempQ = new InformationElement();
+                infElementTempQ.typeElement = 'quality';
+                infElementTempQ.attributeElement = {};
+                let infElementTempVal = new InformationObject();
+                infElementTempVal.typeElement = 'value';
+                infElementTempVal.attributeElement = {};
+                Elements.push(infElementTempQ);
+                Elements.push(infElementTempVal);
+            }
+            else if(typeID === '2' || typeID === '4'){
+                let infElementTempQ = new InformationElement();
+                infElementTempQ.typeElement = 'quality';
+                infElementTempQ.attributeElement = {};
+                let infElementTempVal = new InformationObject();
+                infElementTempVal.typeElement = 'value';
+                infElementTempVal.attributeElement = {};
+                let infElementTempTime = new InformationObject();
+                infElementTempTime.typeElement = 'time';
+                infElementTempTime.attributeElement = {};
+                Elements.push(infElementTempQ);
+                Elements.push(infElementTempVal);
+                Elements.push(infElementTempTime);
+            }
+            // else if(typeID === '3'){
+            //
+            // }
+
+            if(sq === false){
+                //Добавляем объекты
+                let infObj = new InformationObject();
+                infObj.addrObj = 0;
+                infObj.attributeObj.push(Elements);
+                map.data.servers61850[index].itemsASDU[indexASDU].objects.push(infObj);
+            }
+            else if(sq === true){
+                //Добавляем элементы
+                if(count === 0){
+                    let infObj = new InformationObject();
+                    infObj.addrObj = 0;
+                    infObj.attributeObj.push(Elements);
+                    map.data.servers61850[index].itemsASDU[indexASDU].objects.push(infObj);
+                }
+                else{
+                    map.data.servers61850[index].itemsASDU[indexASDU].objects[0].attributeObj.push(Elements);
+                }
+            }
+        },
+
+
+        hasFirst: function() {
+            return this.current > 2;
+        },
+        hasLast: function() {
+            return this.rangeEnd < this.totalPages
+        },
+        hasPrev: function() {
+            console.log(this.current);
+            return this.current > 1;
+        },
+        hasNext: function() {
+            return this.current < this.totalPages
+        },
+        changePage: function(page) {
+            this.$emit('page-changed', page)
+        },
+        props: {
+            current: {
+                type: Number,
+                default: 0
+            },
+            total: {
+                type: Number,
+                default: 0
+            },
+            perPage: {
+                type: Number,
+                default: 9
+            },
+            pageRange: {
+                type: Number,
+                default: 2
+            }
+        },
+        watch: {
+            pages: function() {
+                let pages = [];
+
+                for(let i = this.rangeStart; i <= this.rangeEnd; i++) {
+                    pages.push(i)
+                }
+
+                return pages
+            },
+            rangeStart: function() {
+                let start = this.current - this.pageRange;
+
+                return (start > 0) ? start : 1
+            },
+            rangeEnd: function() {
+                let end = this.current + this.pageRange;
+
+                return (end < this.totalPages) ? end : this.totalPages
+            },
+            totalPages: function() {
+                return Math.ceil(this.total/this.perPage)
+            },
+            nextPage: function() {
+                return this.current + 1
+            },
+            prevPage: function() {
+                return this.current - 1
+            }
+        },
     }
 });
 
@@ -325,7 +847,8 @@ Vue.component('app-header_left', {
         return {
             map: map,
             open_view: open_view,
-            TreeView: TreeView
+            TreeView: TreeView,
+            ShowASDU: ShowASDU
         }
     },
     methods: {
@@ -342,6 +865,9 @@ Vue.component('app-header_left', {
             obj.title = "root";
             obj.type = "root";
             TreeView.push(obj);
+            //Добавляем структуру для оброботки отображения ASDU
+            let objASDU = new showASDU();
+            ShowASDU.push(objASDU);
             //Добавить новый сервер
 
 
