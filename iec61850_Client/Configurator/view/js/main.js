@@ -19,6 +19,7 @@ class server61850 {
     }
 }
 
+//ASDU
 class ASDU{
     constructor(){
         this.typeID = 0;
@@ -29,6 +30,11 @@ class ASDU{
         this.oa = 0;
         this.ca = 0;
         this.objects = [];
+        this.objectsInf = {
+            typeID: {},
+            sq: {},
+            use: false
+        }
     }
 }
 
@@ -41,8 +47,15 @@ class InformationObject{
 
 class InformationElement{
     constructor(){
-        this.typeElement = {};  //3 типа: штамп времени (3-byte/7-byte), значение, качество (time, value, quantity)
+        this.typeElement = {};  //Много различных типов//3 типа: штамп времени (3-byte/7-byte), значение, качество (time, value, quanlity)
         this.attributeElement = {};
+    }
+}
+
+class Elements{
+    constructor(){
+        this.typeID = {};
+        this.Elements = [];
     }
 }
 
@@ -724,36 +737,697 @@ Vue.component('app-iec61850',{
             let count =  map.data.servers61850[index].itemsASDU[indexASDU].objects.length;
             let Elements = [];
 
-            if(typeID === '1' || typeID === '3'){
-                let infElementTempQ = new InformationElement();
-                infElementTempQ.typeElement = 'quality';
-                infElementTempQ.attributeElement = {};
-                let infElementTempVal = new InformationObject();
-                infElementTempVal.typeElement = 'value';
-                infElementTempVal.attributeElement = {};
-                Elements.push(infElementTempQ);
-                Elements.push(infElementTempVal);
+            if(typeID.toString() === '0' || typeID === '22' || typeID === '23' || typeID === '24' || typeID === '25' || typeID === '26'
+                || typeID === '27' || typeID === '28' || typeID === '29' || typeID === '41' || typeID === '42' || typeID === '43' || typeID === '44'
+                || typeID === '52' || typeID === '53' || typeID === '54' || typeID === '55' || typeID === '56' || typeID === '57' || typeID === '58'
+                || typeID === '59' || typeID === '60' || typeID === '61' || typeID === '62' || typeID === '63' || typeID === '64' || typeID === '65'
+                || typeID === '66' || typeID === '67' || typeID === '68' || typeID === '69' || typeID === '71' || typeID === '72' || typeID === '73'
+                || typeID === '74' || typeID === '75' || typeID === '76' || typeID === '77' || typeID === '78' || typeID === '79' || typeID === '80'
+                || typeID === '81' || typeID === '82' || typeID === '83' || typeID === '84' || typeID === '85' || typeID === '86' || typeID === '87'
+                || typeID === '88' || typeID === '89' || typeID === '90' || typeID === '91' || typeID === '92' || typeID === '93' || typeID === '93'
+                || typeID === '94' || typeID === '95' || typeID === '96' || typeID === '97' || typeID === '98' || typeID === '99' || typeID === '107'
+                || typeID === '108' || typeID === '109' || typeID === '114' || typeID === '115' || typeID === '116' || typeID === '117' || typeID === '118'
+                || typeID === '119'){
+                alert('Структура типа не определена');
+                return;
             }
-            else if(typeID === '2' || typeID === '4'){
-                let infElementTempQ = new InformationElement();
-                infElementTempQ.typeElement = 'quality';
-                infElementTempQ.attributeElement = {};
-                let infElementTempVal = new InformationObject();
-                infElementTempVal.typeElement = 'value';
-                infElementTempVal.attributeElement = {};
-                let infElementTempTime = new InformationObject();
-                infElementTempTime.typeElement = 'time';
-                infElementTempTime.attributeElement = {};
-                Elements.push(infElementTempQ);
-                Elements.push(infElementTempVal);
+            else if(typeID === '1'){
+                //Формирование SIQ
+                let infElementTempSIQ = new InformationElement();
+                infElementTempSIQ.typeElement = 'SIQ';  //SIQ
+                infElementTempSIQ.attributeElement = '';
+                Elements.push(infElementTempSIQ);
+            }
+            else if(typeID === '2'){
+                //Формирование SIQ
+                let infElementTempSIQ = new InformationElement();
+                infElementTempSIQ.typeElement = 'SIQ';  //SIQ
+                infElementTempSIQ.attributeElement = '';
+                Elements.push(infElementTempSIQ);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
             }
-            // else if(typeID === '3'){
-            //
-            // }
+            else if(typeID === '3'){
+                //Формирование DIQ
+                let infElementTempDIQ = new InformationElement();
+                infElementTempDIQ.typeElement = 'DIQ';  //DIQ
+                infElementTempDIQ.attributeElement = '';
+                Elements.push(infElementTempDIQ);
+            }
+            else if(typeID === '4'){
+                //Формирование DIQ
+                let infElementTempDIQ = new InformationElement();
+                infElementTempDIQ.typeElement = 'DIQ';  //DIQ
+                infElementTempDIQ.attributeElement = '';
+                Elements.push(infElementTempDIQ);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if(typeID === '5'){
+                //Формирование VTI
+                let infElementTempVTI = new InformationElement();
+                infElementTempVTI.typeElement = 'VTI';  //VTI
+                infElementTempVTI.attributeElement = '';
+                Elements.push(infElementTempVTI);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+            }
+            else if(typeID === '6'){
+                //Формирование VTI
+                let infElementTempVTI = new InformationElement();
+                infElementTempVTI.typeElement = 'VTI';  //VTI
+                infElementTempVTI.attributeElement = '';
+                Elements.push(infElementTempVTI);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '7') {
+                //Формирование BSI
+                let infElementTempVTI = new InformationElement();
+                infElementTempVTI.typeElement = 'BSI';  //BSI
+                infElementTempVTI.attributeElement = '';
+                Elements.push(infElementTempVTI);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+            }
+            else if (typeID === '8') {
+                //Формирование BSI
+                let infElementTempBSI = new InformationElement();
+                infElementTempBSI.typeElement = 'BSI';  //BSI
+                infElementTempBSI.attributeElement = '';
+                Elements.push(infElementTempBSI);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '9') {
+                //Формирование NVA
+                let infElementTempNVA = new InformationElement();
+                infElementTempNVA.typeElement = 'NVA';  //NVA
+                infElementTempNVA.attributeElement = '';
+                Elements.push(infElementTempNVA);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+            }
+            else if (typeID === '10') {
+                //Формирование NVA
+                let infElementTempNVA = new InformationElement();
+                infElementTempNVA.typeElement = 'NVA';  //NVA
+                infElementTempNVA.attributeElement = '';
+                Elements.push(infElementTempNVA);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '11') {
+                //Формирование SVA
+                let infElementTempSVA = new InformationElement();
+                infElementTempSVA.typeElement = 'SVA';  //SVA
+                infElementTempSVA.attributeElement = '';
+                Elements.push(infElementTempSVA);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+            }
+            else if (typeID === '12') {
+                //Формирование SVA
+                let infElementTempSVA = new InformationElement();
+                infElementTempSVA.typeElement = 'SVA';  //SVA
+                infElementTempSVA.attributeElement = '';
+                Elements.push(infElementTempSVA);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '13') {
+                //Формирование IEEE STD 754
+                let infElementTempIEEE = new InformationElement();
+                infElementTempIEEE.typeElement = 'IEEE STD 754';  //IEEE STD 754
+                infElementTempIEEE.attributeElement = '';
+                Elements.push(infElementTempIEEE);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+            }
+            else if (typeID === '14') {
+                //Формирование IEEE STD 754
+                let infElementTempIEEE = new InformationElement();
+                infElementTempIEEE.typeElement = 'IEEE STD 754';  //IEEE STD 754
+                infElementTempIEEE.attributeElement = '';
+                Elements.push(infElementTempIEEE);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '15') {
+                //Формирование BCR
+                let infElementTempBCR = new InformationElement();
+                infElementTempBCR.typeElement = 'BCR';  //BCR
+                infElementTempBCR.attributeElement = '';
+                Elements.push(infElementTempBCR);
+            }
+            else if (typeID === '16') {
+                //Формирование BCR
+                let infElementTempBCR = new InformationElement();
+                infElementTempBCR.typeElement = 'BCR';  //BCR
+                infElementTempBCR.attributeElement = '';
+                Elements.push(infElementTempBCR);
+                //Формирование CP24Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '17') {
+                //Формирование SEP
+                let infElementTempSEP = new InformationElement();
+                infElementTempSEP.typeElement = 'SEP';  //SEP
+                infElementTempSEP.attributeElement = '';
+                Elements.push(infElementTempSEP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP24Time2a
+                let infElementTempTimeCP24 = new InformationElement();
+                infElementTempTimeCP24.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTimeCP24.attributeElement = '';
+                Elements.push(infElementTempTimeCP24);
+            }
+            else if (typeID === '18') {
+                //Формирование SPE
+                let infElementTempSPE = new InformationElement();
+                infElementTempSPE.typeElement = 'SPE';  //SPE
+                infElementTempSPE.attributeElement = '';
+                Elements.push(infElementTempSPE);
+                //Формирование QDP
+                let infElementTempQDP = new InformationElement();
+                infElementTempQDP.typeElement = 'QDP';  //CP24Time2a
+                infElementTempQDP.attributeElement = '';
+                Elements.push(infElementTempQDP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP24Time2a
+                let infElementTempTimeCP24 = new InformationElement();
+                infElementTempTimeCP24.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTimeCP24.attributeElement = '';
+                Elements.push(infElementTempTimeCP24);
+            }
+            else if(typeID === '19'){
+                //Формирование OCI
+                let infElementTempOCI = new InformationElement();
+                infElementTempOCI.typeElement = 'OCI';  //OCI
+                infElementTempOCI.attributeElement = '';
+                Elements.push(infElementTempOCI);
+                //Формирование QDP
+                let infElementTempQDP = new InformationElement();
+                infElementTempQDP.typeElement = 'QDP';  //CP24Time2a
+                infElementTempQDP.attributeElement = '';
+                Elements.push(infElementTempQDP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP24Time2a
+                let infElementTempTimeCP24 = new InformationElement();
+                infElementTempTimeCP24.typeElement = 'CP24Time2a';  //CP24Time2a
+                infElementTempTimeCP24.attributeElement = '';
+                Elements.push(infElementTempTimeCP24);
+            }
+            else if (typeID === '20'){
+                //Формирование SCD
+                let infElementTempSCD = new InformationElement();
+                infElementTempSCD.typeElement = 'SCD';  //SCD
+                infElementTempSCD.attributeElement = '';
+                Elements.push(infElementTempSCD);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+            }
+            else if (typeID === '21'){
+                //Формирование NVA
+                let infElementTempNVA = new InformationElement();
+                infElementTempNVA.typeElement = 'NVA';  //NVA
+                infElementTempNVA.attributeElement = '';
+                Elements.push(infElementTempNVA);
+            }
+            else if (typeID === '30'){
+                //Формирование SIQ
+                let infElementTempSIQ = new InformationElement();
+                infElementTempSIQ.typeElement = 'SIQ';  //SIQ
+                infElementTempSIQ.attributeElement = '';
+                Elements.push(infElementTempSIQ);
+                //Формирование CP56Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '31'){
+                //Формирование DIQ
+                let infElementTempDIQ = new InformationElement();
+                infElementTempDIQ.typeElement = 'DIQ';  //DIQ
+                infElementTempDIQ.attributeElement = '';
+                Elements.push(infElementTempDIQ);
+                //Формирование CP56Time2a
+                let infElementTempTime = new InformationElement();
+                infElementTempTime.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTime.attributeElement = '';
+                Elements.push(infElementTempTime);
+            }
+            else if (typeID === '32'){
+                //Формирование VTI
+                let infElementTempVTI = new InformationElement();
+                infElementTempVTI.typeElement = 'VTI';  //VTI
+                infElementTempVTI.attributeElement = '';
+                Elements.push(infElementTempVTI);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '33') {
+                //Формирование BSI
+                let infElementTempBSI = new InformationElement();
+                infElementTempBSI.typeElement = 'BSI';  //BSI
+                infElementTempBSI.attributeElement = '';
+                Elements.push(infElementTempBSI);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '34') {
+                //Формирование NVA
+                let infElementTempNVA = new InformationElement();
+                infElementTempNVA.typeElement = 'NVA';  //NVA
+                infElementTempNVA.attributeElement = '';
+                Elements.push(infElementTempNVA);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '35') {
+                //Формирование SVA
+                let infElementTempSVA = new InformationElement();
+                infElementTempSVA.typeElement = 'SVA';  //SVA
+                infElementTempSVA.attributeElement = '';
+                Elements.push(infElementTempSVA);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '36') {
+                //Формирование IEEE STD 754
+                let infElementTempIEEE = new InformationElement();
+                infElementTempIEEE.typeElement = 'IEEE STD 754';  //IEEE STD 754
+                infElementTempIEEE.attributeElement = '';
+                Elements.push(infElementTempIEEE);
+                //Формирование QDS
+                let infElementTempQDS = new InformationElement();
+                infElementTempQDS.typeElement = 'QDS';  //QDS
+                infElementTempQDS.attributeElement = '';
+                Elements.push(infElementTempQDS);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '37') {
+                //Формирование BCR
+                let infElementTempBCR = new InformationElement();
+                infElementTempBCR.typeElement = 'BCR';  //BCR
+                infElementTempBCR.attributeElement = '';
+                Elements.push(infElementTempBCR);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '38') {
+                //Формирование SEP
+                let infElementTempSEP = new InformationElement();
+                infElementTempSEP.typeElement = 'SEP';  //SEP
+                infElementTempSEP.attributeElement = '';
+                Elements.push(infElementTempSEP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '39') {
+                //Формирование SPE
+                let infElementTempSPE = new InformationElement();
+                infElementTempSPE.typeElement = 'SPE';  //SPE
+                infElementTempSPE.attributeElement = '';
+                Elements.push(infElementTempSPE);
+                //Формирование QDP
+                let infElementTempQDP = new InformationElement();
+                infElementTempQDP.typeElement = 'QDP';  //QDP
+                infElementTempQDP.attributeElement = '';
+                Elements.push(infElementTempQDP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '40') {
+                //Формирование OCI
+                let infElementTempOCI = new InformationElement();
+                infElementTempOCI.typeElement = 'OCI';  //OCI
+                infElementTempOCI.attributeElement = '';
+                Elements.push(infElementTempOCI);
+                //Формирование QDP
+                let infElementTempQDP = new InformationElement();
+                infElementTempQDP.typeElement = 'QDP';  //QDP
+                infElementTempQDP.attributeElement = '';
+                Elements.push(infElementTempQDP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '40') {
+                //Формирование OCI
+                let infElementTempOCI = new InformationElement();
+                infElementTempOCI.typeElement = 'OCI';  //OCI
+                infElementTempOCI.attributeElement = '';
+                Elements.push(infElementTempOCI);
+                //Формирование QDP
+                let infElementTempQDP = new InformationElement();
+                infElementTempQDP.typeElement = 'QDP';  //QDP
+                infElementTempQDP.attributeElement = '';
+                Elements.push(infElementTempQDP);
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '45') {
+                //Формирование SCO
+                let infElementTempSCO = new InformationElement();
+                infElementTempSCO.typeElement = 'SCO';  //SCO
+                infElementTempSCO.attributeElement = '';
+                Elements.push(infElementTempSCO);
+            }
+            else if (typeID === '46') {
+                //Формирование DCO
+                let infElementTempDCO = new InformationElement();
+                infElementTempDCO.typeElement = 'DCO';  //DCO
+                infElementTempDCO.attributeElement = '';
+                Elements.push(infElementTempDCO);
+            }
+            else if (typeID === '47') {
+                //Формирование RCO
+                let infElementTempRCO = new InformationElement();
+                infElementTempRCO.typeElement = 'RCO';  //RCO
+                infElementTempRCO.attributeElement = '';
+                Elements.push(infElementTempRCO);
+            }
+            else if (typeID === '48') {
+                //Формирование NVA
+                let infElementTempNVA = new InformationElement();
+                infElementTempNVA.typeElement = 'NVA';  //NVA
+                infElementTempNVA.attributeElement = '';
+                Elements.push(infElementTempNVA);
+                //Формирование QOS
+                let infElementTempQOS = new InformationElement();
+                infElementTempQOS.typeElement = 'QOS';  //QOS
+                infElementTempQOS.attributeElement = '';
+                Elements.push(infElementTempQOS);
+            }
+            else if (typeID === '49') {
+                //Формирование SVA
+                let infElementTempSVA = new InformationElement();
+                infElementTempSVA.typeElement = 'SVA';  //SVA
+                infElementTempSVA.attributeElement = '';
+                Elements.push(infElementTempSVA);
+                //Формирование QOS
+                let infElementTempQOS = new InformationElement();
+                infElementTempQOS.typeElement = 'QOS';  //QOS
+                infElementTempQOS.attributeElement = '';
+                Elements.push(infElementTempQOS);
+            }
+            else if (typeID === '50') {
+                //Формирование IEEE STD 754
+                let infElementTempIEEE = new InformationElement();
+                infElementTempIEEE.typeElement = 'IEEE STD 754';  //IEEE STD 754
+                infElementTempIEEE.attributeElement = '';
+                Elements.push(infElementTempIEEE);
+                //Формирование QOS
+                let infElementTempQOS = new InformationElement();
+                infElementTempQOS.typeElement = 'QOS';  //QOS
+                infElementTempQOS.attributeElement = '';
+                Elements.push(infElementTempQOS);
+            }
+            else if (typeID === '51') {
+                //Формирование BSI
+                let infElementTempBSI = new InformationElement();
+                infElementTempBSI.typeElement = 'BSI';  //BSI
+                infElementTempBSI.attributeElement = '';
+                Elements.push(infElementTempBSI);
+            }
+            else if (typeID === '70') {
+                //Формирование COI
+                let infElementTempCOI = new InformationElement();
+                infElementTempCOI.typeElement = 'COI';  //COI
+                infElementTempCOI.attributeElement = '';
+                Elements.push(infElementTempCOI);
+            }
+            else if (typeID === '70') {
+                //Формирование COI
+                let infElementTempCOI = new InformationElement();
+                infElementTempCOI.typeElement = 'COI';  //COI
+                infElementTempCOI.attributeElement = '';
+                Elements.push(infElementTempCOI);
+            }
+            else if (typeID === '100') {
+                //Формирование QOI
+                let infElementTempQOI = new InformationElement();
+                infElementTempQOI.typeElement = 'QOI';  //QOI
+                infElementTempQOI.attributeElement = '';
+                Elements.push(infElementTempQOI);
+            }
+            else if (typeID === '101') {
+                //Формирование QCC
+                let infElementTempQCC = new InformationElement();
+                infElementTempQCC.typeElement = 'QCC';  //QCC
+                infElementTempQCC.attributeElement = '';
+                Elements.push(infElementTempQCC);
+            }
+            else if (typeID === '103') {
+                //Формирование CP56Time2a
+                let infElementTempTimeCP56 = new InformationElement();
+                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
+                infElementTempTimeCP56.attributeElement = '';
+                Elements.push(infElementTempTimeCP56);
+            }
+            else if (typeID === '104') {
+                //Формирование FBP
+                let infElementTempFBP = new InformationElement();
+                infElementTempFBP.typeElement = 'FBP';  //FBP
+                infElementTempFBP.attributeElement = '';
+                Elements.push(infElementTempFBP);
+            }
+            else if (typeID === '105') {
+                //Формирование QRP
+                let infElementTempQRP = new InformationElement();
+                infElementTempQRP.typeElement = 'QRP';  //QRP
+                infElementTempQRP.attributeElement = '';
+                Elements.push(infElementTempQRP);
+            }
+            else if (typeID === '106') {
+                //Формирование CP16Time2a
+                let infElementTempTimeCP16 = new InformationElement();
+                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
+                infElementTempTimeCP16.attributeElement = '';
+                Elements.push(infElementTempTimeCP16);
+            }
+            else if (typeID === '110') {
+                //Формирование NVA
+                let infElementTempNVA = new InformationElement();
+                infElementTempNVA.typeElement = 'NVA';  //NVA
+                infElementTempNVA.attributeElement = '';
+                Elements.push(infElementTempNVA);
+                //Формирование QPM
+                let infElementTempQPM = new InformationElement();
+                infElementTempQPM.typeElement = 'QPM';  //QPM
+                infElementTempQPM.attributeElement = '';
+                Elements.push(infElementTempQPM);
+            }
+            else if (typeID === '111') {
+                //Формирование SVA
+                let infElementTempSVA = new InformationElement();
+                infElementTempSVA.typeElement = 'SVA';  //SVA
+                infElementTempSVA.attributeElement = '';
+                Elements.push(infElementTempSVA);
+                //Формирование QPM
+                let infElementTempQPM = new InformationElement();
+                infElementTempQPM.typeElement = 'QPM';  //QPM
+                infElementTempQPM.attributeElement = '';
+                Elements.push(infElementTempQPM);
+            }
+            else if (typeID === '112') {
+                //Формирование IEEE STD 754
+                let infElementTempIEEE = new InformationElement();
+                infElementTempIEEE.typeElement = 'IEEE STD 754';  //IEEE STD 754
+                infElementTempIEEE.attributeElement = '';
+                Elements.push(infElementTempIEEE);
+                //Формирование QPM
+                let infElementTempQPM = new InformationElement();
+                infElementTempQPM.typeElement = 'QPM';  //QPM
+                infElementTempQPM.attributeElement = '';
+                Elements.push(infElementTempQPM);
+            }
+            else if (typeID === '113') {
+                //Формирование QPA
+                let infElementTempQPA = new InformationElement();
+                infElementTempQPA.typeElement = 'QPA';  //QPA
+                infElementTempQPA.attributeElement = '';
+                Elements.push(infElementTempQPA);
+            }
+
+
+            //Проверка на соответствие формату
+            if(map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.use){
+                if(count !== 0){
+                    //Проверка на sq
+                    let sqTemp =  map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.sq;
+                    if(sq !== sqTemp){
+                        alert('Несответствие объектов и элементов');
+                        return;
+                    }
+                    //Проверка на элементы
+                    let typeIdTemp = map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.typeID;
+                    if(typeID !== typeIdTemp){
+                        alert('Несовпадение типа');
+                        return;
+                    }
+                }
+            }
 
             if(sq === false){
                 //Добавляем объекты
+                if(count === 0){
+                    //Заполнение информации о элементах
+                    map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.use = true;
+                    map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.typeID = typeID;
+                    map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.sq = sq;
+                }
                 let infObj = new InformationObject();
                 infObj.addrObj = 0;
                 infObj.attributeObj.push(Elements);
@@ -766,6 +1440,10 @@ Vue.component('app-iec61850',{
                     infObj.addrObj = 0;
                     infObj.attributeObj.push(Elements);
                     map.data.servers61850[index].itemsASDU[indexASDU].objects.push(infObj);
+                    //Заполнение информации о элементах
+                    map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.use = true;
+                    map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.typeID = typeID;
+                    map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.sq = sq;
                 }
                 else{
                     map.data.servers61850[index].itemsASDU[indexASDU].objects[0].attributeObj.push(Elements);

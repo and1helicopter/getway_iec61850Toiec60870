@@ -132,7 +132,7 @@
                         <button v-on:click="add_asdu(map.actual.index)">ADD</button>
                         <hr>
                         <!--Отображение выбронного ASDU c редактирвованием-->
-                        <div class="asdu" v-if="ShowASDU[map.actual.index].show" >
+                        <div class="asdu" v-if="ShowASDU[map.actual.index].show">
                             <div style="width: 100%; display: flex;">
                                 <div>Type ID:</div>
                                 <input type="number" min="0" max="127" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID"  v-on:change="cot_filter(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID)">
@@ -171,12 +171,12 @@
                                 <label>Количество:</label>
                                 <label v-model="quantity = map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects.length">{{quantity }}</label>
                             </div>
-                            <div>
+                            <div >
                                 <button v-on:click="add_obj_asdu(map.actual.index)">ADD</button>
                             </div>
-                            <div>
+                            <div v-model="showObj = true">
                                 <!--Объекты-->
-                                <div v-for="obj in map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects" style="margin: 2px; padding: 2px;  border: 1px solid rgba(0, 0, 0, 0.1); ">
+                                <div v-show="showObj" v-for="obj in map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects" style="margin: 2px; padding: 2px;  border: 1px solid rgba(0, 0, 0, 0.1); ">
                                     <input v-model="obj.addrObj">
                                     <!--Элементы-->
                                     <div v-for="elem in obj.attributeObj">
