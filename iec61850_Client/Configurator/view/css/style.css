@@ -395,6 +395,20 @@ select{
     margin: 1px;
 }
 
+#alertBox {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+#alert {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
 
 .menu_ld_open {
     content: url(../image/LD_open_32.png);

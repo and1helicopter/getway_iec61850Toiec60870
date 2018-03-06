@@ -773,6 +773,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if(typeID === '3'){
                 //Формирование DIQ
@@ -792,6 +797,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if(typeID === '5'){
                 //Формирование VTI
@@ -821,6 +831,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '7') {
                 //Формирование BSI
@@ -850,6 +865,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '9') {
                 //Формирование NVA
@@ -879,6 +899,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '11') {
                 //Формирование SVA
@@ -908,6 +933,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '13') {
                 //Формирование IEEE STD 754
@@ -937,6 +967,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '15') {
                 //Формирование BCR
@@ -956,6 +991,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '17') {
                 //Формирование SEP
@@ -995,6 +1035,16 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP24.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTimeCP24.attributeElement = '';
                 Elements.push(infElementTempTimeCP24);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if(typeID === '19'){
                 //Формирование OCI
@@ -1017,6 +1067,16 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP24.typeElement = 'CP24Time2a';  //CP24Time2a
                 infElementTempTimeCP24.attributeElement = '';
                 Elements.push(infElementTempTimeCP24);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '20'){
                 //Формирование SCD
@@ -1048,6 +1108,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '31'){
                 //Формирование DIQ
@@ -1060,6 +1125,11 @@ Vue.component('app-iec61850',{
                 infElementTempTime.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTime.attributeElement = '';
                 Elements.push(infElementTempTime);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '32'){
                 //Формирование VTI
@@ -1077,6 +1147,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '33') {
                 //Формирование BSI
@@ -1094,6 +1169,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '34') {
                 //Формирование NVA
@@ -1111,6 +1191,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '35') {
                 //Формирование SVA
@@ -1128,6 +1213,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '36') {
                 //Формирование IEEE STD 754
@@ -1145,6 +1235,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '37') {
                 //Формирование BCR
@@ -1157,6 +1252,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '38') {
                 //Формирование SEP
@@ -1174,6 +1274,11 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
             }
             else if (typeID === '39') {
                 //Формирование SPE
@@ -1196,6 +1301,16 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '40') {
                 //Формирование OCI
@@ -1218,28 +1333,16 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
-            }
-            else if (typeID === '40') {
-                //Формирование OCI
-                let infElementTempOCI = new InformationElement();
-                infElementTempOCI.typeElement = 'OCI';  //OCI
-                infElementTempOCI.attributeElement = '';
-                Elements.push(infElementTempOCI);
-                //Формирование QDP
-                let infElementTempQDP = new InformationElement();
-                infElementTempQDP.typeElement = 'QDP';  //QDP
-                infElementTempQDP.attributeElement = '';
-                Elements.push(infElementTempQDP);
-                //Формирование CP16Time2a
-                let infElementTempTimeCP16 = new InformationElement();
-                infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
-                infElementTempTimeCP16.attributeElement = '';
-                Elements.push(infElementTempTimeCP16);
-                //Формирование CP56Time2a
-                let infElementTempTimeCP56 = new InformationElement();
-                infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
-                infElementTempTimeCP56.attributeElement = '';
-                Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '45') {
                 //Формирование SCO
@@ -1247,6 +1350,16 @@ Vue.component('app-iec61850',{
                 infElementTempSCO.typeElement = 'SCO';  //SCO
                 infElementTempSCO.attributeElement = '';
                 Elements.push(infElementTempSCO);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '46') {
                 //Формирование DCO
@@ -1254,6 +1367,16 @@ Vue.component('app-iec61850',{
                 infElementTempDCO.typeElement = 'DCO';  //DCO
                 infElementTempDCO.attributeElement = '';
                 Elements.push(infElementTempDCO);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '47') {
                 //Формирование RCO
@@ -1261,6 +1384,16 @@ Vue.component('app-iec61850',{
                 infElementTempRCO.typeElement = 'RCO';  //RCO
                 infElementTempRCO.attributeElement = '';
                 Elements.push(infElementTempRCO);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '48') {
                 //Формирование NVA
@@ -1273,6 +1406,16 @@ Vue.component('app-iec61850',{
                 infElementTempQOS.typeElement = 'QOS';  //QOS
                 infElementTempQOS.attributeElement = '';
                 Elements.push(infElementTempQOS);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '49') {
                 //Формирование SVA
@@ -1285,6 +1428,16 @@ Vue.component('app-iec61850',{
                 infElementTempQOS.typeElement = 'QOS';  //QOS
                 infElementTempQOS.attributeElement = '';
                 Elements.push(infElementTempQOS);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '50') {
                 //Формирование IEEE STD 754
@@ -1297,6 +1450,16 @@ Vue.component('app-iec61850',{
                 infElementTempQOS.typeElement = 'QOS';  //QOS
                 infElementTempQOS.attributeElement = '';
                 Elements.push(infElementTempQOS);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '51') {
                 //Формирование BSI
@@ -1304,6 +1467,16 @@ Vue.component('app-iec61850',{
                 infElementTempBSI.typeElement = 'BSI';  //BSI
                 infElementTempBSI.attributeElement = '';
                 Elements.push(infElementTempBSI);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '70') {
                 //Формирование COI
@@ -1311,13 +1484,16 @@ Vue.component('app-iec61850',{
                 infElementTempCOI.typeElement = 'COI';  //COI
                 infElementTempCOI.attributeElement = '';
                 Elements.push(infElementTempCOI);
-            }
-            else if (typeID === '70') {
-                //Формирование COI
-                let infElementTempCOI = new InformationElement();
-                infElementTempCOI.typeElement = 'COI';  //COI
-                infElementTempCOI.attributeElement = '';
-                Elements.push(infElementTempCOI);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '100') {
                 //Формирование QOI
@@ -1325,6 +1501,16 @@ Vue.component('app-iec61850',{
                 infElementTempQOI.typeElement = 'QOI';  //QOI
                 infElementTempQOI.attributeElement = '';
                 Elements.push(infElementTempQOI);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '101') {
                 //Формирование QCC
@@ -1332,6 +1518,16 @@ Vue.component('app-iec61850',{
                 infElementTempQCC.typeElement = 'QCC';  //QCC
                 infElementTempQCC.attributeElement = '';
                 Elements.push(infElementTempQCC);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '103') {
                 //Формирование CP56Time2a
@@ -1339,6 +1535,16 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP56.typeElement = 'CP56Time2a';  //CP56Time2a
                 infElementTempTimeCP56.attributeElement = '';
                 Elements.push(infElementTempTimeCP56);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '104') {
                 //Формирование FBP
@@ -1346,6 +1552,16 @@ Vue.component('app-iec61850',{
                 infElementTempFBP.typeElement = 'FBP';  //FBP
                 infElementTempFBP.attributeElement = '';
                 Elements.push(infElementTempFBP);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '105') {
                 //Формирование QRP
@@ -1353,6 +1569,16 @@ Vue.component('app-iec61850',{
                 infElementTempQRP.typeElement = 'QRP';  //QRP
                 infElementTempQRP.attributeElement = '';
                 Elements.push(infElementTempQRP);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '106') {
                 //Формирование CP16Time2a
@@ -1360,6 +1586,16 @@ Vue.component('app-iec61850',{
                 infElementTempTimeCP16.typeElement = 'CP16Time2a';  //CP16Time2a
                 infElementTempTimeCP16.attributeElement = '';
                 Elements.push(infElementTempTimeCP16);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '110') {
                 //Формирование NVA
@@ -1372,6 +1608,16 @@ Vue.component('app-iec61850',{
                 infElementTempQPM.typeElement = 'QPM';  //QPM
                 infElementTempQPM.attributeElement = '';
                 Elements.push(infElementTempQPM);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '111') {
                 //Формирование SVA
@@ -1384,6 +1630,16 @@ Vue.component('app-iec61850',{
                 infElementTempQPM.typeElement = 'QPM';  //QPM
                 infElementTempQPM.attributeElement = '';
                 Elements.push(infElementTempQPM);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '112') {
                 //Формирование IEEE STD 754
@@ -1396,6 +1652,16 @@ Vue.component('app-iec61850',{
                 infElementTempQPM.typeElement = 'QPM';  //QPM
                 infElementTempQPM.attributeElement = '';
                 Elements.push(infElementTempQPM);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
             else if (typeID === '113') {
                 //Формирование QPA
@@ -1403,8 +1669,17 @@ Vue.component('app-iec61850',{
                 infElementTempQPA.typeElement = 'QPA';  //QPA
                 infElementTempQPA.attributeElement = '';
                 Elements.push(infElementTempQPA);
+                //Поддержка на элементы
+                if(sq === true){
+                    alert('Тип не поддерживает элементы');
+                    return;
+                }
+                //Одиночный объект
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length > 0){
+                    alert('Тип содержит только один объект');
+                    return;
+                }
             }
-
 
             //Проверка на соответствие формату
             if(map.data.servers61850[index].itemsASDU[indexASDU].objectsInf.use){
@@ -1489,7 +1764,7 @@ Vue.component('app-iec61850',{
             map.data.servers61850[index].itemsASDU.sort();
             this.ShowASDU[index].total -= 1;
             this.ShowASDU[index].show = false;
-            this.ShowASDU[indes].current = 0;
+            this.ShowASDU[index].current = 0;
             if(this.ShowASDU[index].total === 0) {
                 this.ShowASDU[index].show_left = false;
                 this.ShowASDU[index].show_right = false;
