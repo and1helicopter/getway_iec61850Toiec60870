@@ -24,6 +24,7 @@ class ASDU{
     constructor(){
         this.typeID = 0;
         this.sq = false;
+        this.length = 0;
         this.cot = 0;
         this.isNegative = false;
         this.isTest = false;
@@ -582,7 +583,8 @@ Vue.component('app-iec61850',{
         },
         cot_filter: function (value) {
             this.TempASDU_COT = [];
-            if (value === '0' || value === '41' || value === '42' || value === '43' || value === '44'
+            if (value === '0' || value === '22' || value === '23' || value === '24' || value === '25' || value === '26' || value === '27' || value === '28'
+                || value === '29' || value === '41' || value === '42' || value === '43' || value === '44'
                 || value === '52' || value === '53' || value === '54' || value === '55' || value === '56' || value === '57' || value === '58' || value === '59'
                 || value === '60' || value === '61' || value === '62' || value === '63' || value === '64' || value === '65' || value === '66' || value === '67'
                 || value === '68' || value === '69' || value === '71' || value === '72' || value === '73' || value === '74' || value === '75' || value === '76'
@@ -591,6 +593,7 @@ Vue.component('app-iec61850',{
                 || value === '93' || value === '94' || value === '95' || value === '96' || value === '97' || value === '98' || value === '99' || value === '107'
                 || value === '108' || value === '109' || value === '114' || value === '115' || value === '116' || value === '117' || value === '118' || value === '119'){
                 this.TempASDU_COT.push(map.options_iec60870.options_cot[0]);
+                return false;
             }
             else if(value === '1' || value === '3' || value === '5' || value === '20') {
                 for(let i = 0; i < map.options_iec60870.options_cot.length; i++){
@@ -729,12 +732,13 @@ Vue.component('app-iec61850',{
                     }
                 }
             }
+            return true;
         },
         add_obj_asdu: function (index) {
             let indexASDU = this.ShowASDU[index].current;
             let typeID = map.data.servers61850[index].itemsASDU[indexASDU].typeID;
             let sq = map.data.servers61850[index].itemsASDU[indexASDU].sq;
-            let count =  map.data.servers61850[index].itemsASDU[indexASDU].objects.length;
+            let count = map.data.servers61850[index].itemsASDU[indexASDU].objects.length;
             let Elements = [];
 
             if(typeID.toString() === '0' || typeID === '22' || typeID === '23' || typeID === '24' || typeID === '25' || typeID === '26'
@@ -1432,6 +1436,8 @@ Vue.component('app-iec61850',{
                 infObj.addrObj = 0;
                 infObj.attributeObj.push(Elements);
                 map.data.servers61850[index].itemsASDU[indexASDU].objects.push(infObj);
+                //Обновление length
+                map.data.servers61850[index].itemsASDU[indexASDU].length = map.data.servers61850[index].itemsASDU[indexASDU].objects.length;
             }
             else if(sq === true){
                 //Добавляем элементы
@@ -1448,10 +1454,34 @@ Vue.component('app-iec61850',{
                 else{
                     map.data.servers61850[index].itemsASDU[indexASDU].objects[0].attributeObj.push(Elements);
                 }
+                //Обновление length
+                map.data.servers61850[index].itemsASDU[indexASDU].length = map.data.servers61850[index].itemsASDU[indexASDU].objects[0].attributeObj.length;
             }
         },
-
-
+        remove_infObj: function (indexObj, indexElem) {
+            let index = map.actual.index;
+            let indexASDU = this.ShowASDU[index].current;
+            let sq = map.data.servers61850[index].itemsASDU[indexASDU].sq;
+            if(sq === true){
+                //Удаляем элементы
+                if(map.data.servers61850[index].itemsASDU[indexASDU].length === 1){
+                    map.data.servers61850[index].itemsASDU[indexASDU].objects.splice(0,1);
+                    //Обновление length
+                    map.data.servers61850[index].itemsASDU[indexASDU].length = 0;
+                }
+                else{
+                    map.data.servers61850[index].itemsASDU[indexASDU].objects[0].attributeObj.splice(indexElem,1);
+                    //Обновление length
+                    map.data.servers61850[index].itemsASDU[indexASDU].length = map.data.servers61850[index].itemsASDU[indexASDU].objects[0].attributeObj.length;
+                }
+            }
+            else{
+                //Удаляем объекты
+                map.data.servers61850[index].itemsASDU[indexASDU].objects.splice(indexObj,1);
+                //Обновление length
+                map.data.servers61850[index].itemsASDU[indexASDU].length = map.data.servers61850[index].itemsASDU[indexASDU].objects.length;
+            }
+        },
         hasFirst: function() {
             return this.current > 2;
         },

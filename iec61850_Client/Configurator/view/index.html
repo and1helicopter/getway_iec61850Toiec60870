@@ -135,7 +135,7 @@
                         <div class="asdu" v-if="ShowASDU[map.actual.index].show">
                             <div style="width: 100%; display: flex;">
                                 <div>Type ID:</div>
-                                <input type="number" min="0" max="127" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID"  v-on:change="cot_filter(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID)">
+                                <input type="number" min="0" max="127" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID"  v-on:change="showObj = cot_filter(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID)">
                                 <label  v-model="value = show_text(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID, map.options_iec60870.options_typeID)">{{value.strEN}}({{value.strRU}})</label>
                             </div>
                             <div style="width: 100%;  display: flex;">
@@ -169,22 +169,29 @@
                             </div>
                             <div style="width: 100%;  display: flex;">
                                 <label>Количество:</label>
-                                <label v-model="quantity = map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects.length">{{quantity }}</label>
+                                <label v-model="quantity = map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].length">{{quantity }}</label>
                             </div>
                             <div >
-                                <button v-on:click="add_obj_asdu(map.actual.index)">ADD</button>
+                                <button v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">ADD</button>
                             </div>
-                            <div v-model="showObj = true">
+                            <div>
+
                                 <!--Объекты-->
-                                <div v-show="showObj" v-for="obj in map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects" style="margin: 2px; padding: 2px;  border: 1px solid rgba(0, 0, 0, 0.1); ">
+                                <div v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID === map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID" v-for="(obj, indexObj) in map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects" style="margin: 2px; padding: 2px;  border: 1px solid rgba(0, 0, 0, 0.1); ">
                                     <input v-model="obj.addrObj">
                                     <!--Элементы-->
-                                    <div v-for="elem in obj.attributeObj">
+                                    <div v-for="(elem, indexElem) in obj.attributeObj">
                                         <div v-for="item in elem">
                                             <label>{{item.typeElement}}</label>
+                                            <!--Выпадающий список-->
                                             <input v-model="item.attributeElement">
                                         </div>
+                                        <button v-on:click="remove_infObj(indexObj, indexElem)">remove</button>
                                     </div>
+                                </div>
+                                <!--Проверка на соответсвтие типу-->
+                                <div v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID !== map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID">
+                                    <label v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].length > 0">В ASDU содержаться оюъекты типа {{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID}}</label>
                                 </div>
                             </div>
                         </div>
