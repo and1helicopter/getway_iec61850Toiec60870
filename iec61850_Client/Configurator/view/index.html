@@ -9,7 +9,7 @@
 
     <template id="iec61850">
         <transition name="fade">
-            <div class="iec61850">
+            <div id="p_content" class="iec61850">
                 <div  class="sidebars">
                     <div class="iec61850_left">
                         <h3>Конфигрутор соединения IEC61850:</h3>
@@ -116,20 +116,31 @@
                         </div>
                     </div>
                 </div>
-                <div style="background-color: #9f9f9f; width: 100%; height: 100%;"></div>
+                <!--Разделитель-->
+                <!--style="background-color: #9f9f9f; width: 1px; height: 100%;"-->
+                <div style="height: 100%; padding-left: 2px;">
+                    <button id="left_button" style="width: 6px; height: 100%; border: 1px; padding: 0; visibility: visible; " v-on:click="change_content(map.actual.index); show_content('left_button');"></button>
+                </div>
                 <!--ASDU-->
                 <div class="sidebars">
                     <h3>Конфигрутор ASDU:</h3>
                     <!--Отображение всех ASDU c выбором и добавлением-->
-                    <div>
+                    <div style="padding: 3px">
                         <div class="pagination">
-                            <button class="pagination_left">Left</button>
-                            <div class="pagination_mid" v-for="(itemASDU, indexASDU) in map.data.servers61850[map.actual.index].itemsASDU">
-                                <button v-on:click="change_current(indexASDU, map.actual.index)">{{indexASDU + 1}}</button>
+                            <button class="pagination_left">
+                                <img src="image/left_32.png">
+                            </button>
+                            <div v-for="(itemASDU, indexASDU) in map.data.servers61850[map.actual.index].itemsASDU">
+                                <button  class="button" v-on:click="change_current(indexASDU, map.actual.index)">{{indexASDU + 1}}</button>
                             </div>
-                            <button class="pagination_right">Right</button>
+                            <button class="pagination_right">
+                                <img src="image/right_32.png">
+                            </button>
                         </div>
-                        <button v-on:click="add_asdu(map.actual.index)">ADD</button>
+                        <button class="button" v-on:click="add_asdu(map.actual.index)">
+                            <span class="tooltiptext">Добавить ASDU</span>
+                            <img src="image/add_32.png">
+                        </button>
                         <hr>
                         <!--Отображение выбронного ASDU c редактирвованием-->
                         <div class="asdu" v-if="ShowASDU[map.actual.index].show">
@@ -172,8 +183,14 @@
                                 <label v-model="quantity = map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].length">{{quantity }}</label>
                             </div>
                             <div >
-                                <button v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">ADD</button>
-                                <button v-on:click="remove_ASDU()">remove</button>
+                                <button class="button" v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">
+                                    <span class="tooltiptext">Добавить объекты или элементы в ASDU</span>
+                                    <label>add</label>
+                                </button>
+                                <button class="button" v-on:click="remove_ASDU()">
+                                    <span class="tooltiptext">Удалить ASDU</span>
+                                    <label>rem</label>
+                                </button>
                             </div>
                             <div>
 
@@ -197,6 +214,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <!--Разделитель-->
+                <!--style="background-color: #9f9f9f; width: 1px; height: 100%;"-->
+                <div style="height: 100%; padding-left: 2px;">
+                    <button id="right_button" style="width: 6px; height: 100%; padding: 0; border: 1px;  visibility: hidden;" v-on:click="change_content(); show_content('right_button');"></button>
                 </div>
             </div>
         </transition>
@@ -244,7 +266,8 @@
                 Хост: {{data.host}}<br>Порт: {{data.port}}
             </mr1>
             <mr2>
-                <button title="Редактировать" class="button_right" v-on:click="show_on">
+                <button class="button" v-on:click="show_on()">
+                    <span class="tooltiptext">Редактировать</span>
                     <img src="image/icons8-edit-32.png">
                 </button>
             </mr2>

@@ -1769,7 +1769,26 @@ Vue.component('app-iec61850',{
                 this.ShowASDU[index].show_left = false;
                 this.ShowASDU[index].show_right = false;
             }
+        },
+        change_content: function (index) {
+            if( document.getElementById("p_content").style["grid-template-columns"] === "0fr 0px 1fr 8px 1fr"){
+                document.getElementById("p_content").style["grid-template-columns"] = "1fr 8px 1fr 0px 0fr";
+            }
+            else{
+                document.getElementById("p_content").style["grid-template-columns"] = "0fr 0px 1fr 8px 1fr";
+            }
+        },
+        show_content: function (id) {
+            if(id === 'left_button'){
+                document.getElementById("left_button").style['visibility'] = 'hidden';
+                document.getElementById("right_button").style['visibility'] = 'visible';
+            }
+            else if(id === 'right_button'){
+                document.getElementById("left_button").style['visibility'] = 'visible';
+                document.getElementById("right_button").style['visibility'] = 'hidden';
+            }
         }
+
     }
 });
 
