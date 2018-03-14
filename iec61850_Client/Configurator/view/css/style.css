@@ -440,6 +440,43 @@ select{
     width: 60%;
 }
 
+/* внешние границы таблицы серого цвета толщиной 1px */
+table{
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    width: 100%;
+    margin: 5px;
+    border-collapse: collapse;
+}
+
+.table_cell{
+    margin: 0;
+}
+/* границы ячеек первого ряда таблицы */
+/*th {border: 1px solid grey;}*/
+/* границы ячеек тела таблицы */
+td{
+     border: 1px solid rgba(0, 0, 0, 0.2);
+     align-content: center;
+     text-align: center;
+}
+
+.td_cell{
+    border: none;
+    text-align: justify;
+}
+
+.td_content{
+    align-content: center;
+    text-align: center;
+    width: 50%;
+}
+
+.td_comment{
+    border: none;
+    width: 50%;
+    text-align: justify;
+}
+
 /*ASDU*/
 .asdu{
     border: 1px solid rgba(0, 0, 0, 0.1);
