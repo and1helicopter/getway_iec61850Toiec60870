@@ -390,6 +390,9 @@ open_view = false;
 TreeView = [];
 ShowASDU = [];
 TempASDU_COT = [];
+TempObjInf = ['test','lol','ururur','hahha','xcvs'];
+
+Vue.component('v-select', VueSelect.VueSelect)
 
 Vue.component('app-iec61850',{
     template: '#iec61850',
@@ -399,7 +402,8 @@ Vue.component('app-iec61850',{
             open_view: open_view,
             TreeView: TreeView,
             ShowASDU: ShowASDU,
-            TempASDU_COT: TempASDU_COT
+            TempASDU_COT: TempASDU_COT,
+            TempObjInf: TempObjInf
         }
     },
     methods: {
@@ -1787,6 +1791,201 @@ Vue.component('app-iec61850',{
                 document.getElementById("left_button").style['visibility'] = 'visible';
                 document.getElementById("right_button").style['visibility'] = 'hidden';
             }
+        },
+        optionsInfObj: function (typeObj) {
+            let index = map.actual.index;
+            let indexASDU = this.ShowASDU[index].current;
+            let tempObject61850 = map.data.servers61850[index].items61850;
+            let tempInfObj = [];
+
+            if(typeObj === 'SIQ'){
+                for(let i = 0; i < tempObject61850.length; i++) {
+                    if(tempObject61850[i].typeFC === 'ST'){
+                        if(tempObject61850[i].typeMMS === 'MMS_BOOLEAN'){
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'CP24Time2a'){
+                for(let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'MX') {
+                        if(tempObject61850[i].typeMMS === 'MMS_UTC_TIME'){
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj ===  'DIQ'){
+                for(let i = 0; i < tempObject61850.length; i++) {
+                    if(tempObject61850[i].typeFC === 'ST'){
+                        if(tempObject61850[i].typeMMS === 'MMS_BIT_STRING'){
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if (typeObj === 'VTI') {
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    if (tempObject61850[i].typeFC === 'ST') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BIT_STRING') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if (typeObj === 'QDS'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj = tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'MX') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BIT_STRING') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if (typeObj === 'BSI'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj = tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'MX') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BIT_STRING') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'NVA'){
+
+            }
+            else if(typeObj === 'SVA'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj = tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'CF' || tempObj === 'CO' || tempObj === 'SV' || tempObj === 'SG' || tempObj === 'SE' || tempObj === 'DC' ) {
+                        if (tempObject61850[i].typeMMS === 'MMS_INTEGER') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'IEEE STD 754'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'MX' || tempObj === 'SV' || tempObj === 'CF' || tempObj === 'SP' || tempObj === 'SG') {
+                        if (tempObject61850[i].typeMMS === 'MMS_FLOAT') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'BCR'){
+
+            }
+            else if(typeObj === 'SEP'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'MX') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BIT_STRING') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'CP16Time2a'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'MX') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BINARY_TIME') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'SPE'){
+
+            }
+            else if(typeObj === 'OCI'){
+
+            }
+            else if(typeObj === 'SCD'){
+
+            }
+            else if(typeObj === 'CP56Time2a'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'ST' || tempObj === 'MX') {
+                        if (tempObject61850[i].typeMMS === 'MMS_UTC_TIME') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'QDP'){
+
+            }
+            else if(typeObj === 'SCO'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'CO') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BOOLEAN') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'DCO'){
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj =  tempObject61850[i].typeFC;
+                    if (tempObj === 'CO') {
+                        if (tempObject61850[i].typeMMS === 'MMS_BIT_STRING') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
+            }
+            else if(typeObj === 'RCO'){
+
+            }
+            else if(typeObj === 'QOS'){
+
+            }
+            else if(typeObj === 'COI'){
+
+            }
+            else if(typeObj === 'QOI'){
+
+            }
+            else if(typeObj === 'QCC'){
+
+            }
+            else if(typeObj === 'FBP'){
+
+            }
+            else if(typeObj === 'QRP'){
+
+            }
+            else if(typeObj === 'QRP'){
+
+            }
+            else if(typeObj === 'QPM'){
+
+            }
+            else if(typeObj === 'QPA'){
+
+            }
+
+            return tempInfObj;
         }
 
     }
@@ -1877,7 +2076,7 @@ new Vue({
     el: '#app',
     data:{
         show60870: false,
-        show61850: false
+        show61850: false,
     },
     methods:{
         change_show60870: function (value) {

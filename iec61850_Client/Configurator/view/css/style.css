@@ -253,9 +253,9 @@ input{
     border: 1px solid #ebebeb;
 }
 
-div{
-    margin-bottom: 1px;
-}
+/*div{*/
+    /*margin-bottom: 1px;*/
+/*}*/
 
 .input_no_border{
     font-family: Consolas, sans-serif;
@@ -363,15 +363,16 @@ h3{
 .attr_item{
     padding-left: 50px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    min-height: 16px;
+    min-height: 18px;
 }
 
 .button_menu{
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
     padding: 0;
     background: none;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
 }
 
 ht {
@@ -463,6 +464,8 @@ td{
 .td_cell{
     border: none;
     text-align: justify;
+    padding: 0;
+    max-height: 18px;
 }
 
 .td_content{
@@ -502,11 +505,4 @@ td{
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
     opacity: 0
 }
-
-
-
-
-
-
-
 

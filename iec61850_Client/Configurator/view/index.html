@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/vselect.css">
 </head>
 <body >
 
@@ -50,32 +51,34 @@
                                         <div class="attr_item" v-on:click="itemAttr.show =!itemAttr.show" >
                                             <!--Отображение-->
                                             <div v-show="!itemAttr.edit">
-                                                <div>{{itemAttr.attr.path}}
-                                                    <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 7px; position: absolute;" v-on:click="if(!map.start.run[map.actual.index])itemAttr.edit = !itemAttr.edit;">
+                                                <div style="height: 18px;">
+                                                    <label style="height: 18px;">{{itemAttr.attr.path}}</label>
+                                                    <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 1px; position: absolute;" v-on:click="if(!map.start.run[map.actual.index])itemAttr.edit = !itemAttr.edit;">
                                                         <img src="image/edit.png">
                                                     </button>
                                                 </div>
-                                                <div v-show="itemAttr.show">FC: {{itemAttr.attr.typeFC}}&nbsp;&nbsp;&nbsp;&nbsp; MMS: {{itemAttr.attr.typeMMS}}
-                                                    <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 7px; position: absolute;" v-on:click="remove_item_iec61850(itemAttr, indexAttr, indexDO, indexLN, indexLD)">
+                                                <div style="height: 18px;" v-show="itemAttr.show">
+                                                    <label style="height: 18px;">FC: {{itemAttr.attr.typeFC}}&nbsp;&nbsp;&nbsp;&nbsp; MMS: {{itemAttr.attr.typeMMS}}</label>
+                                                    <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 1px; position: absolute;" v-on:click="remove_item_iec61850(itemAttr, indexAttr, indexDO, indexLN, indexLD)">
                                                         <img src="image/remove.png">
                                                     </button>
                                                 </div>
                                             </div>
                                             <!--Редактирование-->
                                             <div v-show="itemAttr.edit">
-                                                <div v-show="!map.start.run[map.actual.index]">
-                                                    <input v-model="itemAttr.attr.path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
-                                                    <button class="button_menu" style="right: 7px; position: absolute;" v-on:click="if(!map.start.run[map.actual.index])itemAttr.edit = !itemAttr.edit;">
+                                                <div style="height: 18px;" v-show="!map.start.run[map.actual.index]">
+                                                    <input v-model="itemAttr.attr.path" style="width: 100%; margin-top: 0; margin-left: -1px;">
+                                                    <button class="button_menu" style="right: 0; position: absolute;" v-on:click="if(!map.start.run[map.actual.index])itemAttr.edit = !itemAttr.edit;">
                                                         <img src="image/edit.png">
                                                     </button>
                                                 </div>
-                                                <div>
+                                                <div style="height: 18px;">
                                                     <label>FC: </label>
-                                                    <select v-model="itemAttr.attr.typeFC">
+                                                    <select style="height: 18px;" v-model="itemAttr.attr.typeFC">
                                                         <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
                                                     </select>
                                                     <label style="padding-left: 30px">MMS: </label>
-                                                    <select v-model="itemAttr.attr.typeMMS">
+                                                    <select style="height: 18px;" v-model="itemAttr.attr.typeMMS">
                                                         <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
                                                     </select>
                                                 </div>
@@ -93,20 +96,20 @@
                                 <img v-if="!map.actual.add_item61850[map.actual.index].show" src="image/add.png" v-on:click="add_show_new_item">
                                 <img v-else src="image/clear.png" v-on:click="close_mew_item" >
                             </button>
-                            <div style="padding-left: 16px">
-                                <input style="width: 100%; margin-top: -1px; margin-left: -1px;" v-show="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
+                            <div style="padding-left: 18px">
+                                <input style="width: 100%;  margin-bottom: 1px; margin-left: -1px;" v-show="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
                             </div>
                         </div>
-                        <div style="padding-left: 16px" v-show="map.actual.add_item61850[map.actual.index].show">
+                        <div style="padding-left: 18px" v-show="map.actual.add_item61850[map.actual.index].show">
                             <label>FC: </label>
-                            <select v-model="map.actual.add_item61850[map.actual.index].typeFC">
+                            <select style="height: 18px;" v-model="map.actual.add_item61850[map.actual.index].typeFC">
                                 <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
                             </select>
                             <label style="padding-left: 30px">MMS: </label>
-                            <select v-model="map.actual.add_item61850[map.actual.index].typeMMS">
+                            <select style="height: 18px;" v-model="map.actual.add_item61850[map.actual.index].typeMMS">
                                 <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
                             </select>
-                            <button class="button_menu" style="right: 7px; position: absolute;  margin-bottom: 0;" v-show="map.actual.add_item61850[map.actual.index].show" v-on:click="add_new_item(
+                            <button class="button_menu" style="right: 1px; position: absolute;  margin-bottom: 0;" v-show="map.actual.add_item61850[map.actual.index].show" v-on:click="add_new_item(
                                 map.actual.add_item61850[map.actual.index].path,
                                 map.actual.add_item61850[map.actual.index].typeFC,
                                 map.actual.add_item61850[map.actual.index].typeMMS,
@@ -250,38 +253,33 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div >
-                                <button class="button" v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">
-                                    <span class="tooltiptext">Добавить объекты или элементы в ASDU</span>
-                                    <label>add</label>
-                                </button>
-
-                            </div>
                             <div>
                                 <!--Объекты-->
                                 <div v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID === map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID" v-for="(obj, indexObj) in map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objects" style="margin: 2px; padding: 2px;  border: 1px solid rgba(0, 0, 0, 0.1); ">
-
-                                    <table class="table_cell">
-                                        <tr>
+                                    <table class="table_cell" style="margin-bottom: 1px">
+                                        <tr style="padding: 0;  max-height: 18px;">
                                             <td class="td_cell" style="width: 20%">
                                                 <label>Адрес: </label>
                                             </td>
-                                            <td class="td_cell" style="width: 70%">
+                                            <td class="td_cell" style="width: 75%">
                                                 <input style="width: 100%" v-model="obj.addrObj" type="number" min="0" max="16777215">
                                             </td>
-                                            <td class="td_cell" style="width: 1px0%"></td>
+                                            <td class="td_cell" style="width: 5%"></td>
                                         </tr>
                                     </table>
                                     <table v-for="(elem, indexElem) in obj.attributeObj" class="table_cell">
-                                        <tr v-for="(item, indexItem) in elem">
+                                        <tr style="padding: 0; max-height: 18px;" v-for="(item, indexItem) in elem">
                                             <td class="td_cell" style="width: 20%">
                                                 <label>{{item.typeElement}}: </label>
                                             </td>
-                                            <td class="td_cell" style="width: 70%">
-                                                <input style="width: 100%" v-model="item.attributeElement">
+                                            <td class="td_cell" style="width: 75%">
+                                                <!--<input style="width: 100%" v-model="item.attributeElement">-->
+                                                <v-select :options="optionsInfObj(item.typeElement)"></v-select>
                                             </td>
-                                            <td class="td_cell" style="width: 10%">
-                                                <button v-if="indexItem === elem.length - 1" v-on:click="remove_infObj(indexObj, indexElem)">rem</button>
+                                            <td class="td_cell" style="width: 5%; ">
+                                                <button class="button_menu" v-if="indexItem === elem.length - 1" style="border: none; padding-top: 1px;" v-on:click="remove_infObj(indexObj, indexElem)">
+                                                    <img src="image/remove.png">
+                                                </button>
                                             </td>
                                         </tr>
                                     </table>
@@ -290,6 +288,12 @@
                                 <div v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID !== map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID">
                                     <label v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].length > 0">В ASDU содержаться оюъекты типа {{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID}}</label>
                                 </div>
+                            </div>
+                            <div >
+                                <button class="button" v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">
+                                    <span class="tooltiptext">Добавить объекты или элементы в ASDU</span>
+                                    <label>add</label>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -426,6 +430,7 @@
             </div>
         </div>
     </div>
+    <script src="js/vue-select.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/main.js"></script>
 </body>
