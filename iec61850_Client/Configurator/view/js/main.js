@@ -367,15 +367,6 @@ class openShow61850{
     }
 }
 
-class treeView{
-    constructor(){
-        this.title = {};
-        this.node = [];
-        this.show = {};
-        this.type = {};
-    }
-}
-
 class showASDU{
     constructor(){
         this.current = 0;
@@ -386,13 +377,21 @@ class showASDU{
     }
 }
 
+class showList{
+    constructor(){
+        this.current = 0;
+        this.show = false;
+    }
+}
+
 open_view = false;
-TreeView = [];
+
+ShowList = [];
 ShowASDU = [];
 TempASDU_COT = [];
-TempObjInf = ['test','lol','ururur','hahha','xcvs'];
+TempObjInf = [];
 
-Vue.component('v-select', VueSelect.VueSelect)
+Vue.component('v-select', VueSelect.VueSelect);
 
 Vue.component('app-iec61850',{
     template: '#iec61850',
@@ -400,7 +399,7 @@ Vue.component('app-iec61850',{
         return {
             map: map,
             open_view: open_view,
-            TreeView: TreeView,
+            ShowList: ShowList,
             ShowASDU: ShowASDU,
             TempASDU_COT: TempASDU_COT,
             TempObjInf: TempObjInf
@@ -422,7 +421,6 @@ Vue.component('app-iec61850',{
                     //Сервер не запустился
                     return;
                 }
-                TreeView[index].node = [];
                 map.actual.add_item61850[index].edit_item_iec61850 = [];
                 map.data.servers61850[index].items61850 = [];
                 for(let i=0; i < temp.length; i++)
@@ -451,7 +449,8 @@ Vue.component('app-iec61850',{
             {
                 map.start.run[index] = false;
                 map.start.run.splice(index, 1);
-                TreeView.splice(index, 1);
+                ShowList.splice(index, 1);
+                ShowASDU.splice(index, 1);
                 map.show.show61850[index] = false;
                 this.$emit('showstatuschange', map.show.show61850[index]);
                 map.show.show61850.splice(index, 1);
@@ -473,63 +472,8 @@ Vue.component('app-iec61850',{
                 typeFC ,
                 typeMMS);
 
-            function do_TreeView(index, obj, strLD, strLN) {
-                let strDO = obj.path.split('/')[1].split('.')[1];
-                //Проверка на существование DO
-                if(!TreeView[index].node.find(ld_node => ld_node.title === strLD)
-                        .node.find(ln_node => ln_node.title === strLN).node.find(doo => doo.title === strDO)) {
-                    let objDO = new treeView();
-                    objDO.show = false;
-                    objDO.title = strDO;
-                    objDO.type = "do";
-                    TreeView[index].node.find(ld_node => ld_node.title === strLD)
-                        .node.find(ln_node => ln_node.title === strLN).node.push(objDO);
-                }
-                //Кладем указатель на орбъект
-                map.data.servers61850[index].items61850.push(obj);
-                let index_obj = map.data.servers61850[index].items61850.indexOf(obj);
-
-                TreeView[index].node.find(ld_node => ld_node.title === strLD)
-                    .node.find(ln_node => ln_node.title === strLN)
-                    .node.find(do_node => do_node.title === strDO)
-                    .node.push({attr: map.data.servers61850[index].items61850[index_obj], show: false, edit: false});
-             }
-
-            function ln_TreeView(index, obj, strLD) {
-                let strLN = obj.path.split('/')[1].split('.')[0];
-                //Проверка на существование LN
-                if(!TreeView[index].node.find(ld_node => ld_node.title === strLD).node.find(ln => ln.title === strLN)){
-                    let objLN = new treeView();
-                    objLN.show = false;
-                    objLN.title = strLN;
-                    objLN.type = "ln";
-                    TreeView[index].node.find(ld_node => ld_node.title === strLD).node.push(objLN);
-                }
-                do_TreeView(index, obj, strLD, strLN);
-            }
-
-            function ld_TreeView(index, obj) {
-                if(TreeView[index].type === "root"){
-                    //Достаем имя LD
-                    let strLD = obj.path.split('/')[0];
-                    //Проверка на существование LD
-                    if(!TreeView[index].node.find(ld => ld.title === strLD)){
-                        let objLD = new treeView();
-                        objLD.show = false;
-                        objLD.title = strLD;
-                        objLD.type = "ld";
-                        TreeView[index].node.push(objLD);
-                    }
-                    ln_TreeView(index, obj, strLD);
-                }
-            }
-
-            //Проверка на существование объекта
-            if(!map.data.servers61850[index].items61850.includes(obj))
-            {
-                //Добовляем элемент в дерево отображения
-                ld_TreeView(index, obj);
-            }
+            //Добовляем элемент в дерево отображения
+            map.data.servers61850[index].items61850.push(obj);
             //Скрыть редактор элемента
             map.actual.add_item61850[index].show = false;
         },
@@ -539,28 +483,37 @@ Vue.component('app-iec61850',{
         edit_item_iec61850: function (index) {
             map.actual.add_item61850[map.actual.index].edit_item_iec61850[index] = !  map.actual.add_item61850[map.actual.index].edit_item_iec61850[index];
             map.data.servers61850[map.actual.index].items61850.sort();
-            console.log(map.actual.add_item61850[ map.actual.index].edit_item_iec61850[index]);
         },
-        remove_item_iec61850: function(itemAttr, indexAttr, indexDO, indexLN, indexLD){
+        remove_item_iec61850: function(itemAttr, indexAttr){
             let index = map.actual.index;
             //Удаляем объект из списка элементов сервера
-            let obj = TreeView[index].node[indexLD].node[indexLN].node[indexDO].node[indexAttr].attr;
-            let indexItem = map.data.servers61850[index].items61850.indexOf(obj);
+            let indexItem = map.data.servers61850[index].items61850.indexOf(itemAttr);
             map.data.servers61850[index].items61850.splice(indexItem, 1);
             map.data.servers61850[index].items61850.sort();
-
-            //Удаляем элемент из отображения
-            TreeView[index].node[indexLD].node[indexLN].node[indexDO].node.splice(indexAttr, 1);
-            if(TreeView[index].node[indexLD].node[indexLN].node[indexDO].node.length === 0){
-                TreeView[index].node[indexLD].node[indexLN].node.splice(indexDO, 1);
-                if(TreeView[index].node[indexLD].node[indexLN].node.length === 0){
-                    TreeView[index].node[indexLD].node.splice(indexLN, 1);
-                    if(TreeView[index].node[indexLD].node.length === 0){
-                        TreeView[index].node.splice(indexLD, 1);
-                    }
+        },
+        show_list: function (current) {
+            let index = map.actual.index;
+                if(ShowList[index].show){
+                if(ShowList[index].current === current){
+                    ShowList[index].show = false;
+                }
+                else{
+                    ShowList[index].current = current;
                 }
             }
-
+            else{
+                if(ShowList[index].current === current){
+                    ShowList[index].show = true;
+                }
+                else{
+                    ShowList[index].current = current;
+                    ShowList[index].show = true;
+                }
+            }
+        },
+        show_attr: function (indexAttr) {
+            let index = map.actual.index;
+            return !!(indexAttr === ShowList[index].current && ShowList[index].show);
         },
         //функции для ASDU
         add_asdu: function (index) {
@@ -1997,8 +1950,8 @@ Vue.component('app-header_left', {
         return {
             map: map,
             open_view: open_view,
-            TreeView: TreeView,
-            ShowASDU: ShowASDU
+            ShowASDU: ShowASDU,
+            ShowList: ShowList
         }
     },
     methods: {
@@ -2010,14 +1963,11 @@ Vue.component('app-header_left', {
             map.actual.add_item61850.push(new info_add_item61850());
             map.show.show61850.push(false);
             //Добавляем корень дерева атрибутов сервера
-            let obj = new treeView();
-            obj.show = true;
-            obj.title = "root";
-            obj.type = "root";
-            TreeView.push(obj);
             //Добавляем структуру для оброботки отображения ASDU
             let objASDU = new showASDU();
             ShowASDU.push(objASDU);
+            let objList = new showList();
+            ShowList.push(objList);
             //Добавить новый сервер
 
 
