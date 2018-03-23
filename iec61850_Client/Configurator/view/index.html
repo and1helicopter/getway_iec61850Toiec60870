@@ -40,17 +40,21 @@
                     </div>
                     <hr>
                     <!--Список элементов мэк61850-->
-                    <div v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850">
-                        <!--Отображение-->
-                        <div style="height: auto; border: solid 1px rgba(0,0,0,0.1);">
-                            <div style="height: 18px;">
-                                <input v-if="show_attr(indexAttr)" v-model="itemAttr.path" style="width: 100%; margin-top: 0; margin-right: -19px;">
-                                <label v-if="!show_attr(indexAttr)" style="height: 18px;">{{itemAttr.path}}</label>
-                                <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 1px; position: absolute;" v-on:click="show_list(indexAttr)">
+                    <table v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850" style="margin: 0; border: solid 1px rgba(0,0,0,0.1);">
+                        <tr>
+                            <td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">
+                                <input v-if="show_attr(indexAttr)" v-model="itemAttr.path" style="width: 100%; margin-top: 0; ">
+                                <label v-if="!show_attr(indexAttr)" style="height: 18px; text-align: left;">{{itemAttr.path}}</label>
+                            </td>
+                            <td style="width: 5%; border: none;padding: 0; margin: 0;">
+                                <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="show_list(indexAttr)">
                                     <img src="image/edit.png">
                                 </button>
-                            </div>
-                            <div style="height: 18px;">
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">
                                 <label v-if="!show_attr(indexAttr)" style="height: 18px;">FC: {{itemAttr.typeFC}}&nbsp;&nbsp;&nbsp;&nbsp; MMS: {{itemAttr.typeMMS}}</label>
                                 <div v-if="show_attr(indexAttr)" style="height: 18px; width: 100%; margin-right: -19px;">
                                     <label>FC: </label>
@@ -62,12 +66,14 @@
                                         <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
                                     </select>
                                 </div>
-                                <button v-if="!show_attr(indexAttr)" v-show="!map.start.run[map.actual.index]" class="button_menu" style="right: 1px; position: absolute;" v-on:click="remove_item_iec61850(itemAttr, indexAttr)">
+                            </td>
+                            <td style="width: 5%; border: none;padding: 0; margin: 0;">
+                                <button v-if="!show_attr(indexAttr)" v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="remove_item_iec61850(itemAttr, indexAttr)">
                                     <img src="image/remove.png">
                                 </button>
-                            </div>
-                        </div>
-                    </div>
+                            </td>
+                        </tr>
+                    </table>
                     <!--Добавить новый элемент, если связь не установленна-->
                     <div class="attr_item" v-if="!map.start.run[map.actual.index]" style="padding-left: 0;">
                         <div>
@@ -363,7 +369,6 @@
         </div>
     </template>
 
-
     <template id="iec60870">
         <transition name="fade">
             <div>
@@ -391,6 +396,13 @@
                     <img src="image/icons8-edit-32.png">
                 </button>
             </mr2>
+            <div>
+                <button style="position: absolute; bottom: 2px;" class="button" v-on:click="save_file()">save</button>
+                <button class="button" style="position: absolute; bottom: 2px; left: 38px;">
+                    <input type="file" v-on:change="open_file($event)" accept=".json">
+                </button>
+                <button style="position: absolute; bottom: 2px; right: 2px;" class="button">start</button>
+            </div>
         </div>
     </template>
 
@@ -405,12 +417,12 @@
             </div>
             <div class="menu_right">
                 <app-header_right  v-bind:show="show60870" v-on:showstatuschange="change_show60870"></app-header_right>
-                <div class="content_right"></div>
             </div>
         </div>
     </div>
     <script src="js/vue-select.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/FileSaver.js"></script>
 </body>
 </html>

@@ -83,7 +83,6 @@
     display: block;
     font-size: 0;
     content: " ";
-    clear: both;
     height: 0
 }
 
@@ -108,7 +107,7 @@
 .v-select .dropdown-menu {
     display: block;
     position: absolute;
-    top: 100%;
+    top: auto;
     left: 0;
     z-index: 1000;
     padding: 0;

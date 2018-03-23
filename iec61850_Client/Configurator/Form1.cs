@@ -54,6 +54,7 @@ namespace Configurator
 				UniversalAccessFromFileUrls = CefState.Enabled
 			};
 			_chromeBrowser.BrowserSettings = browserSettings;
+			_chromeBrowser.DownloadHandler = new DownloadHandler();
 
 			//			var server_start = new CefCustomObject(_chromeBrowser, this);
 

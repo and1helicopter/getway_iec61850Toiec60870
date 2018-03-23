@@ -2018,6 +2018,21 @@ Vue.component('app-header_right', {
             map.data.servers61850.sort();
 
             console.log(map.show.show60870);
+        },
+        save_file: function () {
+
+            let file = JSON.stringify(map.data);
+
+            saveTextAs(file, 'settings.json');
+        },
+        open_file: function (event) {
+            let reader = new FileReader()
+            reader.onload = event => console.log(event.target.result) // desired file content
+            reader.onerror = error => reject(error)
+            reader.readAsText(file) // you could also read images and other binaries
+
+
+
         }
     }
 });

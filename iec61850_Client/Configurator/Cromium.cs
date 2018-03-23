@@ -1,4 +1,8 @@
-﻿using CefSharp;
+﻿using System.IO;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
+using CefSharp;
 using CefSharp.WinForms;
 using Gateway;
 
@@ -53,6 +57,20 @@ namespace Configurator
 			return GatewayAPI_Class.Remove_Server61850(index);
 		}
 
+		public dynamic saveToFile(dynamic file)
+		{
+		    SaveFileDialog sfd = new SaveFileDialog
+		    {
+		        DefaultExt = @".json",
+		    };
+		    if (sfd.ShowDialog() == DialogResult.OK)
+		    {
+		        FileStream fs = new FileStream(sfd.FileName, FileMode.Create);
+
+            }
+		    return false;
+		}
+		
 		//public void opencmd()
 		//{
 		//	ProcessStartInfo start = new ProcessStartInfo("cmd.exe", "/c pause");

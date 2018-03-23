@@ -909,7 +909,7 @@
                     directives: [{name: "model", rawName: "v-model", value: t.search, expression: "search"}],
                     ref: "search",
                     staticClass: "form-control",
-                    style: {width: t.isValueEmpty ? "100%" : "auto"},
+                    style: {width: t.isValueEmpty ? "90%" : "auto"},
                     attrs: {
                         type: "search",
                         autocomplete: "false",
