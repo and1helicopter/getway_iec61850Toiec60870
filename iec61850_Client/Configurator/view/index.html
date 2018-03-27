@@ -40,7 +40,8 @@
                     </div>
                     <hr>
                     <!--Список элементов мэк61850-->
-                    <table v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850" style="margin: 0; border: solid 1px rgba(0,0,0,0.1);">
+                    <!--style="margin: 0; border: solid 1px rgba(0,0,0,0.1);"-->
+                    <table v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850" >
                         <tr>
                             <td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">
                                 <input v-if="show_attr(indexAttr)" v-model="itemAttr.path" style="width: 100%; margin-top: 0; ">
@@ -78,26 +79,26 @@
                     <div class="attr_item" v-if="!map.start.run[map.actual.index]" style="padding-left: 0;">
                         <div>
                             <button class="button_menu" style="position: absolute;  margin-bottom: 0;">
-                                <img v-if="!map.actual.add_item61850[map.actual.index].show" src="image/add.png" v-on:click="add_show_new_item">
+                                <img v-if="!map.actual.add_item61850_show" src="image/add.png" v-on:click="add_show_new_item()">
                                 <img v-else src="image/clear.png" v-on:click="close_mew_item" >
                             </button>
                             <div style="padding-left: 18px">
-                                <input style="width: 100%;  margin-bottom: 1px; margin-left: -1px;" v-show="map.actual.add_item61850[map.actual.index].show" v-model="map.actual.add_item61850[map.actual.index].path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
+                                <input style="width: 100%;  margin-bottom: 1px; margin-left: -1px;" v-show="map.actual.add_item61850_show" v-model="map.actual.info_add_item61850.path" style="width: 100%; margin-top: -1px; margin-left: -1px;">
                             </div>
                         </div>
-                        <div style="padding-left: 18px" v-show="map.actual.add_item61850[map.actual.index].show">
+                        <div style="padding-left: 18px" v-show="map.actual.add_item61850_show">
                             <label>FC: </label>
-                            <select style="height: 18px;" v-model="map.actual.add_item61850[map.actual.index].typeFC">
+                            <select style="height: 18px;" v-model="map.actual.info_add_item61850.typeFC">
                                 <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
                             </select>
                             <label style="padding-left: 30px">MMS: </label>
-                            <select style="height: 18px;" v-model="map.actual.add_item61850[map.actual.index].typeMMS">
+                            <select style="height: 18px;" v-model="map.actual.info_add_item61850.typeMMS">
                                 <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
                             </select>
-                            <button class="button_menu" style="right: 1px; position: absolute;  margin-bottom: 0;" v-show="map.actual.add_item61850[map.actual.index].show" v-on:click="add_new_item(
-                                map.actual.add_item61850[map.actual.index].path,
-                                map.actual.add_item61850[map.actual.index].typeFC,
-                                map.actual.add_item61850[map.actual.index].typeMMS,
+                            <button class="button_menu" style="right: 1px; position: absolute;  margin-bottom: 0;" v-show="map.actual.add_item61850_show" v-on:click="add_new_item(
+                                map.actual.info_add_item61850.path,
+                                map.actual.info_add_item61850.typeFC,
+                                map.actual.info_add_item61850.typeMMS,
                                 map.actual.index)">
                                 <img src="image/ok.png">
                             </button>
@@ -397,11 +398,16 @@
                 </button>
             </mr2>
             <div>
-                <button style="position: absolute; bottom: 2px;" class="button" v-on:click="save_file()">save</button>
-                <button class="button" style="position: absolute; bottom: 2px; left: 38px;">
-                    <input type="file" v-on:change="open_file($event)" accept=".json">
+                <button style="position: absolute; bottom: 2px;" class="button" v-on:click="save_file()">
+                    <img src="image/save_32.png">
                 </button>
-                <button style="position: absolute; bottom: 2px; right: 2px;" class="button">start</button>
+                <button class="button" style="position: absolute; bottom: 2px; left: 38px;">
+                    <img src="image/open_32.png">
+                    <input type="file" v-on:change="open_file($event)" accept=".json" style="height: 32px; width: 32px;">
+                </button>
+                <button style="position: absolute; bottom: 2px; right: 2px;" class="button">
+                    <img src="image/start_green_32.png">
+                </button>
             </div>
         </div>
     </template>

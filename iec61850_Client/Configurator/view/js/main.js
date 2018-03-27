@@ -79,18 +79,13 @@ data = {
 
 actual = {
     index: 0,
-    add_item61850: []
-};
-
-class info_add_item61850{
-    constructor(){
-        this.path ='';
-        this.typeFC = 'NONE';
-        this.typeMMS = 'MMS_ARRAY';
-        this.show = false;
-        this.edit_item_iec61850 = [];
+    add_item61850_show: false,
+    info_add_item61850: {
+        path: '',
+        typeFC: 'NONE',
+        typeMMS: 'MMS_ARRAY'
     }
-}
+};
 
 show = {
     show61850: [],
@@ -421,7 +416,6 @@ Vue.component('app-iec61850',{
                     //Сервер не запустился
                     return;
                 }
-                map.actual.add_item61850[index].edit_item_iec61850 = [];
                 map.data.servers61850[index].items61850 = [];
                 for(let i=0; i < temp.length; i++)
                 {
@@ -444,28 +438,23 @@ Vue.component('app-iec61850',{
         },
         removeServer: async function () {
             let index = map.actual.index;
-            let temp = await serverStart.removeServer61850(index);
-            if(temp !== false)
-            {
-                map.start.run[index] = false;
-                map.start.run.splice(index, 1);
-                ShowList.splice(index, 1);
-                ShowASDU.splice(index, 1);
-                map.show.show61850[index] = false;
-                this.$emit('showstatuschange', map.show.show61850[index]);
-                map.show.show61850.splice(index, 1);
-                map.data.servers61850.splice(index, 1);
-                map.actual.add_item61850.splice(index, 1);
-                map.data.servers61850.sort();
-                //Запуск или остановка сервера
-            }
+            map.start.run[index] = false;
+            map.start.run.splice(index, 1);
+            ShowList.splice(index, 1);
+            ShowASDU.splice(index, 1);
+            map.show.show61850[index] = false;
+            this.$emit('showstatuschange', map.show.show61850[index]);
+            map.show.show61850.splice(index, 1);
+            map.data.servers61850.splice(index, 1);
+            map.data.servers61850.sort();
+            //Запуск или остановка сервера
+            await serverStart.removeServer61850(index);
         },
         add_show_new_item: function () {
             //Отобразить форму для создания нового атрибута
-            map.actual.add_item61850[map.actual.index].show = true;
+            map.actual.add_item61850_show = true;
         },
         add_new_item: function (path, typeFC, typeMMS, index) {
-            map.actual.add_item61850[index].edit_item_iec61850.push(false);
             //Добовляем элемент в массив
             let obj = new Object61850(
                 path,
@@ -475,13 +464,12 @@ Vue.component('app-iec61850',{
             //Добовляем элемент в дерево отображения
             map.data.servers61850[index].items61850.push(obj);
             //Скрыть редактор элемента
-            map.actual.add_item61850[index].show = false;
+            map.actual.add_item61850_show = false;
         },
         close_mew_item: function () {
-            map.actual.add_item61850[map.actual.index].show = false;
+            map.actual.add_item61850_show = false;
         },
         edit_item_iec61850: function (index) {
-            map.actual.add_item61850[map.actual.index].edit_item_iec61850[index] = !  map.actual.add_item61850[map.actual.index].edit_item_iec61850[index];
             map.data.servers61850[map.actual.index].items61850.sort();
         },
         remove_item_iec61850: function(itemAttr, indexAttr){
@@ -1956,11 +1944,11 @@ Vue.component('app-header_left', {
     },
     methods: {
         add_server61850: async function () {
-            map.data.servers61850.push(new server61850());
-            map.data.servers61850[data.servers61850.length - 1].host = "127.0.0.1";
-            map.data.servers61850[data.servers61850.length - 1].port = 102;
+            let obj = new server61850();
+            map.data.servers61850.push(obj);
+            map.data.servers61850[map.data.servers61850.length - 1].host = "127.0.0.1";
+            map.data.servers61850[map.data.servers61850.length - 1].port = 102;
             map.start.run.push(false);
-            map.actual.add_item61850.push(new info_add_item61850());
             map.show.show61850.push(false);
             //Добавляем корень дерева атрибутов сервера
             //Добавляем структуру для оброботки отображения ASDU
@@ -1969,24 +1957,17 @@ Vue.component('app-header_left', {
             let objList = new showList();
             ShowList.push(objList);
             //Добавить новый сервер
-
-
-            var output = JSON.stringify(data.servers61850[data.servers61850.length - 1]);
-            var temp = await serverStart.addServer61850(output);
-            console.log(show.show61850[show.show61850.length - 1]);
+            let output = JSON.stringify(data.servers61850[data.servers61850.length - 1]);
+            let temp = await serverStart.addServer61850(output);
         },
         show_server61850: function (server, index) {
+            map.actual.index = index;
             map.show.show61850[index] = !map.show.show61850[index];
             for(let i = 0; i < map.show.show61850.length; i++){
                 if(i !== index){map.show.show61850[i] = false;}
             }
-            console.log("lol" + map.show.show61850[index]);
             this.$emit('showstatuschange', map.show.show61850[index]);
-            map.actual.index = index;
             map.data.servers61850.sort();
-
-            console.log(index);
-            console.log(server);
         }
     }
 });
@@ -2026,13 +2007,37 @@ Vue.component('app-header_right', {
             saveTextAs(file, 'settings.json');
         },
         open_file: function (event) {
-            let reader = new FileReader()
-            reader.onload = event => console.log(event.target.result) // desired file content
-            reader.onerror = error => reject(error)
-            reader.readAsText(file) // you could also read images and other binaries
-
-
-
+            // Check for the various File API support.
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                // Great success! All the File APIs are supported.
+            }
+            else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+            let input = event.target;
+            let reader = new FileReader();
+            reader.onload = function() {
+                let str = reader.result;
+                let temp = JSON.parse(str);
+                //Обработка загружаймого файла
+                //Очистка
+                map.data = [];
+                map.data = temp;
+                map.actual.index = 0;
+                map.actual.add_item61850_show = false;
+                map.start.run = [];
+                map.show.show61850 = [];
+                for(let i = 0; i < temp.servers61850.length; i++){
+                    map.start.run.push(false);
+                    map.show.show61850.push(false);
+                }
+                //Добавляем структуру для оброботки отображения ASDU
+                let objASDU = new showASDU();
+                ShowASDU.push(objASDU);
+                let objList = new showList();
+                ShowList.push(objList);
+            };
+            reader.readAsText(input.files[0]);
         }
     }
 });
