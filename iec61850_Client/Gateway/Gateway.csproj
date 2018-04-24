@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -40,8 +40,8 @@
       <HintPath>..\libiec\iec61850dotnet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,6 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataMap\CauseOfTransmition\COT.cs" />
+    <Compile Include="DataMap\CauseOfTransmition\Periodic.cs" />
+    <Compile Include="DataMap\Destination\Destination.cs" />
+    <Compile Include="DataMap\Destination\iec60870.cs" />
+    <Compile Include="DataMap\GateWay.cs" />
+    <Compile Include="DataMap\Source\iec61850.cs" />
+    <Compile Include="DataMap\Source\modBus.cs" />
+    <Compile Include="DataMap\GateWayAPI.cs" />
+    <Compile Include="DataMap\Source\Source.cs" />
+    <Compile Include="DataMap\TypeASDU\TypeBase.cs" />
+    <Compile Include="DataMap\TypeASDU\М_SP_NA_1.cs" />
     <Compile Include="GatewayAPI.cs" />
     <Compile Include="DataMapping.cs" />
     <Compile Include="DataItem.cs" />

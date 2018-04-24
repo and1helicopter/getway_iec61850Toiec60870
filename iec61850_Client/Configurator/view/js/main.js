@@ -505,6 +505,10 @@ Vue.component('app-iec61850',{
         },
         //функции для ASDU
         add_asdu: function (index) {
+            if(map.data.servers61850[index].itemsASDU.length >= 127){
+                alert("Достигнуто максимальное количество объектов");
+                return;
+            }
             let asduObj = new ASDU();
             map.data.servers61850[index].itemsASDU.push(asduObj);
             ShowASDU[index].total += 1;
@@ -2038,6 +2042,15 @@ Vue.component('app-header_right', {
                 ShowList.push(objList);
             };
             reader.readAsText(input.files[0]);
+        },
+        startServer60870: async function () {
+            let temp = JSON.stringify(map.data);
+
+            let answer = await serverStart.startServerTwo(temp);
+            let answerTemp = JSON.parse(answer);
+            if(answerTemp){
+
+            }
         }
     }
 });

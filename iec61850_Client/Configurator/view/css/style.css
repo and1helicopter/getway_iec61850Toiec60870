@@ -70,6 +70,7 @@ body {
     width: auto;
     height: -webkit-fill-available;
     padding-left: 1px;
+    padding-right: 1px;
     position: relative;
     top: auto;
     left: auto;
@@ -275,6 +276,7 @@ hr{
 h3{
     font-family: Consolas, sans-serif;
     -webkit-margin-before: 0;
+    margin: 0;
 }
 
 .iec60870{
@@ -409,7 +411,7 @@ select{
     height: 32px;
     display: flex;
     justify-content: space-between;
-    margin: 5px auto 5px;
+    margin: 5px 0 5px;
 }
 
 .pagination_left, .pagination_right {
@@ -484,6 +486,7 @@ td{
 /*ASDU*/
 .asdu{
     border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 2px;
     margin: 1px;
 }
 

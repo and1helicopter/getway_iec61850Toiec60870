@@ -68,7 +68,13 @@ namespace Configurator
 		        FileStream fs = new FileStream(sfd.FileName, FileMode.Create);
 
             }
-		    return false;
+		    return true;
+		}
+
+		public dynamic startServerTwo(dynamic obj)
+		{
+			var answer = GatewayAPI_Class.Start_Server60870(obj);
+			return answer;
 		}
 		
 		//public void opencmd()

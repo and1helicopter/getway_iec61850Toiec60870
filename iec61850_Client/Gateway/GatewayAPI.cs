@@ -104,7 +104,10 @@ namespace Gateway
 			return JsonConvert.SerializeObject(ServersList[index].items61850, Formatting.Indented, new StringEnumConverter(false));
 		}
 
-
+		public static bool Start_Server60870(dynamic obj)
+		{
+			return false;
+		}
 
 
 	}

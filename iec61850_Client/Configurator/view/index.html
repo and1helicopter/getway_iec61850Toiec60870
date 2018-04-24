@@ -15,12 +15,12 @@
                     <div class="iec61850_left">
                         <h3>Конфигрутор соединения IEC61850:</h3>
                         <div class="services">
-                            <button class="button_services" title="Запуск/Остановка" v-on:click="startServer">
-                                <img v-if="!map.start.run[map.actual.index]" src="image/icons8-play-32.png">
+                            <button class="button_services" title="Запуск/Остановка" v-on:click="startServer()">
+                                <img v-if="!map.start.run[map.actual.index]" src="image/start_green_32.png">
                                 <img v-else src="image/icons8-stop-32.png">
                             </button>
-                            <button class="button_services" title="Удалить" v-on:click="removeServer">
-                                <img src="image/icons8-delete-32.png">
+                            <button class="button_services" title="Удалить" v-on:click="removeServer()">
+                                <img src="image/remove_32.png">
                             </button>
                         </div>
                         <label>Хост: </label><input v-model="map.data.servers61850[map.actual.index].host">
@@ -41,40 +41,52 @@
                     <hr>
                     <!--Список элементов мэк61850-->
                     <!--style="margin: 0; border: solid 1px rgba(0,0,0,0.1);"-->
-                    <table v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850" >
+                    <table v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850" style="margin: 0; border: solid 1px rgba(0,0,0,0.1);">
                         <tr>
                             <td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">
-                                <input v-if="show_attr(indexAttr)" v-model="itemAttr.path" style="width: 100%; margin-top: 0; ">
                                 <label v-if="!show_attr(indexAttr)" style="height: 18px; text-align: left;">{{itemAttr.path}}</label>
                             </td>
                             <td style="width: 5%; border: none;padding: 0; margin: 0;">
-                                <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="show_list(indexAttr)">
-                                    <img src="image/edit.png">
-                                </button>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">
-                                <label v-if="!show_attr(indexAttr)" style="height: 18px;">FC: {{itemAttr.typeFC}}&nbsp;&nbsp;&nbsp;&nbsp; MMS: {{itemAttr.typeMMS}}</label>
-                                <div v-if="show_attr(indexAttr)" style="height: 18px; width: 100%; margin-right: -19px;">
-                                    <label>FC: </label>
-                                    <select style="height: 18px;" v-model="itemAttr.typeFC">
-                                        <option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>
-                                    </select>
-                                    <label style="padding-left: 30px">MMS: </label>
-                                    <select style="height: 18px;" v-model="itemAttr.typeMMS">
-                                        <option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td style="width: 5%; border: none;padding: 0; margin: 0;">
-                                <button v-if="!show_attr(indexAttr)" v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="remove_item_iec61850(itemAttr, indexAttr)">
+                                <button v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="remove_item_iec61850(itemAttr, indexAttr)">
                                     <img src="image/remove.png">
                                 </button>
                             </td>
                         </tr>
                     </table>
+                    <!--<table v-for="(itemAttr, indexAttr) in map.data.servers61850[map.actual.index].items61850" >-->
+                        <!--<tr>-->
+                            <!--<td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">-->
+                                <!--<input v-if="show_attr(indexAttr)" v-model="itemAttr.path" style="width: 100%; margin-top: 0; ">-->
+                                <!--<label v-if="!show_attr(indexAttr)" style="height: 18px; text-align: left;">{{itemAttr.path}}</label>-->
+                            <!--</td>-->
+                            <!--<td style="width: 5%; border: none;padding: 0; margin: 0;">-->
+                                <!--<button v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="show_list(indexAttr)">-->
+                                    <!--<img src="image/edit.png">-->
+                                <!--</button>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td style="width: 95%; text-align: left; border: none; padding: 0; margin: 0;">-->
+                                <!--<label v-if="!show_attr(indexAttr)" style="height: 18px;">FC: {{itemAttr.typeFC}}&nbsp;&nbsp;&nbsp;&nbsp; MMS: {{itemAttr.typeMMS}}</label>-->
+                                <!--<div v-if="show_attr(indexAttr)" style="height: 18px; width: 100%; margin-right: -19px;">-->
+                                    <!--<label>FC: </label>-->
+                                    <!--<select style="height: 18px;" v-model="itemAttr.typeFC">-->
+                                        <!--<option v-for="option in  map.options_iec61850.options_fc" v-bind:value="option.value">{{option.value}}</option>-->
+                                    <!--</select>-->
+                                    <!--<label style="padding-left: 30px">MMS: </label>-->
+                                    <!--<select style="height: 18px;" v-model="itemAttr.typeMMS">-->
+                                        <!--<option v-for="option in  map.options_iec61850.options_mms" v-bind:value="option.value">{{option.value}}</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                            <!--<td style="width: 5%; border: none;padding: 0; margin: 0;">-->
+                                <!--<button v-if="!show_attr(indexAttr)" v-show="!map.start.run[map.actual.index]" class="button_menu" style="border: none;" v-on:click="remove_item_iec61850(itemAttr, indexAttr)">-->
+                                    <!--<img src="image/remove.png">-->
+                                <!--</button>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
                     <!--Добавить новый элемент, если связь не установленна-->
                     <div class="attr_item" v-if="!map.start.run[map.actual.index]" style="padding-left: 0;">
                         <div>
@@ -116,20 +128,19 @@
                     <!--Отображение всех ASDU c выбором и добавлением-->
                     <div style="padding: 3px">
                         <div class="pagination">
-                            <button class="pagination_left">
+                            <button class="pagination_left" v-show="map.data.servers61850[map.actual.index].itemsASDU.length > 8">
                                 <img src="image/left_32.png">
                             </button>
                             <div v-for="(itemASDU, indexASDU) in map.data.servers61850[map.actual.index].itemsASDU">
                                 <button  class="button" v-on:click="change_current(indexASDU, map.actual.index)">{{indexASDU + 1}}</button>
                             </div>
-                            <button class="pagination_right">
+                            <button class="pagination_right" v-show="map.data.servers61850[map.actual.index].itemsASDU.length > 8">
                                 <img src="image/right_32.png">
                             </button>
+                            <button class="button" v-on:click="add_asdu(map.actual.index)" style="float: right">
+                                <img src="image/add_32.png">
+                            </button>
                         </div>
-                        <button class="button" v-on:click="add_asdu(map.actual.index)">
-                            <span class="tooltiptext">Добавить ASDU</span>
-                            <img src="image/add_32.png">
-                        </button>
                         <hr>
                         <!--Отображение выбронного ASDU c редактирвованием-->
                         <div class="asdu" v-if="ShowASDU[map.actual.index].show">
@@ -138,10 +149,10 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Type ID:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <input style="width: 100%" type="number" min="0" max="127" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID"  v-on:change="showObj = cot_filter(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID)">
+                                    <td class="td_cell" style="width: 20%">
+                                        <input style="width: 95%" type="number" min="0" max="127" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID"  v-on:change="showObj = cot_filter(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID)">
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%">
                                         <label  v-model="value = show_text(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID, map.options_iec60870.options_typeID)">{{value.strEN}}</label>
                                     </td>
                                 </tr>
@@ -151,10 +162,10 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Structure Qualifier:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <input style="width: 100%" type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].sq">
+                                    <td class="td_cell" style="width: 20%">
+                                        <input style="width: 95%" type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].sq">
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%">
                                         <label>{{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].sq ? 'Одиночный объект' : 'Последовательность объектов'}}</label>
                                     </td>
                                 </tr>
@@ -164,12 +175,12 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Causes of transmissions:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <select style="width: 100%" type="submit" min="0" max="63" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].cot">
+                                    <td class="td_cell" style="width: 20%">
+                                        <select style="width: 95%; border: solid 1px rgba(0,0,0,0.1);" type="submit" min="0" max="63" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].cot">
                                             <option v-for="option in TempASDU_COT">{{option.value}}</option>
                                         </select>
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%">
                                         <label  v-model="value = show_text(map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].cot, map.options_iec60870.options_cot)">{{value.strEN}}</label>
                                     </td>
                                 </tr>
@@ -179,10 +190,10 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Verification:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <input style="width: 100%" type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isNegative" >
+                                    <td class="td_cell" style="width: 20%;">
+                                        <input style="width: 95%" type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isNegative" >
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%">
                                         <label>{{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isNegative ? 'Отрицательное' : 'Положительное'}}</label>
                                     </td>
                                 </tr>
@@ -192,10 +203,10 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Test:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <input style="width: 100%" type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isTest" >
+                                    <td class="td_cell" style="width: 20%">
+                                        <input style="width: 95%" type="checkbox" value="false" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isTest" >
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%">
                                         <label>{{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].isTest ? 'True' : 'False'}}</label>
                                     </td>
                                 </tr>
@@ -205,10 +216,10 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Initiator address:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <input style="width: 100%" type="number" min="0" max="255" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].oa" >
+                                    <td class="td_cell" style="width: 20%">
+                                        <input style="width: 95%" type="number" min="0" max="255" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].oa" >
                                     </td>
-                                    <td class="td_cell" style="width: 40%"></td>
+                                    <td class="td_cell" style="width: 45%"></td>
                                 </tr>
                             </table>
                             <table class="table_cell">
@@ -216,10 +227,10 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Common address:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
-                                        <input style="width: 100%" type="number" min="0" max="65535" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].ca" >
+                                    <td class="td_cell" style="width: 20%">
+                                        <input style="width: 95%" type="number" min="0" max="65535" value="0" v-model="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].ca" >
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%">
                                     </td>
                                 </tr>
                             </table>
@@ -228,13 +239,15 @@
                                     <td class="td_cell" style="width: 35%">
                                         <label>Quantity:</label>
                                     </td>
-                                    <td class="td_cell" style="width: 25%">
+                                    <td class="td_cell" style="width: 20%">
                                         <label v-model="quantity = map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].length">{{quantity }}</label>
                                     </td>
-                                    <td class="td_cell" style="width: 40%">
+                                    <td class="td_cell" style="width: 45%; text-align: right;padding-right: 2px;">
+                                        <button class="button" v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">
+                                            <img src="image/add_32.png">
+                                        </button>
                                         <button class="button" v-on:click="remove_ASDU()">
-                                            <span class="tooltiptext">Удалить ASDU</span>
-                                            <label>rem</label>
+                                            <img src="image/remove_32.png">
                                         </button>
                                     </td>
                                 </tr>
@@ -274,12 +287,6 @@
                                 <div v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID !== map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].typeID">
                                     <label v-show="map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].length > 0">В ASDU содержаться оюъекты типа {{map.data.servers61850[map.actual.index].itemsASDU[ShowASDU[map.actual.index].current].objectsInf.typeID}}</label>
                                 </div>
-                            </div>
-                            <div >
-                                <button class="button" v-show="showObj" v-on:click="add_obj_asdu(map.actual.index)">
-                                    <span class="tooltiptext">Добавить объекты или элементы в ASDU</span>
-                                    <label>add</label>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -363,7 +370,7 @@
                 </div>
                 <div>
                     <button title="Добавить" class="button_add" v-on:click="add_server61850">
-                        <img src="image/icons8-plus-32.png">
+                        <img src="image/add_32.png">
                     </button>
                 </div>
             </div>
@@ -405,7 +412,7 @@
                     <img src="image/open_32.png">
                     <input type="file" v-on:change="open_file($event)" accept=".json" style="height: 32px; width: 32px;">
                 </button>
-                <button style="position: absolute; bottom: 2px; right: 2px;" class="button">
+                <button style="position: absolute; bottom: 2px; right: 2px;" class="button" v-on:click="startServer60870()">
                     <img src="image/start_green_32.png">
                 </button>
             </div>

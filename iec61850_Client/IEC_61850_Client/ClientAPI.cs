@@ -94,10 +94,7 @@ namespace IEC_61850
 
 		public static async Task<dynamic> GetValue(int index, ClientConnect.PathDA item)
 		{
-			dynamic value =  await Task.Run(() =>
-			{
-				return ConnectionList[index].GetValue(item);
-			});
+			dynamic value =  await Task.Run(() => ConnectionList[index].GetValue(item));
 
 			return value;
 		}
