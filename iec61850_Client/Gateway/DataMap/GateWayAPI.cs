@@ -22,7 +22,7 @@ namespace Gateway.DataMap
 
     public enum Sources
     {
-        IEC61870,
+        IEC61850,
         MODBUS
     }
 }

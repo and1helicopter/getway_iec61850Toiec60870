@@ -1,20 +1,23 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace Gateway.DataMap.Source
 {
-    public class source_modBus : Source
+    public class modBus : Source
     {
-        public override void GetSource()
+
+
+        public override Source GetSource()
         {
-            Console.WriteLine("modBus");
+            return this;
         }
 
-        public override void SetSource()
+        public override void SetSource(JObject source)
         {
 
         }
 
-        public source_modBus()
+        public modBus(JObject source)
         {
 
         }

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DataMap\CauseOfTransmition\COT.cs" />
     <Compile Include="DataMap\CauseOfTransmition\Periodic.cs" />
+    <Compile Include="DataMap\Data\Data.cs" />
     <Compile Include="DataMap\Destination\Destination.cs" />
     <Compile Include="DataMap\Destination\iec60870.cs" />
     <Compile Include="DataMap\GateWay.cs" />
@@ -82,6 +83,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
