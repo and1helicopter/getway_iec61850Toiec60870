@@ -1,7 +1,7 @@
-﻿using Gateway.DataMap.Destination;
-using Gateway.DataMap.Source;
+﻿using Gateway.Destination;
+using Gateway.Source;
 
-namespace Gateway.DataMap.Data
+namespace Gateway.Data
 {
     public class Data:ISource, IDestination
     {
@@ -23,11 +23,11 @@ namespace Gateway.DataMap.Data
             return Destination.GetDestination();
         }
 
-        private Source.Source Source { get; set; }
-        private Destination.Destination Destination { get; set; }
-        private SourcePath SourcePath { get; set; }
-        private DestinationPath DestinationPath { get; set; }
-        private dynamic Value { get; set; }
+        public Source.Source Source { get; set; }
+        public Destination.Destination Destination { get; set; }
+        public SourcePath SourcePath { get; set; }
+        public DestinationPath DestinationPath { get; set; }
+        public dynamic Value { get; set; }
 
     }
 

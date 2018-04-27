@@ -1,21 +1,26 @@
 ﻿using System.Collections.Generic;
-using Gateway.DataMap.Destination;
-using Gateway.DataMap.Source;
+using Gateway.Destination;
+using Gateway.Source;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Gateway.DataMap
+namespace Gateway
 {
     public static class GateWay
     {
-        private static List<Data.Data> DataItems =  new List<Data.Data>();
+        delegate void Heandler(List<JObject> list);
+        private static Heandler _heandler;
+        private static readonly List<JObject> Data = new List<JObject>();
+        private static bool _run;
 
         public static void InitializeGateWay(JObject file, Destinations destinations, Sources sources)
         {
+
             //Распарсить на объекты
             //Получаем все Destination
             foreach (var itemDestination in ParseDestination.Destination(file))
             {
-                Destination.Destination destination = DestinationTemp(destinations, itemDestination);
+               Destination.Destination destination = DestinationTemp(destinations, itemDestination);
                 if(destination == null)
                     break;
                 //Получаем все Source для данного Destination
@@ -37,16 +42,25 @@ namespace Gateway.DataMap
                             var infoDestination = DestinationPathTemp(destinations, itemData, item);
                             var infoSource = SourcePathTemp(sources, item);
                             //Заносим элементы в список Data 
-                            DataItems.Add(new Data.Data(source, destination, infoSource, infoDestination));
+                            Data.Add(JObject.Parse(JsonConvert.SerializeObject(new Data.Data(source, destination, infoSource, infoDestination))));
                         }
                     }
                 }
+            }
+
+            //Инициализировать обработчик обработки данных
+            //Оброботчик находится на стороне Destination
+            switch (destinations)
+            {
+                case Destinations.IEC60870:
+                    _heandler = IEC_60870_BL.Logic.Heandler;
+                    break;
             }
         }
 
         private static DestinationPath DestinationPathTemp(Destinations destinations, JObject itemData, JObject item)
         {
-            Destination.DestinationPath destination = null;
+            DestinationPath destination = null;
             switch (destinations)
             {
                 case Destinations.IEC60870:
@@ -98,10 +112,32 @@ namespace Gateway.DataMap
             return source;
         }
 
-        public static void StartGateWay()
+        public static void DeInitializeGateWay()
         {
+            if (!_run)
+            { 
 
+            }
+            //DataItems.Clear();
         }
 
+        public static void StartGateWay()
+        {
+            if (!_run)
+            {
+                //Передать обработчик 
+                _heandler?.Invoke(Data);
+                _run = true;
+            }
+        }
+
+        public static void StopGateWay()
+        {
+            if (_run)
+            {
+                //Передать обработчик 
+                _run = false;
+            }
+        }
     }
 }

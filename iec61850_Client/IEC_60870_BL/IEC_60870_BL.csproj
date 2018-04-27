@@ -1,20 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{54235AE3-6E1D-4439-9364-EB9DD2BBA11E}</ProjectGuid>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{87A6C372-A504-443D-94FD-8EB0134DF096}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gateway</RootNamespace>
-    <AssemblyName>Gateway</AssemblyName>
+    <RootNamespace>IEC_60870_BL</RootNamespace>
+    <AssemblyName>IEC_60870_BL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,9 +20,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,44 +31,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="iec60870, Version=1.0.6528.18463, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\libiec\iec60870.dll</HintPath>
-    </Reference>
-    <Reference Include="iec61850dotnet, Version=1.0.6451.17097, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\libiec\iec61850dotnet.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Data.cs" />
-    <Compile Include="Destination\Destination.cs" />
-    <Compile Include="Destination\iec60870.cs" />
-    <Compile Include="GateWay.cs" />
-    <Compile Include="Source\iec61850.cs" />
-    <Compile Include="Source\modBus.cs" />
-    <Compile Include="GateWayAPI.cs" />
-    <Compile Include="Source\Source.cs" />
+    <Compile Include="CauseOfTransmition\COT.cs" />
+    <Compile Include="CauseOfTransmition\Periodic.cs" />
+    <Compile Include="Logic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeASDU\TypeBase.cs" />
+    <Compile Include="TypeASDU\М_SP_NA_1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IEC_60870\IEC_60870.csproj">
       <Project>{7eb5871e-c706-4144-93a9-242e2f1883c4}</Project>
       <Name>IEC_60870</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IEC_60870_BL\IEC_60870_BL.csproj">
-      <Project>{87a6c372-a504-443d-94fd-8eb0134df096}</Project>
-      <Name>IEC_60870_BL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IEC_61850_Client\IEC_61850.csproj">
-      <Project>{14003231-621f-47bf-83e3-6f166e929e51}</Project>
-      <Name>IEC_61850</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.csproj">
       <Project>{49f43633-4c77-4b27-8964-8fdfb3fd641e}</Project>
@@ -80,13 +64,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

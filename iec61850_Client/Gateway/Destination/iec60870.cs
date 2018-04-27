@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Gateway.Destination;
 using Newtonsoft.Json.Linq;
 
-namespace Gateway.DataMap.Destination
+namespace Gateway.Destination
 {
     public class iec60870 : Destination
     {
-        private string host { get; set; }
-        private int port  { get; set; }
-        private int maxQueue { get; set; }
-        private int  maxConnection  { get; set; }
-        private bool statusTls  { get; set; }
+        public string host { get; set; }
+        public int port  { get; set; }
+        public int maxQueue { get; set; }
+        public int  maxConnection  { get; set; }
+        public bool statusTls  { get; set; }
 
         public override Destination GetDestination()
         {
@@ -38,16 +38,16 @@ namespace Gateway.DataMap.Destination
 
     public class iec60870Path : DestinationPath
     {
-        private int typeID { get; set; } 
-        private  bool sq { get; set; } 
-        private int length { get; set; }
-        private int cot { get; set; }
-        private bool isNegative { get; set; }
-        private bool isTest { get; set; }
-        private int oa { get; set; }
-        private int ca { get; set; }
-        private int addrObj { get; set; }
-        private List<string> typeElement { get; set; } = new List<string>();
+        public int typeID { get; }
+        public bool sq { get; }
+        public int length { get; }
+        public int cot { get; }
+        public bool isNegative { get; }
+        public bool isTest { get; }
+        public int oa { get; }
+        public int ca { get; }
+        public int addrObj { get; }
+        public List<string> typeElement { get; } = new List<string>();
 
         public override DestinationPath GetDestinationPath()
         {

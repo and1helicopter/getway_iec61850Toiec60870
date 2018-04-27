@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace Gateway.DataMap.Source
+namespace Gateway.Source
 {
-    public class iec61850 : Source
+    public class iec61850 : Gateway.Source.Source
     {
-        private string host { get; set; }
-        private int port { get; set; }
-        private string apTitleR { get; set; }
-        private string aeQualifierR { get; set; }
-        private string pSelectorR { get; set; }
-        private string sSelectorR { get; set; }
-        private string tSelectorR { get; set; }
-        private string apTitleL { get; set; }
-        private string aeQualifierL { get; set; }
-        private string pSelectorL { get; set; }
-        private string sSelectorL { get; set; }
-        private string tSelectorL { get; set; }
-        private bool enabled { get; set; }
-        private string password { get; set; }
+        public string host { get; set; }
+        public int port { get; set; }
+        public string apTitleR { get; set; }
+        public string aeQualifierR { get; set; }
+        public string pSelectorR { get; set; }
+        public string sSelectorR { get; set; }
+        public string tSelectorR { get; set; }
+        public string apTitleL { get; set; }
+        public string aeQualifierL { get; set; }
+        public string pSelectorL { get; set; }
+        public string sSelectorL { get; set; }
+        public string tSelectorL { get; set; }
+        public bool enabled { get; set; }
+        public string password { get; set; }
 
-        public override Source GetSource()
+        public override Gateway.Source.Source GetSource()
         {
             return this;
         }
@@ -65,7 +65,7 @@ namespace Gateway.DataMap.Source
 
     public class iec61850Path:SourcePath
     {
-        private List<string> attributeElement { get; set; } = new List<string>();
+        public List<string> attributeElement { get; set; } = new List<string>();
 
         public override SourcePath GetSourcePath()
         {

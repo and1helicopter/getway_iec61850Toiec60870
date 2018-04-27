@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace Gateway.DataMap.Source
+namespace Gateway.Source
 {
     public abstract class Source
     {

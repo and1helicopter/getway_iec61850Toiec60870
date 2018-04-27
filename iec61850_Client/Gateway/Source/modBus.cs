@@ -1,13 +1,12 @@
-﻿using System;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
-namespace Gateway.DataMap.Source
+namespace Gateway.Source
 {
-    public class modBus : Source
+    public class modBus : Gateway.Source.Source
     {
 
 
-        public override Source GetSource()
+        public override Gateway.Source.Source GetSource()
         {
             return this;
         }
