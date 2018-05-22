@@ -60,13 +60,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Abstraction\Abstraction.csproj">
+      <Project>{D892858D-9BA7-42E3-990A-8606788DB62C}</Project>
+      <Name>Abstraction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IEC_60870\IEC_60870.csproj">
       <Project>{7eb5871e-c706-4144-93a9-242e2f1883c4}</Project>
       <Name>IEC_60870</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IEC_60870_BL\IEC_60870_BL.csproj">
-      <Project>{87a6c372-a504-443d-94fd-8eb0134df096}</Project>
-      <Name>IEC_60870_BL</Name>
     </ProjectReference>
     <ProjectReference Include="..\IEC_61850_Client\IEC_61850.csproj">
       <Project>{14003231-621f-47bf-83e3-6f166e929e51}</Project>

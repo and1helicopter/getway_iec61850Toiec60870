@@ -5,12 +5,12 @@ namespace Gateway.Data
 {
     public class Data:ISource, IDestination
     {
-        public Data(Source.Source source, Destination.Destination destination, SourcePath sourcePath, DestinationPath destinationPath)
+        public Data(Source.Source source, Abstraction.Destination destination, SourcePath sourcePath)
         {
             Source = source;
             Destination = destination;
             SourcePath = sourcePath;
-            DestinationPath = destinationPath;
+            //DestinationPath = destinationPath;
         }
 
         public Source.Source GetSource()
@@ -18,15 +18,15 @@ namespace Gateway.Data
             return Source.GetSource();
         }
 
-        public Destination.Destination GetDestination()
-        {
-            return Destination.GetDestination();
-        }
+        //public Abstraction.Destination GetDestination()
+        //{
+        //    return Destination.GetDestination();
+        //}
 
         public Source.Source Source { get; set; }
-        public Destination.Destination Destination { get; set; }
+        public Abstraction.Destination Destination { get; set; }
         public SourcePath SourcePath { get; set; }
-        public DestinationPath DestinationPath { get; set; }
+       // public DestinationPath DestinationPath { get; set; }
         public dynamic Value { get; set; }
 
     }

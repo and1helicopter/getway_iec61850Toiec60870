@@ -18,10 +18,9 @@ namespace Gateway
 
             //Распарсить на объекты
             //Получаем все Destination
-            foreach (var itemDestination in ParseDestination.Destination(file))
+            foreach (var itemDestination in Parse.Destinations(file))
             {
-               Destination.Destination destination = DestinationTemp(destinations, itemDestination);
-                if(destination == null)
+                if (!DestinationAPI.Add(itemDestination))
                     break;
                 //Получаем все Source для данного Destination
                 foreach (var itemSource in ParseSource.Source(itemDestination))
@@ -30,45 +29,40 @@ namespace Gateway
                     if (source == null)
                         break;
                     //Data 
-                    foreach (var itemData in ParseDestination.InfoDestination(itemSource))
-                    {
-                        if(itemData == null)
-                            break;
-                        foreach (var item in ParseSource.InfoSource(itemData))
-                        {
-                            if(item == null)
-                                break;
-                            //
-                            var infoDestination = DestinationPathTemp(destinations, itemData, item);
-                            var infoSource = SourcePathTemp(sources, item);
-                            //Заносим элементы в список Data 
-                            Data.Add(JObject.Parse(JsonConvert.SerializeObject(new Data.Data(source, destination, infoSource, infoDestination))));
-                        }
-                    }
+                    //foreach (var itemData in Parse.InfoDestination(itemSource))
+                    //{
+                    //    if(itemData == null)
+                    //        break;
+                    //    foreach (var item in ParseSource.InfoSource(itemData))
+                    //    {
+                    //        if(item == null)
+                    //            break;
+                    //        //
+                    //        var infoDestination = DestinationPathTemp(destinations, itemData, item);
+                    //        var infoSource = SourcePathTemp(sources, item);
+                    //        //Заносим элементы в список Data 
+                    //        Data.Add(JObject.Parse(JsonConvert.SerializeObject(new Data.Data(source, destination, infoSource, infoDestination))));
+                    //    }
+                    //}
                 }
             }
 
             //Инициализировать обработчик обработки данных
             //Оброботчик находится на стороне Destination
-            switch (destinations)
-            {
-                case Destinations.IEC60870:
-                    _heandler = IEC_60870_BL.Logic.Heandler;
-                    break;
-            }
+
         }
 
-        private static DestinationPath DestinationPathTemp(Destinations destinations, JObject itemData, JObject item)
-        {
-            DestinationPath destination = null;
-            switch (destinations)
-            {
-                case Destinations.IEC60870:
-                    destination = new iec60870Path(itemData, item);
-                    break;
-            }
-            return destination;
-        }
+        //private static DestinationPath DestinationPathTemp(Destinations destinations, JObject itemData, JObject item)
+        //{
+        //    DestinationPath destination = null;
+        //    switch (destinations)
+        //    {
+        //        case Destinations.IEC60870:
+        //            destination = new iec60870Path(itemData, item);
+        //            break;
+        //    }
+        //    return destination;
+        //}
 
         private static SourcePath SourcePathTemp(Sources sources,  JObject item)
         {
@@ -85,17 +79,17 @@ namespace Gateway
             return source;
         }
 
-        private static Destination.Destination DestinationTemp(Destinations destinations, JObject itemDestination)
-        {
-            Destination.Destination destination = null;
-            switch (destinations)
-            {
-                case Destinations.IEC60870:
-                    destination = new iec60870(ParseDestination.DestinationShort(itemDestination));
-                    break;
-            }
-            return destination;
-        }
+        //private static Destination.Destination DestinationTemp(Destinations destinations, JObject itemDestination)
+        //{
+        //    Destination.Destination destination = null;
+        //    switch (destinations)
+        //    {
+        //        case Destinations.IEC60870:
+        //            destination = new iec60870(Parse.DestinationShort(itemDestination));
+        //            break;
+        //    }
+        //    return destination;
+        //}
 
         private static Source.Source SourceTemp(Sources sources, JObject itemSource)
         {
