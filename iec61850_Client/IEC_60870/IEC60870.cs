@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Abstraction;
+using lib60870.CS101;
 using Newtonsoft.Json.Linq;
 
 namespace IEC_60870
@@ -43,6 +44,7 @@ namespace IEC_60870
         
         public override bool Start()
         {
+            iec60870.ServerSetHandlers();
             IsRun = iec60870.ServerStart();
             return IsRun;
         }
