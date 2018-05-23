@@ -21,7 +21,7 @@ namespace Gateway.Destination
                 {
                     try
                     {
-                        Abstraction.Destination destTemp = new IEC_60870.IEC60870(temp);
+                        Abstraction.Destination destTemp = new IEC_60870.IEC60870_Server(temp);
                         //Проверка есть ли уже такой объект
                         if (Destinations.Find(x => x.ShortInfo() == destTemp.ShortInfo()) != null)
                             return false;
@@ -35,13 +35,6 @@ namespace Gateway.Destination
                     break;
                 }
             }
-
-            Start();
-            while (true)
-            {
-
-            }
-
             return true;
         }
 

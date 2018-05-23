@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Gateway.Destination;
 using Gateway.Source;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Parse = Gateway.Source.Parse;
 
 namespace Gateway
 {
@@ -18,22 +18,26 @@ namespace Gateway
 
             //Распарсить на объекты
             //Получаем все Destination
-            foreach (var itemDestination in Parse.Destinations(file))
+            foreach (var itemDestination in Destination.Parse.Destinations(file))
             {
                 if (!DestinationAPI.Add(itemDestination))
                     break;
                 //Получаем все Source для данного Destination
-                foreach (var itemSource in ParseSource.Source(itemDestination))
+                foreach (var itemSource in Parse.Sources(itemDestination))
                 {
-                    Source.Source source = SourceTemp(sources, itemSource);
-                    if (source == null)
+                    if (!SourceAPI.Add(itemSource))
                         break;
+
+
+                    //Source.Source source = SourceTemp(sources, itemSource);
+                    //if (source == null)
+                    //    break;
                     //Data 
                     //foreach (var itemData in Parse.InfoDestination(itemSource))
                     //{
                     //    if(itemData == null)
                     //        break;
-                    //    foreach (var item in ParseSource.InfoSource(itemData))
+                    //    foreach (var item in Parse.InfoSource(itemData))
                     //    {
                     //        if(item == null)
                     //            break;
@@ -64,20 +68,20 @@ namespace Gateway
         //    return destination;
         //}
 
-        private static SourcePath SourcePathTemp(Sources sources,  JObject item)
-        {
-            SourcePath source = null;
-            switch (sources)
-            {
-                case Sources.IEC61850:
-                    source = new iec61850Path(item);
-                    break;
-                case Sources.MODBUS:
+        //private static SourcePath SourcePathTemp(Sources sources,  JObject item)
+        //{
+        //    SourcePath source = null;
+        //    switch (sources)
+        //    {
+        //        case Sources.IEC61850:
+        //            source = new iec61850Path(item);
+        //            break;
+        //        case Sources.MODBUS:
 
-                    break;
-            }
-            return source;
-        }
+        //            break;
+        //    }
+        //    return source;
+        //}
 
         //private static Destination.Destination DestinationTemp(Destinations destinations, JObject itemDestination)
         //{
@@ -91,20 +95,20 @@ namespace Gateway
         //    return destination;
         //}
 
-        private static Source.Source SourceTemp(Sources sources, JObject itemSource)
-        {
-            Source.Source source = null;
-            switch (sources)
-            {
-                case Sources.IEC61850:
-                    source = new iec61850(ParseSource.SourceShort(itemSource));
-                    break;
-                case Sources.MODBUS:
-                    source = new modBus(ParseSource.SourceShort(itemSource));
-                    break;
-            }
-            return source;
-        }
+        //private static Source.Source SourceTemp(Sources sources, JObject itemSource)
+        //{
+        //    Source.Source source = null;
+        //    switch (sources)
+        //    {
+        //        case Sources.IEC61850:
+        //            source = new iec61850(Parse.SourceShort(itemSource));
+        //            break;
+        //        case Sources.MODBUS:
+        //            source = new modBus(Parse.SourceShort(itemSource));
+        //            break;
+        //    }
+        //    return source;
+        //}
 
         public static void DeInitializeGateWay()
         {

@@ -11,6 +11,7 @@ namespace Abstraction
         public abstract dynamic GetValue();
         public abstract dynamic SetValue();
         public abstract dynamic ShortInfo();
+        public abstract bool InitHandlers();
     }
 
     public interface IDestination
@@ -22,5 +23,6 @@ namespace Abstraction
         dynamic SetValue();
 
         dynamic ShortInfo();
+        bool InitHandlers();
     }
 }

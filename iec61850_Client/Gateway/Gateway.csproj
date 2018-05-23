@@ -51,10 +51,7 @@
   <ItemGroup>
     <Compile Include="Data\Data.cs" />
     <Compile Include="Destination\Destination.cs" />
-    <Compile Include="Destination\iec60870.cs" />
     <Compile Include="GateWay.cs" />
-    <Compile Include="Source\iec61850.cs" />
-    <Compile Include="Source\modBus.cs" />
     <Compile Include="GateWayAPI.cs" />
     <Compile Include="Source\Source.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,7 +65,7 @@
       <Project>{7eb5871e-c706-4144-93a9-242e2f1883c4}</Project>
       <Name>IEC_60870</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IEC_61850_Client\IEC_61850.csproj">
+    <ProjectReference Include="..\IEC_61850\IEC_61850.csproj">
       <Project>{14003231-621f-47bf-83e3-6f166e929e51}</Project>
       <Name>IEC_61850</Name>
     </ProjectReference>

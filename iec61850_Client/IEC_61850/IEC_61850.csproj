@@ -20,7 +20,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -50,11 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientAPI.cs" />
-    <Compile Include="ClientConnect.cs" />
+    <Compile Include="Client\ClientAPI.cs" />
+    <Compile Include="Client\ClientConnect.cs" />
+    <Compile Include="Client\IEC61850_Client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Abstraction\Abstraction.csproj">
+      <Project>{d892858d-9ba7-42e3-990a-8606788db62c}</Project>
+      <Name>Abstraction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.csproj">
       <Project>{49f43633-4c77-4b27-8964-8fdfb3fd641e}</Project>
       <Name>Logger</Name>

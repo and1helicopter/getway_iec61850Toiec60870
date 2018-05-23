@@ -49,9 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IEC60870.cs" />
+    <Compile Include="Sever\HandlerCOT_Server.cs" />
+    <Compile Include="Sever\Handlers_Server.cs" />
+    <Compile Include="Sever\IEC60870_Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Sever\Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstraction\Abstraction.csproj">

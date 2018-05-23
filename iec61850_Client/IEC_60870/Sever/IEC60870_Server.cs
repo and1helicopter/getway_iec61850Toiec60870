@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Abstraction;
-using lib60870.CS101;
 using Newtonsoft.Json.Linq;
 
 namespace IEC_60870
 {
-    public class IEC60870 : Destination
+    public class IEC60870_Server : Destination
     {
         private string Host { get; }
         private int Port { get; }
@@ -18,7 +17,7 @@ namespace IEC_60870
 
         public override bool IsRun { get; set; }
 
-        public IEC60870(JObject destination)
+        public IEC60870_Server(JObject destination)
         {
             Host = destination.GetValue("host").ToString().ToLower() == "localhost" ? "127.0.0.1" : destination.GetValue("host").ToString().ToLower();
             Port = (int)destination.GetValue("port");
@@ -68,6 +67,13 @@ namespace IEC_60870
         public override dynamic ShortInfo()
         {
                return (Host, Port);
+        }
+
+        public override bool InitHandlers()
+        {
+
+
+            return true;
         }
     }
 }

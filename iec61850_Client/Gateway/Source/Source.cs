@@ -1,8 +1,46 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Logger;
 using Newtonsoft.Json.Linq;
 
 namespace Gateway.Source
 {
+    public static class SourceAPI
+    {
+        private static readonly List<Abstraction.Source> Sources = new List<Abstraction.Source>();
+
+        public static bool Add(JObject source)
+        {
+            var temp = Parse.Source(source);
+
+            var type = temp.Property("type").Value.ToString().ToLower();
+            switch (type)
+            {
+                case "iec60870":
+                {
+                    try
+                    {
+                        Abstraction.Source sourceTemp = new IEC_61850.IEC61850_Client();
+                        //Проверка есть ли уже такой объект
+                        if (Sources.Find(x => x.ShortInfo() == sourceTemp.ShortInfo()) != null)
+                                return false;
+                            //Abstraction.Source destTemp = new IEC_60870.IEC60870_Server(temp);
+                            ////Проверка есть ли уже такой объект
+
+                            //Destinations.Add(destTemp);
+                        }
+                        catch (Exception e)
+                    {
+                        Log.Write(e, Log.Code.WARNING);
+                        return false;
+                    }
+                    break;
+                }
+            }
+            return true;
+        }
+    }
+
     public abstract class Source
     {
         public abstract Source GetSource();
@@ -15,9 +53,9 @@ namespace Gateway.Source
         public abstract void SetSourcePath(JObject source);
     }
 
-    public static class ParseSource
+    public static class Parse
     {
-        public static IEnumerable<JObject> Source(JObject file)
+        public static IEnumerable<JObject> Sources(JObject file)
         {
             JObject tempSource = file;
             //Проверка на существование
@@ -31,7 +69,7 @@ namespace Gateway.Source
             }
         }
 
-        public static JObject SourceShort(JObject file)
+        public static JObject Source(JObject file)
         {
             JObject source = null;
             //Проверка на существование
