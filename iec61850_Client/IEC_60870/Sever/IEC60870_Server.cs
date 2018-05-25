@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Abstraction;
 using Newtonsoft.Json.Linq;
+using Logger;
 
 namespace IEC_60870
 {
@@ -13,39 +15,54 @@ namespace IEC_60870
         private int MaxConnection { get; }
         private bool StatusTls { get; }
 
-        private Server iec60870 { get; set; }
+        private Server iec60870 { get; }
 
         public override bool IsRun { get; set; }
 
         public IEC60870_Server(JObject destination)
         {
-            Host = destination.GetValue("host").ToString().ToLower() == "localhost" ? "127.0.0.1" : destination.GetValue("host").ToString().ToLower();
-            Port = (int)destination.GetValue("port");
-            MaxQueue = (int)destination.GetValue("maxQueue");
-            MaxConnection = (int)destination.GetValue("maxConnection");
-            StatusTls = (bool)destination.GetValue("statusTls");
-            
-            List<string> bLip = new List<string>();
-            List<string> wLip = new List<string>();
-
-            foreach (var item in destination.GetValue("blackListIP").ToList())
+            try
             {
-                bLip.Add(item.ToString());
-            }
+                Host = destination.GetValue("host").ToString().ToLower() == "localhost" ? "127.0.0.1" : destination.GetValue("host").ToString().ToLower();
+                Port = (int)destination.GetValue("port");
+                MaxQueue = (int)destination.GetValue("maxQueue");
+                MaxConnection = (int)destination.GetValue("maxConnection");
+                StatusTls = (bool)destination.GetValue("statusTls");
 
-            foreach (var item in destination.GetValue("whiteListIP").ToList())
+                List<string> bLip = new List<string>();
+                List<string> wLip = new List<string>();
+
+                foreach (var item in destination.GetValue("blackListIP").ToList())
+                {
+                    bLip.Add(item.ToString());
+                }
+
+                foreach (var item in destination.GetValue("whiteListIP").ToList())
+                {
+                    wLip.Add(item.ToString());
+                }
+
+                iec60870 = new Server(Host, Port, MaxQueue, MaxConnection, StatusTls, wLip, bLip);
+            }
+            catch (Exception e)
             {
-                wLip.Add(item.ToString());
+                Log.Write(e, Log.Code.ERROR);
             }
-
-            iec60870 = new Server(Host, Port, MaxQueue, MaxConnection, StatusTls, wLip, bLip);
         }
         
         public override bool Start()
         {
-            iec60870.ServerSetHandlers();
-            IsRun = iec60870.ServerStart();
-            return IsRun;
+            try
+            {
+                iec60870.ServerSetHandlers();
+                IsRun = iec60870.ServerStart();
+                return IsRun;
+            }
+            catch (Exception e)
+            {
+                Log.Write(e, Log.Code.ERROR);
+                return IsRun;
+            }
         }
 
         public override bool Stop()

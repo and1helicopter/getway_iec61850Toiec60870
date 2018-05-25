@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using lib60870.CS101;
+using Logger;
 
 namespace IEC_60870
 {
@@ -15,16 +17,23 @@ namespace IEC_60870
 
 	    public Server(string host, int port, int maxQueue, int maxConnection, bool statusTls, List<string> whiteListIp, List<string> blackListIp)
         {
-            _server = new lib60870.CS104.Server();
-            _server.SetLocalAddress(host);
-            _server.SetLocalPort(port);
-            _server.MaxQueueSize = maxQueue;
-            _server.MaxOpenConnections = maxConnection;
+            try
+            {
+                _server = new lib60870.CS104.Server();
+                _server.SetLocalAddress(host);
+                _server.SetLocalPort(port);
+                _server.MaxQueueSize = maxQueue;
+                _server.MaxOpenConnections = maxConnection;
 
-            if (whiteListIp != null)
-                WhiteListIP = whiteListIp;
-            if (blackListIp != null)
-                BlackListIP = blackListIp;
+                if (whiteListIp != null)
+                    WhiteListIP = whiteListIp;
+                if (blackListIp != null)
+                    BlackListIP = blackListIp;
+            }
+            catch (Exception e)
+            {
+                Log.Write(e, Log.Code.ERROR);
+            }
         }
 
 		public bool ServerStart()

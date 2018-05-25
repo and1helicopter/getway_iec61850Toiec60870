@@ -40,8 +40,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libiec\iec61850dotnet.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\ClientAPI.cs" />
-    <Compile Include="Client\ClientConnect.cs" />
+    <Compile Include="Client\Client.cs" />
+    <Compile Include="Client\Client_Handler.cs" />
     <Compile Include="Client\IEC61850_Client.cs" />
+    <Compile Include="Client\IEC61850_Handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +72,9 @@
       <Project>{49f43633-4c77-4b27-8964-8fdfb3fd641e}</Project>
       <Name>Logger</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

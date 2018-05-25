@@ -1,43 +1,24 @@
-﻿using Gateway.Destination;
-using Gateway.Source;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Logger;
+using Newtonsoft.Json.Linq;
 
 namespace Gateway.Data
 {
-    public class Data:ISource, IDestination
+    public static class Parse
     {
-        public Data(Source.Source source, Abstraction.Destination destination, SourcePath sourcePath)
+        public static IEnumerable<JObject> Data(JObject file)
         {
-            Source = source;
-            Destination = destination;
-            SourcePath = sourcePath;
-            //DestinationPath = destinationPath;
+            JObject tempDatum = file;
+            //Проверка на существование
+            if (tempDatum.ContainsKey("itemsDestination"))
+            {
+                var data = tempDatum["itemsDestination"];
+                foreach (var itemDatum in data)
+                {
+                    yield return (JObject)itemDatum;
+                }
+            }
         }
-
-        public Source.Source GetSource()
-        {
-            return Source.GetSource();
-        }
-
-        //public Abstraction.Destination GetDestination()
-        //{
-        //    return Destination.GetDestination();
-        //}
-
-        public Source.Source Source { get; set; }
-        public Abstraction.Destination Destination { get; set; }
-        public SourcePath SourcePath { get; set; }
-       // public DestinationPath DestinationPath { get; set; }
-        public dynamic Value { get; set; }
-
-    }
-
-    interface ISource
-    {
-        
-    }
-
-    interface IDestination
-    {
-        
     }
 }

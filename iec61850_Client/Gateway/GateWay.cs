@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Gateway.Destination;
 using Gateway.Source;
+using Gateway.Data;
 using Newtonsoft.Json.Linq;
-using Parse = Gateway.Source.Parse;
 
 namespace Gateway
 {
@@ -20,15 +20,20 @@ namespace Gateway
             //Получаем все Destination
             foreach (var itemDestination in Destination.Parse.Destinations(file))
             {
-                if (!DestinationAPI.Add(itemDestination))
-                    break;
+                var destination = DestinationAPI.Add(itemDestination);
+                if(destination == null)
+                    continue;
                 //Получаем все Source для данного Destination
-                foreach (var itemSource in Parse.Sources(itemDestination))
+                foreach (var itemSource in Source.Parse.Sources(itemDestination))
                 {
-                    if (!SourceAPI.Add(itemSource))
-                        break;
+                    var source = SourceAPI.Add(itemSource);
+                    if (source == null)
+                        continue;
 
+                    foreach (var itemData in Gateway.Data.Parse.Data(itemSource))
+                    {
 
+                    }
                     //Source.Source source = SourceTemp(sources, itemSource);
                     //if (source == null)
                     //    break;

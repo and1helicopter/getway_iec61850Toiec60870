@@ -10,32 +10,35 @@ namespace Gateway.Destination
     {
         private static readonly List<Abstraction.Destination> Destinations = new List<Abstraction.Destination>();
 
-        public static bool Add(JObject destination)
+        public static Abstraction.Destination Add(JObject destination)
         {
+            Abstraction.Destination destTemp = null;
             var temp = Parse.Destination(destination);
-
             var type = temp.Property("type").Value.ToString().ToLower();
+
             switch (type)
             {
                 case "iec60870":
                 {
                     try
                     {
-                        Abstraction.Destination destTemp = new IEC_60870.IEC60870_Server(temp);
-                        //Проверка есть ли уже такой объект
-                        if (Destinations.Find(x => x.ShortInfo() == destTemp.ShortInfo()) != null)
-                            return false;
-                        Destinations.Add(destTemp);
-                        }
+                        destTemp = new IEC_60870.IEC60870_Server(temp);
+                    }
                     catch (Exception e)
                     {
                         Log.Write(e, Log.Code.WARNING);
-                        return false;
+                        return null;
                     }
                     break;
                 }
             }
-            return true;
+
+            //Проверка есть ли уже такой объект
+            var dest = Destinations.Find(x => destTemp != null && x.ShortInfo().Equals(destTemp.ShortInfo()));
+            if(dest != null)
+                return dest;
+            Destinations.Add(destTemp);
+            return destTemp;
         }
 
         public static bool Start()
@@ -96,6 +99,11 @@ namespace Gateway.Destination
             }
 
             return destination;
+        }
+
+        public static IEnumerable<JObject> InfoDestination(JObject file)
+        {
+            return new JObject[1];
         }
     }
 

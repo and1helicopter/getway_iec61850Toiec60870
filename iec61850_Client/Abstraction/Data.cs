@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Abstraction
+﻿namespace Abstraction
 {
-    class Data
+    public class Data:IData
     {
+        public Source Source { get; set; }
+        public Destination Destination { get; set; }
+        public dynamic Value { get; set; }
+
+        public ItemDestination ItemDestination { get; set; }
+        public ItemSource ItemSource { get; set; }
     }
+
+    interface IData
+    {
+        
+    }
+
 }

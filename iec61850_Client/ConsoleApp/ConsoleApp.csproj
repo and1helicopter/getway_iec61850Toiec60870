@@ -88,10 +88,6 @@
       <Project>{7eb5871e-c706-4144-93a9-242e2f1883c4}</Project>
       <Name>IEC_60870</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IEC_61850_Client\IEC_61850.csproj">
-      <Project>{14003231-621f-47bf-83e3-6f166e929e51}</Project>
-      <Name>IEC_61850</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.csproj">
       <Project>{49f43633-4c77-4b27-8964-8fdfb3fd641e}</Project>
       <Name>Logger</Name>

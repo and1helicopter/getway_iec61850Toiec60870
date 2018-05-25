@@ -6,15 +6,48 @@ using Logger;
 
 namespace IEC_61850
 {
-	public class ClientConnect
+    public partial class Client
 	{
 		private readonly IedConnection _connection = new IedConnection();
 
-		private string _hostname;
+        private string _hostname;
 		private int _port;
 		private bool _runConnect;
 
 		private IsoConnectionParameters _parameters;
+
+	    public Client(string hostname, int port, string apTitleR, int aeQualifierR, uint pSelectorR, byte[] sSelectorR, byte[] tSelectorR,
+	        string apTitleL, int aeQualifierL, uint pSelectorL, byte[] sSelectorL, byte[] tSelectorL, bool enabled, string password)
+	    {
+	        try
+	        {
+	            _hostname = hostname;
+	            _port = port;
+
+	            _parameters = _connection.GetConnectionParameters();
+                if(!string.IsNullOrEmpty(apTitleR) && !string.IsNullOrEmpty(aeQualifierR.ToString()))
+                    _parameters.SetRemoteApTitle(apTitleR, aeQualifierR);
+	            if (!string.IsNullOrEmpty(pSelectorR.ToString()) && sSelectorR != null && tSelectorR != null)
+	                _parameters.SetRemoteAddresses(pSelectorR, sSelectorR, tSelectorR);
+	            if (!string.IsNullOrEmpty(apTitleL) && !string.IsNullOrEmpty(aeQualifierL.ToString()))
+	                _parameters.SetLocalApTitle(apTitleL, aeQualifierL);
+	            if (!string.IsNullOrEmpty(pSelectorL.ToString()) && sSelectorL != null && tSelectorL != null)
+                    _parameters.SetLocalAddresses(pSelectorL, sSelectorL, tSelectorL);
+                if(enabled && !string.IsNullOrEmpty(password))
+                    _parameters.UsePasswordAuthentication(password);
+            }
+	        catch (Exception e)
+	        {
+                Log.Write(e, Log.Code.ERROR);
+	        }
+        }
+
+
+
+
+
+
+
 
 		public string GetConnetionHostPort()
 		{
@@ -27,7 +60,7 @@ namespace IEC_61850
 			_port = port;
 		}
 
-		public bool StartConnection()
+		public bool Start()
 		{
 			try
 			{
@@ -69,35 +102,15 @@ namespace IEC_61850
 			_parameters = null;
 		}
 
-		public void DefinePassword(string password)
-		{
-			_parameters = _connection.GetConnectionParameters();
-			_parameters.UsePasswordAuthentication(password);
-		}
 
-		public void DefineLocalAddresses(uint pSelector, byte[] sSelector, byte[] tSelector)
-		{
-			_parameters = _connection.GetConnectionParameters();
-			_parameters.SetLocalAddresses(pSelector, sSelector, tSelector);
-		}
 
-		public void DefineLocalApTitle(string apTitle, int aeQualifier)
-		{
-			_parameters = _connection.GetConnectionParameters();
-			_parameters.SetLocalApTitle(apTitle, aeQualifier);
-		}
 
-		public void DefineRemoteAddresses(uint pSelector, byte[] sSelector, byte[] tSelector)
-		{
-			_parameters = _connection.GetConnectionParameters();
-			_parameters.SetRemoteAddresses(pSelector, sSelector, tSelector);
-		}
 
-		public void DefineRemoteApTitle(string apTitle, int aeQualifier)
-		{
-			_parameters = _connection.GetConnectionParameters();
-			_parameters.SetRemoteApTitle(apTitle, aeQualifier);
-		}
+
+
+
+
+
 
 		private readonly List<PathDA> _listPath = new List<PathDA>();
 

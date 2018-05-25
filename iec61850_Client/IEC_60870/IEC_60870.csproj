@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sever\HandlerCOT_Server.cs" />
-    <Compile Include="Sever\Handlers_Server.cs" />
+    <Compile Include="Sever\IEC60870_Handler.cs" />
+    <Compile Include="Sever\Server_Handler.cs" />
     <Compile Include="Sever\IEC60870_Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sever\Server.cs" />

@@ -9,34 +9,40 @@ namespace Gateway.Source
     {
         private static readonly List<Abstraction.Source> Sources = new List<Abstraction.Source>();
 
-        public static bool Add(JObject source)
+        public static Abstraction.Source Add(JObject source)
         {
+            Abstraction.Source sourceTemp = null;
             var temp = Parse.Source(source);
-
             var type = temp.Property("type").Value.ToString().ToLower();
+
             switch (type)
             {
-                case "iec60870":
+                case "iec61850":
                 {
                     try
                     {
-                        Abstraction.Source sourceTemp = new IEC_61850.IEC61850_Client();
-                        //Проверка есть ли уже такой объект
-                        if (Sources.Find(x => x.ShortInfo() == sourceTemp.ShortInfo()) != null)
-                                return false;
-                            //Abstraction.Source destTemp = new IEC_60870.IEC60870_Server(temp);
-                            ////Проверка есть ли уже такой объект
-
-                            //Destinations.Add(destTemp);
-                        }
-                        catch (Exception e)
+                        sourceTemp = new IEC_61850.IEC61850_Client(temp);
+                    }
+                    catch (Exception e)
                     {
                         Log.Write(e, Log.Code.WARNING);
-                        return false;
+                        return null;
                     }
                     break;
                 }
             }
+
+            //Проверка есть ли уже такой объект
+            var sour = Sources.Find(x => sourceTemp != null && x.ShortInfo().Equals(sourceTemp.ShortInfo()));
+            if (sour != null)
+                return sour;
+            Sources.Add(sourceTemp);
+
+            return sourceTemp;
+        }
+
+        public static bool Start()
+        {
             return true;
         }
     }
