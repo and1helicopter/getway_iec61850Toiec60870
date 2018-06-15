@@ -12,33 +12,41 @@ namespace Gateway.Source
         public static Abstraction.Source Add(JObject source)
         {
             Abstraction.Source sourceTemp = null;
-            var temp = Parse.Source(source);
-            var type = temp.Property("type").Value.ToString().ToLower();
-
-            switch (type)
+            try
             {
-                case "iec61850":
+                var temp = Parse.Source(source);
+                var type = temp.Property("type").Value.ToString().ToLower();
+
+                switch (type)
                 {
-                    try
+                    case "iec61850":
                     {
-                        sourceTemp = new IEC_61850.IEC61850_Client(temp);
+                        try
+                        {
+                            sourceTemp = new IEC_61850.IEC61850_Client(temp);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Write(e, Log.Code.WARNING);
+                            return null;
+                        }
+                        break;
                     }
-                    catch (Exception e)
-                    {
-                        Log.Write(e, Log.Code.WARNING);
-                        return null;
-                    }
-                    break;
                 }
+
+                //Проверка есть ли уже такой объект
+                var sour = Sources.Find(x => sourceTemp != null && x.ShortInfo().Equals(sourceTemp.ShortInfo()));
+                if (sour != null)
+                    return sour;
+                Sources.Add(sourceTemp);
+
+                return sourceTemp;
             }
-
-            //Проверка есть ли уже такой объект
-            var sour = Sources.Find(x => sourceTemp != null && x.ShortInfo().Equals(sourceTemp.ShortInfo()));
-            if (sour != null)
-                return sour;
-            Sources.Add(sourceTemp);
-
-            return sourceTemp;
+            catch (Exception e)
+            {
+                Log.Write(e, Log.Code.ERROR);
+                return sourceTemp;
+            }
         }
 
         public static bool Start()

@@ -17,7 +17,7 @@ namespace ConsoleApp
 		        }
 		    }
 
-            GateWayAPI.Initialize(objectsList, Destinations.IEC60870, Sources.IEC61850);	
+            GateWayAPI.Initialize(objectsList);	
             GateWayAPI.Start();
 		}
 	}

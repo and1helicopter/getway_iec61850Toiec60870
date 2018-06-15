@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Abstraction;
+using IEC_60870.Sever.Handlers;
 using Newtonsoft.Json.Linq;
 using Logger;
 
@@ -18,6 +19,8 @@ namespace IEC_60870
         private Server iec60870 { get; }
 
         public override bool IsRun { get; set; }
+
+        private Dictionary<Source, Item> dictinory { get; } = new Dictionary<Source, Item>();
 
         public IEC60870_Server(JObject destination)
         {
@@ -88,9 +91,90 @@ namespace IEC_60870
 
         public override bool InitHandlers()
         {
-
+            if (Init_Handler.Validation_cyc())
+            {
+                //Добавляем к обработчику
+            }
 
             return true;
+        }
+
+        public override bool AddDatum(Datum datum)
+        {
+            try
+            {
+                dictinory.Add(datum.Source, datum.Item);
+                return true;
+            }
+            catch
+            {
+                Log.Write(new Exception("IEC60870_Server.AddDatum()"), Log.Code.ERROR);
+                return false;
+            }
+        }
+
+        public override Item InitItem(JObject itemDestination, Source source)
+        {
+            try
+            {
+                var typeId = (int) itemDestination.GetValue("typeID");
+                var sq = (bool) itemDestination.GetValue("sq");
+                var length = (int) itemDestination.GetValue("length");
+                var cot = (int) itemDestination.GetValue("cot");
+                var isNegative = (bool) itemDestination.GetValue("isNegative");
+                var isTest = (bool) itemDestination.GetValue("isTest");
+                var oa = (int) itemDestination.GetValue("oa");
+                var ca = (int) itemDestination.GetValue("ca");
+
+                var item60870 = new Item60870(typeId, sq, length, cot, isNegative, isTest, oa, ca);
+                Dictionary<ItemSource, ItemDestination> dictionary = new Dictionary<ItemSource, ItemDestination>();
+
+                foreach (JObject itemObj in itemDestination["objects"])
+                {
+                    var addrObj = (int) itemObj.GetValue("addrObj");
+                    var attributeObj = itemObj["attributeObj"];
+
+                    var listAttributeObj = attributeObj.ToList();
+
+
+                    foreach (var itemAttributeObj in listAttributeObj)
+                    {
+                        //Создаем Destination
+                        var item = itemAttributeObj.First;
+                        var typeElement = (string)item["typeElement"];
+                        var indexElement = listAttributeObj.IndexOf(itemAttributeObj);
+                        //Получить ItemDestination
+                        var _itemDestination = new Obj(addrObj, typeElement, indexElement);
+
+                        //Создаем Source
+                        var attributeElement = new JObject(item["attributeElement"].Parent);
+                        //Получить ItemSource
+                        var _itemSource = source.InitItemSource(attributeElement);
+                        dictionary.Add(_itemSource, _itemDestination);
+                    }
+                }
+
+                return new ItemDictinory(item60870, dictionary);
+            }
+            catch
+            {
+                Log.Write(new Exception("InitItem()"), Log.Code.ERROR);
+                return null;
+            }
+        }
+
+        private static IEnumerable<JObject> JObjectEnumerable(JObject file, string key)
+        {
+            JObject temp = file;
+            //Проверка на существование
+            if (temp.ContainsKey(key))
+            {
+                var list = temp[key];
+                foreach (var item in list)
+                {
+                    yield return (JObject)item;
+                }
+            }
         }
     }
 }

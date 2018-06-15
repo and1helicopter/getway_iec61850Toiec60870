@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sever\Handlers\Handler_cyc.cs" />
+    <Compile Include="Sever\Dictinory.cs" />
     <Compile Include="Sever\IEC60870_Handler.cs" />
     <Compile Include="Sever\Server_Handler.cs" />
     <Compile Include="Sever\IEC60870_Server.cs" />
@@ -59,6 +61,10 @@
     <ProjectReference Include="..\Abstraction\Abstraction.csproj">
       <Project>{d892858d-9ba7-42e3-990a-8606788db62c}</Project>
       <Name>Abstraction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IEC_61850\IEC_61850.csproj">
+      <Project>{14003231-621F-47BF-83E3-6F166E929E51}</Project>
+      <Name>IEC_61850</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.csproj">
       <Project>{49f43633-4c77-4b27-8964-8fdfb3fd641e}</Project>

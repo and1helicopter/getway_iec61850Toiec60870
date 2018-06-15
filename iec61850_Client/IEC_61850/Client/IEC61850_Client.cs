@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using Abstraction;
 using Logger;
@@ -28,6 +28,8 @@ namespace IEC_61850
 
         public override bool IsRun { get; set; }
 
+        private Dictionary<Destination, Item> dictinory { get; } = new Dictionary<Destination, Item>();
+
         public IEC61850_Client(JObject source)
         {
             try
@@ -55,7 +57,6 @@ namespace IEC_61850
             {
                 Log.Write(e, Log.Code.ERROR);
             }
-
         }
 
         private byte[] GetByte(string str)
@@ -63,12 +64,12 @@ namespace IEC_61850
             return Encoding.ASCII.GetBytes(str); ;
         }
 
-        public override dynamic GetValue(Data data)
+        public override dynamic GetValue(Datum datum)
         {
             throw new NotImplementedException();
         }
 
-        public override dynamic SetValue(Data data)
+        public override dynamic SetValue(Datum datum)
         {
             throw new System.NotImplementedException();
         }
@@ -100,6 +101,35 @@ namespace IEC_61850
         public override bool InitHandlers()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override ItemSource InitItemSource(JObject itemSource)
+        {
+            return new Item61850((string)itemSource.GetValue("attributeElement"));
+        }
+
+        public override bool AddDatum(Datum datum)
+        {
+            try
+            {
+                dictinory.Add(datum.Destination, datum.Item);
+                return true;
+            }
+            catch
+            {
+                Log.Write(new Exception("IEC61850_Client.AddDatum()"), Log.Code.ERROR);
+                return false;
+            }
+        }
+
+        public class Item61850:ItemSource
+        {
+            public string PathItem { get; }
+
+            public Item61850(string pathItem)
+            {
+                PathItem = pathItem;
+            }
         }
     }
 }

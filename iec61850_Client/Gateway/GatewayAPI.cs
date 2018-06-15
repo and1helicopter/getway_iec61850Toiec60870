@@ -4,9 +4,9 @@ namespace Gateway
 {
     public static class GateWayAPI
     {
-        public static void Initialize(JObject data, Destinations destinations, Sources sources)
+        public static void Initialize(JObject data)
         {
-            GateWay.InitializeGateWay(data, destinations, sources);
+            GateWay.InitializeGateWay(data);
         }
 
         public static void DeInitialize()
@@ -23,16 +23,5 @@ namespace Gateway
         {
             GateWay.StopGateWay();
         }
-    }
-
-    public enum Destinations
-    {
-        IEC60870
-    }
-
-    public enum Sources
-    {
-        IEC61850,
-        MODBUS
     }
 }

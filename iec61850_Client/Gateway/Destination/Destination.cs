@@ -24,9 +24,9 @@ namespace Gateway.Destination
                     {
                         destTemp = new IEC_60870.IEC60870_Server(temp);
                     }
-                    catch (Exception e)
+                    catch 
                     {
-                        Log.Write(e, Log.Code.WARNING);
+                        Log.Write(new Exception("Gateway.Destination.Add()"), Log.Code.WARNING);
                         return null;
                     }
                     break;
@@ -39,6 +39,24 @@ namespace Gateway.Destination
                 return dest;
             Destinations.Add(destTemp);
             return destTemp;
+        }
+
+        public static bool InitHandlers()
+        {
+            try
+            {
+                foreach (var destination in Destinations)
+                {
+                    destination.InitHandlers();
+                }
+                return true;
+            }
+            catch
+            {
+                Log.Write(new Exception("Gateway.Destination.InitHandlers()"), Log.Code.ERROR);
+                return true;
+            }
+
         }
 
         public static bool Start()

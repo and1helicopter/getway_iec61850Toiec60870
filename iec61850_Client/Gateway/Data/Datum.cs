@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Logger;
 using Newtonsoft.Json.Linq;
 
-namespace Gateway.Data
+namespace Gateway.Datum
 {
     public static class Parse
     {

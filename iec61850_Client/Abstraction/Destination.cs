@@ -1,4 +1,6 @@
-﻿namespace Abstraction
+﻿using Newtonsoft.Json.Linq;
+
+namespace Abstraction
 {
     public abstract class Destination:IDestination
     {
@@ -10,11 +12,14 @@
         public abstract bool Stop();
         public abstract dynamic ShortInfo();
         public abstract bool InitHandlers();
+        public abstract bool AddDatum(Datum datum);
+
+        public abstract Item InitItem(JObject itemDestination, Source source);
     }
 
     public abstract class ItemDestination
     {
-        public abstract dynamic Path { get; set; }
+
     }
 
     public interface IDestination
