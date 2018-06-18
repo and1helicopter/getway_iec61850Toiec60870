@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Abstraction;
 using IEC_60870.Sever.Handlers;
 using Newtonsoft.Json.Linq;
@@ -19,8 +20,11 @@ namespace IEC_60870
         private Server iec60870 { get; }
 
         public override bool IsRun { get; set; }
+        private static readonly object _locker = new object();
+
 
         private Dictionary<Source, Item> dictinory { get; } = new Dictionary<Source, Item>();
+        private List<Handler> Handlers { get; } = new List<Handler>();
 
         public IEC60870_Server(JObject destination)
         {
@@ -74,12 +78,21 @@ namespace IEC_60870
             return !IsRun;
         }
 
-        public override dynamic GetValue()
+        public override void GetValue(Source source, Item item)
         {
-            throw new System.NotImplementedException();
+            TaskGetValue(source, item);
         }
 
-        public override dynamic SetValue()
+        static async Task TaskGetValue(Source source, Item items)
+        {
+            foreach (var item in items.Dictionary)
+            {
+                var value = await source.GetValue(item.Key);
+
+            }
+        }
+
+        public override void SetValue(Source source, Item item, dynamic value)
         {
             throw new System.NotImplementedException();
         }
@@ -91,12 +104,30 @@ namespace IEC_60870
 
         public override bool InitHandlers()
         {
-            if (Init_Handler.Validation_cyc())
+            try
             {
-                //Добавляем к обработчику
+                if (Init_Handler.ValidationCyclic(dictinory))
+                {
+                    var cyclicHandler = new HandlerCyclic();
+                    //Добавляем к обработчику
+                    if (cyclicHandler.InitHandler(dictinory, this))
+                    {
+                        Handlers.Add(cyclicHandler);
+                    }
+                }
+
+                //Добавить обработчики 
+                iec60870.ServerSetHandlers();
+
+
+                return true;
+            }
+            catch
+            {
+                Log.Write(new Exception("IEC60870_Server.InitHandlers()"), Log.Code.ERROR);
+                return false;
             }
 
-            return true;
         }
 
         public override bool AddDatum(Datum datum)
@@ -154,26 +185,12 @@ namespace IEC_60870
                     }
                 }
 
-                return new ItemDictinory(item60870, dictionary);
+                return new ItemBridge(item60870, dictionary);
             }
             catch
             {
                 Log.Write(new Exception("InitItem()"), Log.Code.ERROR);
                 return null;
-            }
-        }
-
-        private static IEnumerable<JObject> JObjectEnumerable(JObject file, string key)
-        {
-            JObject temp = file;
-            //Проверка на существование
-            if (temp.ContainsKey(key))
-            {
-                var list = temp[key];
-                foreach (var item in list)
-                {
-                    yield return (JObject)item;
-                }
             }
         }
     }

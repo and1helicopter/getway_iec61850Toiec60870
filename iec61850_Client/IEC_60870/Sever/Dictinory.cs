@@ -3,12 +3,12 @@ using Abstraction;
 
 namespace IEC_60870
 {
-    class ItemDictinory: Item
+    public class ItemBridge: Item
     {
         public Item60870 Item { get; }
         public override Dictionary<ItemSource, ItemDestination> Dictionary { get; set; }
 
-        public ItemDictinory(Item60870 item, Dictionary<ItemSource, ItemDestination> dictionary)
+        public ItemBridge(Item60870 item, Dictionary<ItemSource, ItemDestination> dictionary)
         {
             Item = item;
             Dictionary = dictionary;

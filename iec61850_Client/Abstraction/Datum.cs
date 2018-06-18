@@ -7,9 +7,8 @@ namespace Abstraction
     {
         public Source Source { get; }
         public Destination Destination { get; }
+        public Item Item { get; }
         public dynamic Value { get; set; }
-
-        public Item Item { get; } 
 
         public Datum(Source source, Destination destination, JObject itemData)
         {

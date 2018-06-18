@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using lib60870.CS101;
 using Logger;
 
@@ -30,9 +28,9 @@ namespace IEC_60870
                 if (blackListIp != null)
                     BlackListIP = blackListIp;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Write(e, Log.Code.ERROR);
+                Log.Write(new Exception("IEC_60870.Server.Server()"), Log.Code.ERROR);
             }
         }
 

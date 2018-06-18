@@ -6,8 +6,8 @@ namespace Abstraction
     {
         public abstract bool IsRun { get; set; }
 
-        public abstract dynamic GetValue(Datum datum);
-        public abstract dynamic SetValue(Datum datum);
+        public abstract dynamic GetValue(ItemSource datum);
+        public abstract dynamic SetValue(ItemSource datum);
         public abstract bool Start();
         public abstract bool Stop();
         public abstract dynamic ShortInfo();
@@ -23,8 +23,8 @@ namespace Abstraction
 
     public interface ISource
     {
-        dynamic GetValue(Datum datum);
-        dynamic SetValue(Datum datum);            //Объект который изменяет значение и который изменяется
+        dynamic GetValue(ItemSource datum);
+        dynamic SetValue(ItemSource datum);            //Объект который изменяет значение и который изменяется
         bool Start();
         bool Stop();
         dynamic ShortInfo();

@@ -64,12 +64,12 @@ namespace IEC_61850
             return Encoding.ASCII.GetBytes(str); ;
         }
 
-        public override dynamic GetValue(Datum datum)
+        public override dynamic GetValue(ItemSource datum)
         {
             throw new NotImplementedException();
         }
 
-        public override dynamic SetValue(Datum datum)
+        public override dynamic SetValue(ItemSource datum)
         {
             throw new System.NotImplementedException();
         }

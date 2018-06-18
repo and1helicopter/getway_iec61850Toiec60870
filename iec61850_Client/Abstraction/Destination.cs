@@ -6,8 +6,8 @@ namespace Abstraction
     {
         public abstract bool IsRun { get; set; }
 
-        public abstract dynamic GetValue();
-        public abstract dynamic SetValue();
+        public abstract void GetValue(Source source, Item item);
+        public abstract void SetValue(Source source, Item item, dynamic value);
         public abstract bool Start();
         public abstract bool Stop();
         public abstract dynamic ShortInfo();
@@ -24,8 +24,8 @@ namespace Abstraction
 
     public interface IDestination
     {
-        dynamic GetValue();
-        dynamic SetValue();
+        void GetValue(Source source, Item item);
+        void SetValue(Source source, Item item, dynamic value);
         bool Start();
         bool Stop();
         dynamic ShortInfo();
