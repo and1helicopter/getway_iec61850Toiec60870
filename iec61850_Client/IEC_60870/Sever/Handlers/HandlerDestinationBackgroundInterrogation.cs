@@ -7,21 +7,20 @@ using Logger;
 
 namespace IEC_60870.Sever.Handlers
 {
-    public class HandlerCyclic: HandlerBasic, IHandlerDestination
+    public class HandlerDestinationBackgroundInterrogation : HandlerBasic, IHandlerDestination
     {
         public Dictionary<Source, Item> ListDictionary { get; set; }
-
+        
         public void Process()
         {
             Dictionary<Source, ItemBridge> dictionary = ListDictionary.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
+            Random rand = new Random();
 
             while (IsRun)
             {
-                foreach (var item in dictionary)
-                {
-                    lock (_server._locker)
-                        _server.GetValueAsync(item.Key, item.Value);
-                }
+                var item = dictionary.ElementAt(rand.Next(0,dictionary.Count));
+                lock (_server._locker)
+                    _server.GetValueAsync(item.Key, item.Value);
             }
         }
 
@@ -32,17 +31,21 @@ namespace IEC_60870.Sever.Handlers
                 if (HandlerThread == null)
                 {
                     //Создаем список объектов с данным идентификатором
-                    if(ListDictionary == null)
+                    if (ListDictionary == null)
                         ListDictionary = new Dictionary<Source, Item>();
                     if (_server == null)
-                        _server = (IEC60870_Server) destination;
+                        lock (_server._locker)
+                        {
+                            _server = (IEC60870_Server)destination;
+                        }
+
                     Dictionary<Source, ItemBridge> outputDictionary = dictinory.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
-                    foreach (var item in outputDictionary.Where(item => item.Value.Item.Cot == 1).ToList())
+                    foreach (var item in outputDictionary.Where(item => item.Value.Item.Cot == 2).ToList())
                     {
                         ListDictionary.Add(item.Key, item.Value);
                     }
 
-                    HandlerThread = new Thread(Process) {Name = GetType() + @"_" + $"{new Random(100000)}"};
+                    HandlerThread = new Thread(Process) { Name = GetType() + @"_" + $"{new Random(100000)}" };
                     return true;
                 }
                 else
@@ -52,7 +55,7 @@ namespace IEC_60870.Sever.Handlers
             }
             catch
             {
-                Log.Write(new Exception("IEC_60870.Sever.Handlers.HandlerCyclic.InitHandlers()"), Log.Code.ERROR);
+                Log.Write(new Exception("IEC_60870.Sever.Handlers.HandlerDestinationBackgroundInterrogation.InitHandlers()"), Log.Code.ERROR);
                 return false;
             }
         }
@@ -60,20 +63,19 @@ namespace IEC_60870.Sever.Handlers
 
     public static partial class InitHandlers
     {
-        public static bool ValidationCyclic(Dictionary<Source, Item> dictinory)
+        public static bool ValidationBackgroundInterrogation(Dictionary<Source, Item> dictinory)
         {
             try
             {
                 //Проверка есть ли объекты подходящие для этого обработчика
                 Dictionary<Source, ItemBridge> outputDictionary = dictinory.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
-                return outputDictionary.Any(item => item.Value.Item.Cot == 1);
+                return outputDictionary.Any(item => item.Value.Item.Cot == 2);
             }
             catch
             {
-                Log.Write(new Exception("IEC_60870.Sever.Handlers.ValidationCyclic()"), Log.Code.ERROR);
+                Log.Write(new Exception("IEC_60870.Sever.Handlers.ValidationBackgroundInterrogation()"), Log.Code.ERROR);
                 return false;
             }
         }
-
     }
 }

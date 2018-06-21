@@ -8,7 +8,7 @@ namespace IEC_60870
     public partial class Server
     {
         //Проверка  ip - адреса клиента на белый и черный список
-        private static bool connectionRequestHandler(object parameter, IPAddress ipAddress)
+        private bool connectionRequestHandler(object parameter, IPAddress ipAddress)
         {
             if (!WhiteListIP.FindAll(x => x.ToString().Equals(ipAddress.ToString())).Any() && WhiteListIP.Any())
             {
@@ -23,43 +23,43 @@ namespace IEC_60870
         }
 
         //Оброботчик запросов от клиента
-        private static bool asduHandler(object parameter, IMasterConnection connection, ASDU asdu)
+        private bool asduHandler(object parameter, IMasterConnection connection, ASDU asdu)
         {
             return true;
         }
 
         //Обработчик команд опроса
-        private static bool interrogationHandler(object parameter, IMasterConnection connection, ASDU asdu, byte qoi)
+        private bool interrogationHandler(object parameter, IMasterConnection connection, ASDU asdu, byte qoi)
         {
             return true;
         }
 
         //Обработчик команд опроса счетчиков 
-        private static bool counterInterrogationHandler(object parameter, IMasterConnection connection, ASDU asdu, byte qoi)
+        private bool counterInterrogationHandler(object parameter, IMasterConnection connection, ASDU asdu, byte qoi)
         {
             return true;
         }
 
         //Обработчик комаанд чтения
-        private static bool readHandler(object parameter, IMasterConnection connection, ASDU asdu, int ioa)
+        private bool readHandler(object parameter, IMasterConnection connection, ASDU asdu, int ioa)
         {
             return true;
         }
 
         //Обработчик команд синхронизации часов
-        private static bool clockSynchronizationHandler(object parameter, IMasterConnection connection, ASDU asdu, CP56Time2a newTime)
+        private bool clockSynchronizationHandler(object parameter, IMasterConnection connection, ASDU asdu, CP56Time2a newTime)
         {
             return true;
         }
 
         //Обработчик команды сброса процесса в исходное состояние
-        private static bool resetProcessHandler(object parameter, IMasterConnection connection, ASDU asdu, byte qrp)
+        private bool resetProcessHandler(object parameter, IMasterConnection connection, ASDU asdu, byte qrp)
         {
             return true;
         }
 
         //Обработчик команды определения запаздывания
-        private static bool delayAcquisitionHandler(object parameter, IMasterConnection connection, ASDU asdu, CP16Time2a delayTime)
+        private bool delayAcquisitionHandler(object parameter, IMasterConnection connection, ASDU asdu, CP16Time2a delayTime)
         {
             return true;
         }

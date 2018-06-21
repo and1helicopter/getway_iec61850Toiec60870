@@ -16,13 +16,12 @@ namespace IEC_60870
         private int MaxConnection { get; }
         private bool StatusTls { get; }
 
-        private Server iec60870 { get; }
+        private Server IEC60870 { get; }
 
         public override bool IsRun { get; set; }
-        private static readonly object _locker = new object();
+        internal readonly object _locker = new object();
 
-
-        private Dictionary<Source, Item> dictinory { get; } = new Dictionary<Source, Item>();
+        private Dictionary<Source, Item> Dictinory { get; } = new Dictionary<Source, Item>();
         private List<Handler> Handlers { get; } = new List<Handler>();
 
         public IEC60870_Server(JObject destination)
@@ -48,7 +47,7 @@ namespace IEC_60870
                     wLip.Add(item.ToString());
                 }
 
-                iec60870 = new Server(Host, Port, MaxQueue, MaxConnection, StatusTls, wLip, bLip);
+                IEC60870 = new Server(Host, Port, MaxQueue, MaxConnection, StatusTls, wLip, bLip);
             }
             catch (Exception e)
             {
@@ -65,7 +64,7 @@ namespace IEC_60870
                 {
                     handler.Start();
                 }
-                IsRun = iec60870.ServerStart();
+                IsRun = IEC60870.ServerStart();
                 return IsRun;
             }
             catch (Exception e)
@@ -77,13 +76,13 @@ namespace IEC_60870
 
         public override bool Stop()
         {
-            IsRun = iec60870.ServerStop();
+            IsRun = IEC60870.ServerStop();
             return !IsRun;
         }
 
         public override void GetValueAsync(Source source, Item item)
         {
-           TaskGetValue(source, iec60870, item);
+           TaskGetValue(source, IEC60870, item);
         }
 
         static void TaskGetValue(Source source, Server destination, Item items)
@@ -96,12 +95,12 @@ namespace IEC_60870
             }
 
             //Созданый ASDU и отправить на сервер
-            destination.AddASDUServer(items, destination, value);
+            destination.AddASDUServer(items, value);
         }
 
         public override void SetValue(Source source, Item item, dynamic value)
         {
-            throw new System.NotImplementedException();
+             
         }
 
         public override dynamic ShortInfo()
@@ -113,18 +112,28 @@ namespace IEC_60870
         {
             try
             {
-                if (Init_Handler.ValidationCyclic(dictinory))
+                if (Sever.Handlers.InitHandlers.ValidationCyclic(Dictinory))
                 {
                     var cyclicHandler = new HandlerCyclic();
                     //Добавляем к обработчику
-                    if (cyclicHandler.InitHandler(dictinory, this))
+                    if (cyclicHandler.InitHandler(Dictinory, this))
                     {
                         Handlers.Add(cyclicHandler);
                     }
                 }
 
+                if (Sever.Handlers.InitHandlers.ValidationBackgroundInterrogation(Dictinory))
+                {
+                    var backgroundInterrogation = new HandlerDestinationBackgroundInterrogation();
+                    //Добавляем к обработчику
+                    if (backgroundInterrogation.InitHandler(Dictinory, this))
+                    {
+                        Handlers.Add(backgroundInterrogation);
+                    }
+                }
+
                 //Добавить обработчики 
-                iec60870.ServerSetHandlers();
+                IEC60870.ServerSetHandlers();
                 
                 return true;
             }
@@ -140,7 +149,7 @@ namespace IEC_60870
         {
             try
             {
-                dictinory.Add(datum.Source, datum.Item);
+                Dictinory.Add(datum.Source, datum.Item);
                 return true;
             }
             catch
@@ -167,8 +176,9 @@ namespace IEC_60870
                 Dictionary<ItemSource, ItemDestination> dictionary = new Dictionary<ItemSource, ItemDestination>();
                 var index = 0;
 
-                foreach (JObject itemObj in itemsDestination["objects"])
+                foreach (var jToken in itemsDestination["objects"])
                 {
+                    var itemObj = (JObject) jToken;
                     var addrObj = (int) itemObj.GetValue("addrObj");
                     var attributeObj = itemObj["attributeObj"];
 
@@ -187,7 +197,7 @@ namespace IEC_60870
                         var attributeElement = new JObject(item["attributeElement"].Parent);
                         //Получить ItemSource
                         var itemSource = source.InitItemSource(attributeElement);
-                        if(itemSource != null && itemDestination != null)
+                        if(itemSource != null)
                             dictionary.Add(itemSource, itemDestination);
                     }
                 }

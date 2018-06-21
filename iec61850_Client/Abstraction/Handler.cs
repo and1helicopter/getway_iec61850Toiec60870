@@ -11,7 +11,6 @@ namespace Abstraction
         public abstract bool IsRun { get; set; }
         public abstract bool IsUse { get; set; }
         
-        public abstract void Process();
 
         public abstract bool Start();
         public abstract bool Stop();
@@ -23,7 +22,6 @@ namespace Abstraction
         bool IsRun { get; set; }
         bool IsUse { get; set; }
 
-        void Process();
         bool Start();
         bool Stop();
     }
@@ -32,6 +30,7 @@ namespace Abstraction
     {
         Dictionary<Source, Item> ListDictionary { get; set; }
         bool InitHandler(Dictionary<Source, Item> dictinory, Destination destination);
+        void Process();
     }
 
     public interface IHandlerSource

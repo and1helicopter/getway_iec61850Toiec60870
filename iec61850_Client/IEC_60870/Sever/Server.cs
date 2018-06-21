@@ -10,11 +10,11 @@ namespace IEC_60870
 {
 	public partial class Server
 	{
-	    private static lib60870.CS104.Server _server;
-        private static bool _workServer;
-	    private static readonly object _locker = new object();
-	    private static List<string> WhiteListIP { get; set; } = new List<string>();
-	    private static List<string> BlackListIP { get; set; } = new List<string>();
+	    private lib60870.CS104.Server _server;
+        private bool _workServer;
+	    private readonly object _locker = new object();
+	    private List<string> WhiteListIP { get; set; } = new List<string>();
+	    private List<string> BlackListIP { get; set; } = new List<string>();
 
 	    public Server(string host, int port, int maxQueue, int maxConnection, bool statusTls, List<string> whiteListIp, List<string> blackListIp)
         {
@@ -65,7 +65,7 @@ namespace IEC_60870
         
 
 
-		public void AddASDUServer(Item items, Server destination, dynamic[] values)
+		public void AddASDUServer(Item items, dynamic[] values)
 		{
 		    var item = (ItemBridge) items;
 		    var cot = item.Item.Cot;
@@ -530,6 +530,7 @@ namespace IEC_60870
             }
             catch 
 	        {
+                Log.Write(new Exception("IEC_60870.Server.GetObject"), Log.Code.WARNING);
 	            return null;
             }
 	    }
