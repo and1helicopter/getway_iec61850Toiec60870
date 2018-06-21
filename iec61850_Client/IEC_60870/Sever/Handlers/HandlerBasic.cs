@@ -10,6 +10,7 @@ namespace IEC_60870.Sever.Handlers
         public override Thread HandlerThread { get; set; }
         public override bool IsRun { get; set; }
         public override bool IsUse { get; set; }
+        internal IEC60870_Server Server;
 
         public override bool Start()
         {

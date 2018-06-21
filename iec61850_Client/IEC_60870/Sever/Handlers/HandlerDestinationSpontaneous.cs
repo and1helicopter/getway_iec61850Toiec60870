@@ -7,23 +7,9 @@ using Logger;
 
 namespace IEC_60870.Sever.Handlers
 {
-    public class HandlerDestinationBackgroundInterrogation : HandlerBasic, IHandlerDestination
+    public class HandlerDestinationSpontaneous:HandlerBasic, IHandlerDestination
     {
         public Dictionary<Source, Item> ListDictionary { get; set; }
-        
-        public void Process()
-        {
-            Dictionary<Source, ItemBridge> dictionary = ListDictionary.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
-            Random rand = new Random();
-
-            while (IsRun)
-            {
-                var item = dictionary.ElementAt(rand.Next(0,dictionary.Count));
-                lock (Server._locker)
-                    Server.GetValueAsync(item.Key, item.Value);
-            }
-        }
-
         public bool InitHandler(Dictionary<Source, Item> dictinory, Destination destination)
         {
             try
@@ -36,7 +22,7 @@ namespace IEC_60870.Sever.Handlers
                     if (Server == null)
                         Server = (IEC60870_Server)destination;
                     Dictionary<Source, ItemBridge> outputDictionary = dictinory.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
-                    foreach (var item in outputDictionary.Where(item => item.Value.Item.Cot == 2).ToList())
+                    foreach (var item in outputDictionary.Where(item => item.Value.Item.Cot == 3).ToList())
                     {
                         ListDictionary.Add(item.Key, item.Value);
                     }
@@ -51,21 +37,37 @@ namespace IEC_60870.Sever.Handlers
             }
             catch
             {
-                Log.Write(new Exception("IEC_60870.Sever.Handlers.HandlerDestinationBackgroundInterrogation.InitHandlers()"), Log.Code.ERROR);
+                Log.Write(new Exception("IEC_60870.Sever.Handlers.Spontaneous.InitHandlers()"), Log.Code.ERROR);
                 return false;
+            }
+        }
+
+        public void Process()
+        {
+            Dictionary<Source, ItemBridge> dictionary = ListDictionary.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
+
+            while (IsRun)
+            {
+                foreach (var item in dictionary)
+                {
+                    lock (Server._locker)
+                        Server.GetValueAsync(item.Key, item.Value);
+                }
+
+                Thread.Sleep(Convert.ToInt32(new Random(100000)));
             }
         }
     }
 
     public static partial class InitHandlers
     {
-        public static bool ValidationBackgroundInterrogation(Dictionary<Source, Item> dictinory)
+        public static bool ValidationSpontaneous(Dictionary<Source, Item> dictinory)
         {
             try
             {
                 //Проверка есть ли объекты подходящие для этого обработчика
                 Dictionary<Source, ItemBridge> outputDictionary = dictinory.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
-                return outputDictionary.Any(item => item.Value.Item.Cot == 2);
+                return outputDictionary.Any(item => item.Value.Item.Cot == 3);
             }
             catch
             {

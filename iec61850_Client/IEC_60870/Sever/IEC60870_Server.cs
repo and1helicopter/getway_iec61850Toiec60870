@@ -131,6 +131,16 @@ namespace IEC_60870
                         Handlers.Add(backgroundInterrogation);
                     }
                 }
+                
+                if (Sever.Handlers.InitHandlers.ValidationSpontaneous(Dictinory))
+                {
+                    var spontaneous = new HandlerDestinationSpontaneous();
+                    //Добавляем к обработчику
+                    if (spontaneous.InitHandler(Dictinory, this))
+                    {
+                        Handlers.Add(spontaneous);
+                    }
+                }
 
                 //Добавить обработчики 
                 IEC60870.ServerSetHandlers();

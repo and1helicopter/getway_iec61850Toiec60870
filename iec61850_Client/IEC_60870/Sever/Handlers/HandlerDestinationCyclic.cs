@@ -19,8 +19,8 @@ namespace IEC_60870.Sever.Handlers
             {
                 foreach (var item in dictionary)
                 {
-                    lock (_server._locker)
-                        _server.GetValueAsync(item.Key, item.Value);
+                    lock (Server._locker)
+                        Server.GetValueAsync(item.Key, item.Value);
                 }
             }
         }
@@ -34,15 +34,15 @@ namespace IEC_60870.Sever.Handlers
                     //Создаем список объектов с данным идентификатором
                     if(ListDictionary == null)
                         ListDictionary = new Dictionary<Source, Item>();
-                    if (_server == null)
-                        _server = (IEC60870_Server) destination;
+                    if (Server == null)
+                        Server = (IEC60870_Server) destination;
                     Dictionary<Source, ItemBridge> outputDictionary = dictinory.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
                     foreach (var item in outputDictionary.Where(item => item.Value.Item.Cot == 1).ToList())
                     {
                         ListDictionary.Add(item.Key, item.Value);
                     }
 
-                    HandlerThread = new Thread(Process) {Name = GetType() + @"_" + $"{new Random(100000)}"};
+                    HandlerThread = new Thread(Process) {Name = GetType() + @"_" + $"{new Random().Next(100000)}"};
                     return true;
                 }
                 else

@@ -6,15 +6,15 @@ using lib60870;
 using lib60870.CS101;
 using Logger;
 
-namespace IEC_60870
+namespace IEC_60870.Sever
 {
 	public partial class Server
 	{
-	    private lib60870.CS104.Server _server;
+	    private readonly lib60870.CS104.Server _server;
         private bool _workServer;
 	    private readonly object _locker = new object();
-	    private List<string> WhiteListIP { get; set; } = new List<string>();
-	    private List<string> BlackListIP { get; set; } = new List<string>();
+	    private List<string> WhiteListIp { get; } = new List<string>();
+	    private List<string> BlackListIp { get; } = new List<string>();
 
 	    public Server(string host, int port, int maxQueue, int maxConnection, bool statusTls, List<string> whiteListIp, List<string> blackListIp)
         {
@@ -27,9 +27,9 @@ namespace IEC_60870
                 _server.MaxOpenConnections = maxConnection;
 
                 if (whiteListIp != null)
-                    WhiteListIP = whiteListIp;
+                    WhiteListIp = whiteListIp;
                 if (blackListIp != null)
-                    BlackListIP = blackListIp;
+                    BlackListIp = blackListIp;
             }
             catch
             {
@@ -65,7 +65,7 @@ namespace IEC_60870
         
 
 
-		public void AddASDUServer(Item items, dynamic[] values)
+		public void AddASDUtoServer(Item items, dynamic[] values)
 		{
 		    var item = (ItemBridge) items;
 		    var cot = item.Item.Cot;

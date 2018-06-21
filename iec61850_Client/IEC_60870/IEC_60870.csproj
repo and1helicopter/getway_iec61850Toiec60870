@@ -50,8 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sever\Handlers\HandlerBasic.cs" />
     <Compile Include="Sever\Handlers\HandlerDestinationCyclic.cs" />
     <Compile Include="Sever\Dictinory.cs" />
+    <Compile Include="Sever\Handlers\HandlerDestinationBackgroundInterrogation.cs" />
+    <Compile Include="Sever\Handlers\HandlerDestinationSpontaneous.cs" />
     <Compile Include="Sever\IEC60870_Handler.cs" />
     <Compile Include="Sever\Server_Handler.cs" />
     <Compile Include="Sever\IEC60870_Server.cs" />

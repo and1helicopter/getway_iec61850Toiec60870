@@ -3,18 +3,18 @@ using System.Net;
 using lib60870;
 using lib60870.CS101;
 
-namespace IEC_60870
+namespace IEC_60870.Sever
 {
     public partial class Server
     {
         //Проверка  ip - адреса клиента на белый и черный список
         private bool connectionRequestHandler(object parameter, IPAddress ipAddress)
         {
-            if (!WhiteListIP.FindAll(x => x.ToString().Equals(ipAddress.ToString())).Any() && WhiteListIP.Any())
+            if (!WhiteListIp.FindAll(x => x.ToString().Equals(ipAddress.ToString())).Any() && WhiteListIp.Any())
             {
                 return false;
             }
-            else if (BlackListIP.FindAll(x => x.ToString().Equals(ipAddress.ToString())).Any())
+            else if (BlackListIp.FindAll(x => x.ToString().Equals(ipAddress.ToString())).Any())
             {
                 return false;
             }
