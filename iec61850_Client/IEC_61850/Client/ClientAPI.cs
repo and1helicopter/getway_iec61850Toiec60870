@@ -87,19 +87,19 @@ namespace IEC_61850
             return ConnectionList[index];
         }
 
-        public static List<Client.PathDA> GetPathDA(int index)
+        public static List<Client.Item61850> GetPathDA(int index)
         {
             return ConnectionList[index].GetListPathDA();
         }
 
-        public static async Task<dynamic> GetValue(int index, Client.PathDA item)
+        public static async Task<dynamic> GetValue(int index, Client.Item61850 item)
         {
             dynamic value = await Task.Run(() => ConnectionList[index].GetValue(item));
 
             return value;
         }
 
-        public static void SetValue(int index, dynamic newValue, dynamic oldValue, ulong operTm, Client.PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
+        public static void SetValue(int index, dynamic newValue, dynamic oldValue, ulong operTm, Client.Item61850 item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
         {
             var connection = ConnectionList[index];
             connection.SetValue(newValue, oldValue, operTm, item, test, cheakInterlock, cheakSynchro, originator, orCat);

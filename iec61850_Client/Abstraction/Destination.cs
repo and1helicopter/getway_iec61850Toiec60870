@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Abstraction
 {
@@ -6,7 +7,7 @@ namespace Abstraction
     {
         public abstract bool IsRun { get; set; }
 
-        public abstract void GetValue(Source source, Item item);
+        public abstract void GetValueAsync(Source source, Item item);
         public abstract void SetValue(Source source, Item item, dynamic value);
         public abstract bool Start();
         public abstract bool Stop();
@@ -14,7 +15,7 @@ namespace Abstraction
         public abstract bool InitHandlers();
         public abstract bool AddDatum(Datum datum);
 
-        public abstract Item InitItem(JObject itemDestination, Source source);
+        public abstract Item InitItem(JObject itemsDestination, Source source);
     }
 
     public abstract class ItemDestination
@@ -24,7 +25,7 @@ namespace Abstraction
 
     public interface IDestination
     {
-        void GetValue(Source source, Item item);
+        void GetValueAsync(Source source, Item item);
         void SetValue(Source source, Item item, dynamic value);
         bool Start();
         bool Stop();

@@ -1,7 +1,8 @@
 ﻿using System;
 using IEC61850.Client;
-using  IEC61850.Common;
+using IEC61850.Common;
 using System.Collections.Generic;
+using Abstraction;
 using Logger;
 
 namespace IEC_61850
@@ -102,25 +103,15 @@ namespace IEC_61850
 			_parameters = null;
 		}
 
-
-
-
-
-
-
-
-
-
-
-		private readonly List<PathDA> _listPath = new List<PathDA>();
-
-		public class PathDA
-		{
+		private readonly List<Item61850> _listItem = new List<Item61850>();
+        
+        public class Item61850:ItemSource
+        {
 			public string path { get; }
 			public FunctionalConstraint typeFC { get; }
 			public MmsType typeMMS { get; }
 
-			public PathDA(string pathStr, FunctionalConstraint typeFc, MmsType typeMms)
+			public Item61850(string pathStr, FunctionalConstraint typeFc, MmsType typeMms)
 			{
 				path = pathStr;
 				typeFC = typeFc;
@@ -128,21 +119,21 @@ namespace IEC_61850
 			}
 		}
 
-		private PathDA GetPathDA(string path)
+		private Item61850 GetPathDA(string path)
 		{
-			return _listPath.Find(x => x.path == path);
+			return _listItem.Find(x => x.path == path);
 		}
 
-		public List<PathDA> GetListPathDA()
+		public List<Item61850> GetListPathDA()
 		{
-			return _listPath;
+			return _listItem;
 		}
 
 		public bool FillPathDA()
 		{
 			try
 			{
-				_listPath.Clear();
+				_listItem.Clear();
 				var nodeLD = _connection.GetServerDirectory();
 
 				foreach (var ld in nodeLD)
@@ -193,11 +184,11 @@ namespace IEC_61850
 			else
 			{
 				var typeMMS = _connection.GetVariableSpecification(itemPath, typeFC).GetType();
-				_listPath.Add(new PathDA(itemPath, typeFC, typeMMS));
+				_listItem.Add(new Item61850(itemPath, typeFC, typeMMS));
 			}
 		}
 
-		public dynamic GetValue(PathDA item)
+		public dynamic GetValue(Item61850 item)
 		{
 			dynamic val;
 			switch (item.typeMMS)
@@ -226,18 +217,18 @@ namespace IEC_61850
 				default:
 					val = _connection.ReadValue(item.path, item.typeFC);
 					break;
-			}
+            }
 
 			return val;
 		}
 
-		public void SetValue(dynamic newValue, dynamic oldValue, ulong operTm, PathDA item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
+		public void SetValue(dynamic newValue, dynamic oldValue, ulong operTm, Item61850 item, bool test, bool cheakInterlock, bool cheakSynchro, string originator, OrCat orCat)
 		{
 			if (item.path.Contains("Oper.ctlVal"))
 			{
 				var path = item.path.Replace(".Oper.ctlVal", "");
 
-				var pathDA = new PathDA($"{path}.ctlModel", FunctionalConstraint.CF, MmsType.MMS_INTEGER);
+				var pathDA = new Item61850($"{path}.ctlModel", FunctionalConstraint.CF, MmsType.MMS_INTEGER);
 
 				try
 				{

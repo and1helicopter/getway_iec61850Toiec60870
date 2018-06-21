@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Abstraction;
 using IEC_60870.Sever.Handlers;
 using Newtonsoft.Json.Linq;
@@ -61,7 +60,11 @@ namespace IEC_60870
         {
             try
             {
-                iec60870.ServerSetHandlers();
+                //iec60870.ServerSetHandlers();
+                foreach (var handler in Handlers)
+                {
+                    handler.Start();
+                }
                 IsRun = iec60870.ServerStart();
                 return IsRun;
             }
@@ -78,18 +81,22 @@ namespace IEC_60870
             return !IsRun;
         }
 
-        public override void GetValue(Source source, Item item)
+        public override void GetValueAsync(Source source, Item item)
         {
-            TaskGetValue(source, item);
+           TaskGetValue(source, iec60870, item);
         }
 
-        static async Task TaskGetValue(Source source, Item items)
+        static void TaskGetValue(Source source, Server destination, Item items)
         {
-            foreach (var item in items.Dictionary)
+            var value = new dynamic[items.Dictionary.Count];
+            //(ItemBridge)items.Dictionary.
+            foreach (var item in items.Dictionary.Select((item, index) => new { item, index }))
             {
-                var value = await source.GetValue(item.Key);
-
+                value[item.index] = source.GetValueAsync(item.item.Key);
             }
+
+            //Созданый ASDU и отправить на сервер
+            destination.AddASDUServer(items, destination, value);
         }
 
         public override void SetValue(Source source, Item item, dynamic value)
@@ -118,8 +125,7 @@ namespace IEC_60870
 
                 //Добавить обработчики 
                 iec60870.ServerSetHandlers();
-
-
+                
                 return true;
             }
             catch
@@ -144,44 +150,45 @@ namespace IEC_60870
             }
         }
 
-        public override Item InitItem(JObject itemDestination, Source source)
+        public override Item InitItem(JObject itemsDestination, Source source)
         {
             try
             {
-                var typeId = (int) itemDestination.GetValue("typeID");
-                var sq = (bool) itemDestination.GetValue("sq");
-                var length = (int) itemDestination.GetValue("length");
-                var cot = (int) itemDestination.GetValue("cot");
-                var isNegative = (bool) itemDestination.GetValue("isNegative");
-                var isTest = (bool) itemDestination.GetValue("isTest");
-                var oa = (int) itemDestination.GetValue("oa");
-                var ca = (int) itemDestination.GetValue("ca");
+                var typeId = (int) itemsDestination.GetValue("typeID");
+                var sq = (bool) itemsDestination.GetValue("sq");
+                var length = (int) itemsDestination.GetValue("length");
+                var cot = (int) itemsDestination.GetValue("cot");
+                var isNegative = (bool) itemsDestination.GetValue("isNegative");
+                var isTest = (bool) itemsDestination.GetValue("isTest");
+                var oa = (int) itemsDestination.GetValue("oa");
+                var ca = (int) itemsDestination.GetValue("ca");
 
                 var item60870 = new Item60870(typeId, sq, length, cot, isNegative, isTest, oa, ca);
                 Dictionary<ItemSource, ItemDestination> dictionary = new Dictionary<ItemSource, ItemDestination>();
+                var index = 0;
 
-                foreach (JObject itemObj in itemDestination["objects"])
+                foreach (JObject itemObj in itemsDestination["objects"])
                 {
                     var addrObj = (int) itemObj.GetValue("addrObj");
                     var attributeObj = itemObj["attributeObj"];
 
-                    var listAttributeObj = attributeObj.ToList();
-
-
+                    var listAttributeObj = attributeObj.First().ToList();
+                    
                     foreach (var itemAttributeObj in listAttributeObj)
                     {
                         //Создаем Destination
-                        var item = itemAttributeObj.First;
+                        var item = itemAttributeObj;
                         var typeElement = (string)item["typeElement"];
-                        var indexElement = listAttributeObj.IndexOf(itemAttributeObj);
+                        var indexElement = index++;
                         //Получить ItemDestination
-                        var _itemDestination = new Obj(addrObj, typeElement, indexElement);
+                        var itemDestination = new Obj(addrObj, typeElement, indexElement);
 
                         //Создаем Source
                         var attributeElement = new JObject(item["attributeElement"].Parent);
                         //Получить ItemSource
-                        var _itemSource = source.InitItemSource(attributeElement);
-                        dictionary.Add(_itemSource, _itemDestination);
+                        var itemSource = source.InitItemSource(attributeElement);
+                        if(itemSource != null && itemDestination != null)
+                            dictionary.Add(itemSource, itemDestination);
                     }
                 }
 
@@ -189,7 +196,7 @@ namespace IEC_60870
             }
             catch
             {
-                Log.Write(new Exception("InitItem()"), Log.Code.ERROR);
+                Log.Write(new Exception("IEC60870_Server.InitItem()"), Log.Code.ERROR);
                 return null;
             }
         }

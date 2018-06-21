@@ -17,7 +17,7 @@ namespace IEC_60870.Sever.Handlers
 
         public Dictionary<Source, Item> ListDictionary { get; set; }
 
-        private IEC60870_Server server;
+        private IEC60870_Server _server;
 
         public override void Process()
         {
@@ -27,12 +27,10 @@ namespace IEC_60870.Sever.Handlers
             {
                 foreach (var item in dictionary)
                 {
-                    server.GetValue(item.Key, item.Value);
+                    _server.GetValueAsync(item.Key, item.Value);
                 }
             }
         }
-
-
 
         public bool InitHandler(Dictionary<Source, Item> dictinory, Destination destination)
         {
@@ -43,15 +41,15 @@ namespace IEC_60870.Sever.Handlers
                     //Создаем список объектов с данным идентификатором
                     if(ListDictionary == null)
                         ListDictionary = new Dictionary<Source, Item>();
-                    if (server == null)
-                        server = (IEC60870_Server) destination;
+                    if (_server == null)
+                        _server = (IEC60870_Server) destination;
                     Dictionary<Source, ItemBridge> outputDictionary = dictinory.ToDictionary(item => item.Key, item => (ItemBridge)item.Value);
                     foreach (var item in outputDictionary.Where(item => item.Value.Item.Cot == 1).ToList())
                     {
                         ListDictionary.Add(item.Key, item.Value);
                     }
 
-                    HandlerThread = new Thread(Process) {Name = GetType() + @"_" + $"{new Random()}"};
+                    HandlerThread = new Thread(() => Process()) {Name = GetType() + @"_" + $"{new Random(100000)}"};
                     return true;
                 }
                 else

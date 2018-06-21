@@ -124,20 +124,4 @@ namespace Gateway.Destination
             return new JObject[1];
         }
     }
-
-
-    //    public static IEnumerable<JObject> InfoDestination(JObject file)
-    //    {
-    //        JObject tempDestination = file;
-    //        //Проверка на существование
-    //        if (tempDestination.ContainsKey("itemsDestination"))
-    //        {
-    //            var destinations = tempDestination["itemsDestination"];
-    //            foreach (var itemDestination in destinations)
-    //            {
-    //                yield return (JObject)itemDestination;
-    //            }
-    //        }
-    //    }
-    //}
 }

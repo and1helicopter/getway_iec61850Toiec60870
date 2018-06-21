@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Abstraction;
+using IEC61850.Common;
 using Logger;
 using Newtonsoft.Json.Linq;
 
@@ -64,9 +66,9 @@ namespace IEC_61850
             return Encoding.ASCII.GetBytes(str); ;
         }
 
-        public override dynamic GetValue(ItemSource datum)
+        public override dynamic GetValueAsync(ItemSource itemSource)
         {
-            throw new NotImplementedException();
+            return iec61850.GetValue((Client.Item61850)itemSource);
         }
 
         public override dynamic SetValue(ItemSource datum)
@@ -81,9 +83,9 @@ namespace IEC_61850
                 IsRun = iec61850.Start();
                 return IsRun;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Write(e, Log.Code.ERROR);
+                Log.Write(new Exception("IEC60870_Server.Start()"), Log.Code.ERROR);
                 return IsRun;
             }
         }
@@ -105,7 +107,20 @@ namespace IEC_61850
 
         public override ItemSource InitItemSource(JObject itemSource)
         {
-            return new Item61850((string)itemSource.GetValue("attributeElement"));
+            try
+            {
+                var item = (JObject)itemSource["attributeElement"];
+                var valPath = (string)item.GetValue("path");
+                var valTypeFC = (string)item.GetValue("typeFC");
+                var valTypeMMS = (string)item.GetValue("typeMMS");
+                
+                return new Client.Item61850(valPath, (FunctionalConstraint)Enum.Parse(typeof(FunctionalConstraint), valTypeFC), (MmsType)Enum.Parse(typeof(MmsType), valTypeMMS));
+            }
+            catch
+            {
+                Log.Write(new Exception("IEC60870_Server.InitItemSource()"), Log.Code.ERROR);
+                return null;
+            }
         }
 
         public override bool AddDatum(Datum datum)
@@ -122,14 +137,8 @@ namespace IEC_61850
             }
         }
 
-        public class Item61850:ItemSource
-        {
-            public string PathItem { get; }
 
-            public Item61850(string pathItem)
-            {
-                PathItem = pathItem;
-            }
-        }
+
+
     }
 }

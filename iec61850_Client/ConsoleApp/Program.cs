@@ -19,6 +19,7 @@ namespace ConsoleApp
 
             GateWayAPI.Initialize(objectsList);	
             GateWayAPI.Start();
+
 		}
 	}
 }

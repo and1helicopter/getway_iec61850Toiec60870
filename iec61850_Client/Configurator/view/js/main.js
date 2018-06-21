@@ -788,10 +788,10 @@ Vue.component('app-iec61850',{
             }
             else if (typeID === '7') {
                 //Формирование BSI
-                let infElementTempVTI = new InformationElement();
-                infElementTempVTI.typeElement = 'BSI';  //BSI
-                infElementTempVTI.attributeElement = '';
-                Elements.push(infElementTempVTI);
+                let infElementTempBSI = new InformationElement();
+                infElementTempBSI.typeElement = 'BSI';  //BSI
+                infElementTempBSI.attributeElement = '';
+                Elements.push(infElementTempBSI);
                 //Формирование QDS
                 let infElementTempQDS = new InformationElement();
                 infElementTempQDS.typeElement = 'QDS';  //QDS
@@ -1805,7 +1805,15 @@ Vue.component('app-iec61850',{
                 }
             }
             else if(typeObj === 'NVA'){
-
+                for (let i = 0; i < tempObject61850.length; i++) {
+                    let tempObj = tempObject61850[i].typeFC;
+                    if (tempObj === 'CF' || tempObj === 'MX') {
+                        if (tempObject61850[i].typeMMS === 'MMS_FLOAT') {
+                            //Возможно другой тип
+                            tempInfObj.push(tempObject61850[i].path);
+                        }
+                    }
+                }
             }
             else if(typeObj === 'SVA'){
                 for (let i = 0; i < tempObject61850.length; i++) {

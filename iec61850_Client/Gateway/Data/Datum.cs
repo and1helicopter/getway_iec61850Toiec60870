@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Logger;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Gateway.Datum

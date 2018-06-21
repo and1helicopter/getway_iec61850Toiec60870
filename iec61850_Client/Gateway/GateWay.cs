@@ -1,19 +1,12 @@
-﻿using System.Collections.Generic;
-using Gateway.Destination;
+﻿using Gateway.Destination;
 using Gateway.Source;
-using Gateway.Datum;
 using Newtonsoft.Json.Linq;
 
 namespace Gateway
 {
     public static class GateWay
     {
-        delegate void Heandler(List<JObject> list);
-        private static Heandler _heandler;
         private static bool _run;
-        
-        
-        private static readonly List<Abstraction.Datum> Data = new List<Abstraction.Datum>();
 
         public static void InitializeGateWay(JObject file)
         {
@@ -34,12 +27,8 @@ namespace Gateway
                     foreach (var itemData in Datum.Parse.Data(itemSource))
                     {
                         var item = new Abstraction.Datum(source, destination, itemData);
-                        if (item != null)
-                        {
-                            Data.Add(item);
-                            destination.AddDatum(item);
-                            source.AddDatum(item);
-                        }
+                        destination.AddDatum(item);
+                        source.AddDatum(item);
                     }
                 }
             }
@@ -61,9 +50,13 @@ namespace Gateway
         {
             if (!_run)
             {
-                ////Передать обработчик 
-                //_heandler?.Invoke(Datum);
-                //_run = true;
+                //Запустить 
+                if (SourceAPI.Start())
+                    if (DestinationAPI.Start())
+                    {
+                        _run = true;
+                        ProccessRun();
+                    }
             }
         }
 
@@ -73,6 +66,14 @@ namespace Gateway
             {
                 //Передать обработчик 
                 _run = false;
+            }
+        }
+
+        private static void ProccessRun()
+        {
+            while (_run)
+            {
+
             }
         }
     }

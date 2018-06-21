@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Abstraction
 {
@@ -6,7 +7,7 @@ namespace Abstraction
     {
         public abstract bool IsRun { get; set; }
 
-        public abstract dynamic GetValue(ItemSource datum);
+        public abstract dynamic GetValueAsync(ItemSource datum);
         public abstract dynamic SetValue(ItemSource datum);
         public abstract bool Start();
         public abstract bool Stop();
@@ -23,7 +24,7 @@ namespace Abstraction
 
     public interface ISource
     {
-        dynamic GetValue(ItemSource datum);
+        dynamic GetValueAsync(ItemSource datum);
         dynamic SetValue(ItemSource datum);            //Объект который изменяет значение и который изменяется
         bool Start();
         bool Stop();

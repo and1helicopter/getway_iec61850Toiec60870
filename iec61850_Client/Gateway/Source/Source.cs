@@ -51,7 +51,20 @@ namespace Gateway.Source
 
         public static bool Start()
         {
-            return true;
+            try
+            {
+                foreach (var source in Sources)
+                {
+                    source.Start();
+                }
+                return true;
+            }
+            catch
+            {
+                Log.Write(new Exception("SourceAPI.Start()"), Log.Code.WARNING);
+                return false;
+            }
+
         }
     }
 
