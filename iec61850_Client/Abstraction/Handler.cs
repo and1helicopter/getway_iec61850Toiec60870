@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abstraction
 {
@@ -35,6 +34,8 @@ namespace Abstraction
 
     public interface IHandlerSource
     {
-        bool InitHandler(Dictionary<Source, Item> dictinory);
+        Dictionary<Destination, Item> ListDictionary { get; set; }
+        bool InitHandler(Dictionary<Source, Item> dictinory, Source source);
+        void Process();
     }
 }

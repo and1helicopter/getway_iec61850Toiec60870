@@ -16,7 +16,7 @@ namespace IEC_60870
         private int MaxConnection { get; }
         private bool StatusTls { get; }
 
-        private Server IEC60870 { get; }
+        private Sever.Server IEC60870 { get; }
 
         public override bool IsRun { get; set; }
         internal readonly object _locker = new object();
@@ -47,7 +47,7 @@ namespace IEC_60870
                     wLip.Add(item.ToString());
                 }
 
-                IEC60870 = new Server(Host, Port, MaxQueue, MaxConnection, StatusTls, wLip, bLip);
+                IEC60870 = new Sever.Server(Host, Port, MaxQueue, MaxConnection, StatusTls, wLip, bLip);
             }
             catch (Exception e)
             {
@@ -85,7 +85,7 @@ namespace IEC_60870
            TaskGetValue(source, IEC60870, item);
         }
 
-        static void TaskGetValue(Source source, Server destination, Item items)
+        static void TaskGetValue(Source source, Sever.Server destination, Item items)
         {
             var value = new dynamic[items.Dictionary.Count];
             //(ItemBridge)items.Dictionary.
@@ -95,7 +95,7 @@ namespace IEC_60870
             }
 
             //Созданый ASDU и отправить на сервер
-            destination.AddASDUServer(items, value);
+            destination.AddASDUtoServer(items, value);
         }
 
         public override void SetValue(Source source, Item item, dynamic value)
